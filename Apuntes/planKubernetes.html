@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K8s Training • Step-by-Step Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/premium.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            500: '#326ce5', /* K8s Blue */
+                            600: '#2856c0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .prose h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: #1e293b; }
+        .dark .prose h2 { color: #f8fafc; }
+        .prose p { font-size: 0.95rem; line-height: 1.6; color: #64748b; margin-bottom: 1rem; }
+        .dark .prose p { color: #94a3b8; }
+        .prose code { background: rgba(50, 108, 229, 0.1); padding: 0.2rem 0.4rem; border-radius: 0.4rem; font-size: 0.85em; color: #326ce5; }
+        
+        .terminal-window { background: #0d1117; border: 1px solid #30363d; }
+        .terminal-body { font-family: 'Fira Code', monospace; }
+        .prompt-user { color: #238636; font-weight: bold; }
+        .prompt-path { color: #58a6ff; }
+        
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #58a6ff;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .object-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .object-card:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex flex-col bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Header -->
+    <header class="h-16 shrink-0 premium-glass border-b border-slate-200 dark:border-white/5 flex items-center justify-between px-6 z-50">
+        <div class="flex items-center gap-4">
+            <a href="../index.html" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-brand-600 shadow-sm border border-slate-200 dark:border-white/5 transition-all">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-600 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-dharmachakra"></i>
+                </div>
+                <div>
+                    <h1 class="font-heading font-black text-sm tracking-tight leading-none">Kubernetes Training</h1>
+                    <p class="text-[9px] font-bold tracking-widest uppercase text-slate-400 mt-0.5">Step-by-Step Protocol</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-3">
+                <div class="text-right">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase">Progreso Global</p>
+                    <p id="progress-percent" class="text-xs font-black text-brand-500">0%</p>
+                </div>
+                <div class="w-32 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-brand-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+            <button id="themeToggle" class="w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center justify-center border border-slate-200 dark:border-white/5">
+                <i class="fa-solid fa-moon dark:hidden"></i>
+                <i class="fa-solid fa-sun hidden dark:block"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Left Panel: Lesson Content -->
+        <aside class="w-full md:w-[450px] lg:w-[500px] shrink-0 flex flex-col border-r border-slate-200 dark:border-white/5 bg-white dark:bg-[#0d1117] transition-all">
+            <div class="p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#161b22]">
+                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Módulo Actual</label>
+                <select id="module-select" class="w-full bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-brand-500/20 cursor-pointer transition-all">
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+
+            <div id="lesson-body" class="flex-1 overflow-y-auto p-8 prose dark:prose-invert max-w-none scroll-smooth">
+                <!-- Content injected here -->
+            </div>
+
+            <div class="p-6 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#161b22] flex justify-between items-center">
+                <button id="prev-btn" class="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all disabled:opacity-30" disabled>
+                    <i class="fa-solid fa-arrow-left"></i> Anterior
+                </button>
+                <span id="page-indicator" class="text-[10px] font-mono font-bold text-slate-400 uppercase">1 / 8</span>
+                <button id="next-btn" class="flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 transition-all disabled:opacity-30" disabled>
+                    Siguiente <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Right Panel: Visualizer & Terminal -->
+        <main class="flex-1 flex flex-col bg-slate-100 dark:bg-[#020617] relative">
+            
+            <!-- Visualizer Panel -->
+            <div class="h-1/2 p-6 overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Cluster Visualizer</h3>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-0.5 rounded bg-brand-500/10 text-brand-600 text-[9px] font-bold border border-brand-500/20">Namespace: default</span>
+                    </div>
+                </div>
+                <div id="visualizer" class="flex-1 premium-card rounded-[2rem] bg-white dark:bg-[#0d1117] border-slate-200 p-6 flex flex-wrap content-start gap-4 overflow-y-auto">
+                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
+                        <i class="fa-solid fa-microchip text-4xl mb-4"></i>
+                        <p class="text-xs font-mono">Inicia el cluster para ver objetos...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Panel -->
+            <div class="h-1/2 flex flex-col terminal-window border-t border-slate-200 dark:border-white/5">
+                <div class="h-10 px-4 bg-[#161b22] border-b border-white/5 flex items-center justify-between shrink-0">
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                        <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                        <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                    </div>
+                    <span class="text-[9px] font-mono text-slate-500 uppercase tracking-widest">kube-shell — user@ka0s — v1.28</span>
+                </div>
+
+                <!-- Mission Bar -->
+                <div class="px-6 py-3 bg-brand-500/5 border-b border-brand-500/10 shrink-0">
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 w-2 h-2 bg-brand-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(50,108,229,0.5)]"></div>
+                        <div class="flex-1">
+                            <div class="text-[9px] uppercase font-black text-brand-500 tracking-wider mb-0.5">Misión Actual</div>
+                            <div id="task-desc" class="text-slate-600 dark:text-slate-300 font-mono text-xs">Cargando misión...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Area -->
+                <div id="terminal-output" class="flex-1 p-6 terminal-body text-xs text-slate-300 overflow-y-auto space-y-1 scroll-smooth">
+                    <div class="text-slate-500 mb-4">
+                        Kubernetes Interactive Terminal Simulator [v1.0.0]<br>
+                        Type <span class="text-white px-1 bg-slate-800 rounded">help</span> for commands.
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-4 bg-[#0d1117] border-t border-white/5 shrink-0">
+                    <div class="flex items-center gap-2 font-mono text-xs">
+                        <span class="prompt-user">user@ka0s</span>
+                        <span class="prompt-sep">:</span>
+                        <span class="prompt-path">~</span>
+                        <span class="text-slate-500">$</span>
+                        <input type="text" id="terminal-input" class="flex-1 bg-transparent border-none outline-none text-white placeholder-slate-700" autocomplete="off" spellcheck="false" autofocus>
+                        <span class="cursor-blink"></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /* --- CORE: K8S SIMULATION ENGINE --- */
+        class K8sEngine {
+            constructor() {
+                this.state = {
+                    deployments: [],
+                    pods: [],
+                    services: [],
+                    namespaces: ['default', 'kube-system'],
+                    currentNamespace: 'default'
+                };
+            }
+
+            execute(cmd) {
+                const parts = cmd.trim().split(/\s+/);
+                if (parts[0] !== 'kubectl') return `command not found: ${parts[0]}`;
+                
+                const action = parts[1];
+                const resource = parts[2];
+
+                switch (action) {
+                    case 'get':
+                        if (resource === 'pods') return this.getPods();
+                        if (resource === 'deployments' || resource === 'deploy') return this.getDeployments();
+                        if (resource === 'services' || resource === 'svc') return this.getServices();
+                        return `error: unknown resource type "${resource}"`;
+                    
+                    case 'create':
+                        if (resource === 'deployment' || resource === 'deploy') {
+                            const name = parts[3];
+                            const img = parts.find(p => p.startsWith('--image='))?.split('=')[1];
+                            const reps = parts.find(p => p.startsWith('--replicas='))?.split('=')[1] || 1;
+                            if (!name || !img) return `error: name and image are required`;
+                            return this.createDeployment(name, img, parseInt(reps));
+                        }
+                        return `error: cannot create resource type "${resource}"`;
+
+                    case 'expose':
+                        const depName = parts[3];
+                        const type = parts.find(p => p.startsWith('--type='))?.split('=')[1];
+                        const port = parts.find(p => p.startsWith('--port='))?.split('=')[1];
+                        if (!depName || !type) return `error: deployment name and type required`;
+                        return this.exposeDeployment(depName, type, port);
+
+                    case 'scale':
+                        const scaleName = parts[3];
+                        const newReps = parts.find(p => p.startsWith('--replicas='))?.split('=')[1];
+                        if (!scaleName || !newReps) return `error: name and replicas required`;
+                        return this.scaleDeployment(scaleName, parseInt(newReps));
+
+                    case 'delete':
+                        return `resource "${parts[3]}" deleted (simulated)`;
+
+                    default:
+                        return `error: unknown action "${action}"`;
+                }
+            }
+
+            createDeployment(name, image, replicas) {
+                if (this.state.deployments.find(d => d.name === name)) return `error: deployment "${name}" already exists`;
+                const dep = { name, image, replicas, status: 'Scaling' };
+                this.state.deployments.push(dep);
+                
+                // Create Pods
+                for(let i=0; i<replicas; i++) {
+                    this.state.pods.push({ 
+                        name: `${name}-${Math.random().toString(36).substring(7)}`, 
+                        owner: name,
+                        status: 'Running' 
+                    });
+                }
+                setTimeout(() => dep.status = 'Ready', 2000);
+                return `deployment.apps/${name} created`;
+            }
+
+            scaleDeployment(name, replicas) {
+                const dep = this.state.deployments.find(d => d.name === name);
+                if (!dep) return `error: deployment "${name}" not found`;
+                
+                const current = dep.replicas;
+                dep.replicas = replicas;
+                
+                if (replicas > current) {
+                    for(let i=0; i < (replicas - current); i++) {
+                        this.state.pods.push({ name: `${name}-${Math.random().toString(36).substring(7)}`, owner: name, status: 'Running' });
+                    }
+                } else {
+                    const toRemove = current - replicas;
+                    let removed = 0;
+                    this.state.pods = this.state.pods.filter(p => {
+                        if (p.owner === name && removed < toRemove) {
+                            removed++;
+                            return false;
+                        }
+                        return true;
+                    });
+                }
+                return `deployment.apps/${name} scaled`;
+            }
+
+            exposeDeployment(name, type, port) {
+                if (this.state.services.find(s => s.name === name)) return `error: service "${name}" already exists`;
+                this.state.services.push({ name, type, port: port || '80', clusterIP: '10.96.0.' + Math.floor(Math.random()*255) });
+                return `service/${name} exposed`;
+            }
+
+            getPods() {
+                if (this.state.pods.length === 0) return "No resources found in default namespace.";
+                let out = "NAME\t\t\tREADY\tSTATUS\tRESTARTS\tAGE\n";
+                this.state.pods.forEach(p => {
+                    out += `${p.name}\t1/1\t${p.status}\t0\t\t12s\n`;
+                });
+                return out;
+            }
+
+            getDeployments() {
+                if (this.state.deployments.length === 0) return "No resources found.";
+                let out = "NAME\t\tREADY\tUP-TO-DATE\tAVAILABLE\tAGE\n";
+                this.state.deployments.forEach(d => {
+                    out += `${d.name}\t${d.replicas}/${d.replicas}\t${d.replicas}\t\t${d.replicas}\t\t15s\n`;
+                });
+                return out;
+            }
+
+            getServices() {
+                if (this.state.services.length === 0) return "NAME\t\tTYPE\t\tCLUSTER-IP\tEXTERNAL-IP\tPORT(S)\tAGE\nkubernetes\tClusterIP\t10.96.0.1\t<none>\t\t443/TCP\t1d";
+                let out = "NAME\t\tTYPE\t\tCLUSTER-IP\tEXTERNAL-IP\tPORT(S)\tAGE\n";
+                this.state.services.forEach(s => {
+                    out += `${s.name}\t${s.type}\t${s.clusterIP}\t<pending>\t${s.port}/TCP\t5s\n`;
+                });
+                return out;
+            }
+        }
+
+        /* --- CURRICULUM DATA --- */
+        const CURRICULUM = [
+            {
+                title: "1. ¿Qué es Kubernetes?",
+                content: `
+                    <h2>El Capitán de los Contenedores</h2>
+                    <p>Imagina que tienes una flota de barcos (contenedores Docker). Si tienes 2 o 3, puedes manejarlos tú solo. Pero, ¿qué pasa si tienes 1.000 barcos?</p>
+                    <p>Necesitas un <strong>Capitán</strong> (Kubernetes o K8s) que decida dónde aparcar cada barco, qué hacer si uno se hunde y cómo repartir la carga.</p>
+                    <p>K8s es un <strong>Orquestador</strong>: automatiza el despliegue, el escalado y la gestión de aplicaciones en contenedores.</p>
+                `,
+                task: {
+                    desc: "Verifica que el cluster está activo listando los servicios iniciales.",
+                    hint: "Escribe: kubectl get services",
+                    check: (cmd, out) => cmd.includes('get') && (cmd.includes('services') || cmd.includes('svc'))
+                }
+            },
+            {
+                title: "2. El Objeto Pod",
+                content: `
+                    <h2>La Unidad Mínima</h2>
+                    <p>En Kubernetes no despliegas contenedores directamente. Despliegas <strong>Pods</strong>.</p>
+                    <p>Un Pod es como una "vaina" de guisantes. Dentro puede haber uno o varios contenedores que comparten la misma red y almacenamiento.</p>
+                    <p><strong>Regla de oro:</strong> Los Pods son efímeros. Si mueren, K8s crea otro nuevo, pero no resucita el viejo.</p>
+                `,
+                task: {
+                    desc: "Intenta listar los Pods actuales. No debería haber ninguno todavía.",
+                    hint: "Escribe: kubectl get pods",
+                    check: (cmd, out) => cmd.includes('get pods')
+                }
+            },
+            {
+                title: "3. Deployments (Despliegues)",
+                content: `
+                    <h2>Escalado y Resiliencia</h2>
+                    <p>Como los Pods son frágiles, usamos un <strong>Deployment</strong> para gestionarlos.</p>
+                    <p>Un Deployment le dice a K8s: "Quiero que siempre haya 3 copias de mi app corriendo". Si un nodo falla, el Deployment se encarga de crear los Pods en otro sitio.</p>
+                `,
+                task: {
+                    desc: "Crea tu primer Deployment llamado 'web-server' usando la imagen 'nginx'.",
+                    hint: "Escribe: kubectl create deployment web-server --image=nginx",
+                    check: (cmd, out, k8s) => k8s.state.deployments.find(d => d.name === 'web-server')
+                }
+            },
+            {
+                title: "4. Escalado Dinámico",
+                content: `
+                    <h2>Más Potencia, Por Favor</h2>
+                    <p>Una de las magias de K8s es el escalado. Si tu web recibe mucho tráfico, puedes subir el número de réplicas en segundos.</p>
+                    <p>El Deployment ajustará el estado real para que coincida con tu deseo.</p>
+                `,
+                task: {
+                    desc: "Escala el deployment 'web-server' a 5 réplicas.",
+                    hint: "Escribe: kubectl scale deployment web-server --replicas=5",
+                    check: (cmd, out, k8s) => k8s.state.deployments.find(d => d.name === 'web-server' && d.replicas === 5)
+                }
+            },
+            {
+                title: "5. Services (Networking)",
+                content: `
+                    <h2>Abriendo las Puertas</h2>
+                    <p>Los Pods tienen IPs internas que cambian constantemente. ¿Cómo conectamos con ellos desde fuera?</p>
+                    <p>Usamos un <strong>Service</strong>. Un Service es una IP estática y un nombre DNS que apunta a un grupo de Pods.</p>
+                    <p>El tipo <code>LoadBalancer</code> es el que usamos en la nube para recibir tráfico de Internet.</p>
+                `,
+                task: {
+                    desc: "Expón el deployment 'web-server' como un servicio LoadBalancer en el puerto 80.",
+                    hint: "Escribe: kubectl expose deployment web-server --type=LoadBalancer --port=80",
+                    check: (cmd, out, k8s) => k8s.state.services.find(s => s.name === 'web-server' && s.type === 'LoadBalancer')
+                }
+            },
+            {
+                title: "6. Namespaces",
+                content: `
+                    <h2>Organizando el Caos</h2>
+                    <p>Imagina que compartes el cluster con otros equipos. No quieres que sus apps se mezclen con las tuyas.</p>
+                    <p>Los <strong>Namespaces</strong> son clusters virtuales dentro del mismo cluster físico. Permiten aislar recursos.</p>
+                `,
+                task: {
+                    desc: "Lista todos los namespaces para ver cómo está organizado el sistema.",
+                    hint: "Escribe: kubectl get namespaces",
+                    check: (cmd, out) => cmd.includes('get') && (cmd.includes('namespaces') || cmd.includes('ns'))
+                }
+            },
+            {
+                title: "7. Resumen y Siguiente Paso",
+                content: `
+                    <h2>¡Misión Cumplida!</h2>
+                    <p>Has aprendido los pilares fundamentales:</p>
+                    <ul>
+                        <li><strong>Pod:</strong> La unidad básica.</li>
+                        <li><strong>Deployment:</strong> Gestión y escalado.</li>
+                        <li><strong>Service:</strong> Acceso y red.</li>
+                    </ul>
+                    <p>Ahora estás listo para enfrentarte a conceptos avanzados como Ingress, RBAC y Helm.</p>
+                `,
+                task: {
+                    desc: "Haz una limpieza final. Lista todos los recursos creados.",
+                    hint: "Escribe: kubectl get all",
+                    check: (cmd, out) => cmd.includes('get all')
+                }
+            }
+        ];
+
+        /* --- UI LOGIC --- */
+        let currentIdx = 0;
+        const k8s = new K8sEngine();
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+        const lessonBody = document.getElementById('lesson-body');
+        const moduleSelect = document.getElementById('module-select');
+        const visualizer = document.getElementById('visualizer');
+
+        function init() {
+            // Populate select
+            CURRICULUM.forEach((m, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = m.title;
+                moduleSelect.appendChild(opt);
+            });
+
+            updateUI();
+            
+            terminalInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const cmd = terminalInput.value;
+                    if (cmd) handleCommand(cmd);
+                    terminalInput.value = '';
+                }
+            });
+
+            moduleSelect.addEventListener('change', (e) => {
+                currentIdx = parseInt(e.target.value);
+                updateUI();
+            });
+
+            document.getElementById('prev-btn').onclick = () => { if(currentIdx > 0) { currentIdx--; updateUI(); } };
+            document.getElementById('next-btn').onclick = () => { if(currentIdx < CURRICULUM.length - 1) { currentIdx++; updateUI(); } };
+            
+            // Theme toggle
+            document.getElementById('themeToggle').onclick = () => {
+                document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme:dark', document.documentElement.classList.contains('dark') ? '1' : '0');
+            };
+            if (localStorage.getItem('theme:dark') === '1') document.documentElement.classList.add('dark');
+        }
+
+        function updateUI() {
+            const m = CURRICULUM[currentIdx];
+            lessonBody.innerHTML = m.content;
+            document.getElementById('task-desc').textContent = m.task.desc;
+            document.getElementById('page-indicator').textContent = `${currentIdx + 1} / ${CURRICULUM.length}`;
+            moduleSelect.value = currentIdx;
+
+            // Progress
+            const progress = ((currentIdx) / (CURRICULUM.length - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-percent').textContent = `${Math.round(progress)}%`;
+
+            // Buttons
+            document.getElementById('prev-btn').disabled = currentIdx === 0;
+            document.getElementById('next-btn').disabled = true; // Wait for task
+
+            updateVisualizer();
+        }
+
+        function handleCommand(cmd) {
+            const line = document.createElement('div');
+            line.innerHTML = `<span class="prompt-user">user@ka0s</span><span class="prompt-sep">:</span><span class="prompt-path">~</span><span class="text-slate-500">$</span> <span class="text-white">${cmd}</span>`;
+            terminalOutput.appendChild(line);
+
+            const out = k8s.execute(cmd);
+            setTimeout(() => {
+                const res = document.createElement('div');
+                res.className = out.startsWith('error') ? 'text-red-400' : 'text-slate-300 whitespace-pre font-mono';
+                res.textContent = out;
+                terminalOutput.appendChild(res);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+
+                // Check mission
+                if (CURRICULUM[currentIdx].task.check(cmd, out, k8s)) {
+                    const success = document.createElement('div');
+                    success.className = 'text-green-400 font-bold mt-2';
+                    success.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Misión completada! Ya puedes avanzar.';
+                    terminalOutput.appendChild(success);
+                    document.getElementById('next-btn').disabled = false;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                }
+                updateVisualizer();
+            }, 200);
+        }
+
+        function updateVisualizer() {
+            visualizer.innerHTML = '';
+            
+            if (k8s.state.deployments.length === 0 && k8s.state.services.length === 0) {
+                visualizer.innerHTML = `
+                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
+                        <i class="fa-solid fa-microchip text-4xl mb-4"></i>
+                        <p class="text-xs font-mono">Inicia el cluster para ver objetos...</p>
+                    </div>`;
+                return;
+            }
+
+            // Render Deployments
+            k8s.state.deployments.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'object-card p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 w-48 shrink-0';
+                el.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-layer-group text-indigo-500 text-xs"></i>
+                        <span class="text-[10px] font-bold uppercase text-slate-500">Deployment</span>
+                    </div>
+                    <p class="text-xs font-black truncate">${d.name}</p>
+                    <div class="mt-3 flex gap-1">
+                        ${Array(d.replicas).fill(0).map(() => `<div class="w-2 h-2 rounded-full bg-green-500"></div>`).join('')}
+                    </div>
+                `;
+                visualizer.appendChild(el);
+            });
+
+            // Render Services
+            k8s.state.services.forEach(s => {
+                const el = document.createElement('div');
+                el.className = 'object-card p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 w-48 shrink-0';
+                el.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-network-wired text-purple-500 text-xs"></i>
+                        <span class="text-[10px] font-bold uppercase text-slate-500">Service</span>
+                    </div>
+                    <p class="text-xs font-black truncate">${s.name}</p>
+                    <p class="text-[9px] text-slate-400 font-mono mt-1">${s.clusterIP}</p>
+                `;
+                visualizer.appendChild(el);
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

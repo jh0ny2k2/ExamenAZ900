@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apuntes ACE Completo • CertHub Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../theme.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/premium.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        },
+                        dark: {
+                            bg: '#020617',
+                            card: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .prose-ace {
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        .prose-ace strong {
+            font-weight: 700;
+            color: var(--brand-600);
+        }
+        .dark .prose-ace strong {
+            color: var(--brand-500);
+        }
+        .prose-ace code {
+            background: rgba(14, 165, 233, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.4rem;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #0369a1;
+        }
+        .dark .prose-ace code {
+            color: #7dd3fc;
+        }
+        
+        .active-link {
+            background: linear-gradient(to right, rgba(14, 165, 233, 0.1), transparent);
+            border-left: 4px solid var(--brand-500);
+            color: var(--brand-600);
+            font-weight: 700;
+        }
+
+        .command-box {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .command-box::before {
+            content: "Terminal";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #0ea5e9;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 premium-glass border-b border-slate-200/50 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="../index.html" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-brand-600 shadow-sm border border-slate-200 dark:border-white/5 transition-all active:scale-90">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <div class="h-10 w-px bg-slate-200 dark:bg-white/10"></div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 flex items-center justify-center text-xl shadow-inner">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-heading font-black text-lg tracking-tight leading-none">GCP ACE • Ultimate Guide</h1>
+                        <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mt-1">Professional Training</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="themeToggle" class="w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-all flex items-center justify-center border border-transparent hover:border-slate-200">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Hero -->
+    <header class="max-w-7xl mx-auto px-6 pt-20 pb-12 animate-reveal">
+        <div class="premium-card rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full -mr-48 -mt-48 blur-[120px]"></div>
+            <div class="relative z-10 max-w-3xl">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-[10px] font-bold tracking-widest uppercase mb-8 border border-brand-500/20">
+                    GCP Certification Mastery
+                </span>
+                <h2 class="text-5xl md:text-7xl font-heading font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-[1.1]">
+                    Associate <span class="premium-gradient-text">Cloud Engineer</span> Exam Prep
+                </h2>
+                <p class="text-xl text-slate-500 dark:text-slate-400 leading-relaxed font-light mb-10">
+                    La guía definitiva para dominar la infraestructura de Google Cloud. Todo lo que necesitas saber sobre configuración de recursos, seguridad, redes y operaciones.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="window.print()" class="premium-btn px-8 py-4 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold shadow-xl flex items-center gap-3">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar a PDF
+                    </button>
+                    <div class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-brand-500/5 border border-brand-500/10">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-sm font-bold text-slate-600 dark:text-slate-300">Contenido 100% Actualizado 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Grid -->
+    <main class="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-16 animate-reveal" style="animation-delay: 0.2s">
+        
+        <!-- Sticky Sidebar -->
+        <aside class="lg:w-80 shrink-0">
+            <div class="sticky top-32 space-y-8">
+                <div>
+                    <h3 class="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-400 mb-6">Módulos de Estudio</h3>
+                    <nav id="sidebar-nav" class="space-y-2">
+                        <a href="#intro" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-map group-hover:text-brand-500"></i> Introducción y Jerarquía
+                        </a>
+                        <a href="#iam" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-shield-halved group-hover:text-brand-500"></i> IAM y Seguridad
+                        </a>
+                        <a href="#compute" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-server group-hover:text-brand-500"></i> Compute (VMs & GKE)
+                        </a>
+                        <a href="#storage" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-database group-hover:text-brand-500"></i> Storage & DBs
+                        </a>
+                        <a href="#networking" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-network-wired group-hover:text-brand-500"></i> Redes (VPC)
+                        </a>
+                        <a href="#monitoring" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-chart-line group-hover:text-brand-500"></i> Cloud Operations
+                        </a>
+                        <a href="#deployment" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-rocket group-hover:text-brand-500"></i> Despliegue e IaC
+                        </a>
+                        <a href="#gke" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-cubes group-hover:text-brand-500"></i> GKE (Kubernetes)
+                        </a>
+                        <a href="#patterns" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-lightbulb group-hover:text-brand-500"></i> Patrones de Examen
+                        </a>
+                        <a href="#summary" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-brain group-hover:text-brand-500"></i> Resumen Final
+                        </a>
+                        <a href="#commands" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-all group">
+                            <i class="fa-solid fa-terminal group-hover:text-brand-500"></i> Comandos gcloud
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="premium-card rounded-3xl p-8 border-brand-500/10">
+                    <h4 class="text-sm font-bold mb-4">Tips de Examen</h4>
+                    <ul class="text-[11px] text-slate-500 space-y-3 font-light leading-relaxed">
+                        <li>• GKE es casi el 25% del examen.</li>
+                        <li>• Diferencia bien entre Preemptible y Standard VMs.</li>
+                        <li>• Memoriza las clases de Cloud Storage.</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 space-y-32 pb-40">
+            
+            <!-- Intro Section -->
+            <section id="intro" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Jerarquía de Recursos</h3>
+                </div>
+                <div class="prose-ace text-lg text-slate-600 dark:text-slate-400 space-y-8">
+                    <p class="leading-relaxed">Google Cloud organiza los recursos de forma jerárquica para facilitar la gestión centralizada, la herencia de políticas de seguridad (IAM) y el control granular de costes. Esta estructura es similar a un árbol donde las políticas fluyen desde la raíz hasta las hojas.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-slate-200">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">La Estructura Detallada</h4>
+                            <div class="space-y-6">
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-500/10 text-brand-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                                    <div>
+                                        <p class="font-bold text-slate-900 dark:text-white text-sm">Organización (Nodo Raíz)</p>
+                                        <p class="text-xs leading-relaxed">Representa a toda tu empresa. Es donde se definen las políticas globales y se tiene visibilidad de todos los recursos. Requiere un dominio de Google Workspace o Cloud Identity.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-500/10 text-brand-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                                    <div>
+                                        <p class="font-bold text-slate-900 dark:text-white text-sm">Carpetas (Folders)</p>
+                                        <p class="text-xs leading-relaxed">Agrupación lógica para organizar proyectos por departamentos (Ej: Ventas, IT) o entornos (Ej: Prod, Dev). Permiten delegar la administración de forma segmentada.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-500/10 text-brand-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                                    <div>
+                                        <p class="font-bold text-slate-900 dark:text-white text-sm">Proyectos (Unidad de Servicio)</p>
+                                        <p class="text-xs leading-relaxed">Es la base para usar cualquier servicio. Aquí se habilitan las APIs, se asocia una cuenta de facturación y se gestionan los recursos individuales.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="premium-card rounded-[2.5rem] p-8 border-brand-500/20 bg-brand-500/[0.02]">
+                                <h4 class="font-bold text-slate-900 dark:text-white mb-4">Reglas Clave de Examen 🚨</h4>
+                                <ul class="space-y-4 text-xs">
+                                    <li class="flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
+                                        <i class="fa-solid fa-credit-card text-brand-500 mt-1"></i>
+                                        <span><strong>Facturación (Billing):</strong> Se configura a nivel de <strong>Proyecto</strong>. Un proyecto solo puede tener una cuenta de facturación activa, pero una cuenta de facturación puede pagar muchos proyectos.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
+                                        <i class="fa-solid fa-arrow-down-long text-brand-500 mt-1"></i>
+                                        <span><strong>Herencia de Permisos:</strong> Las políticas IAM fluyen hacia abajo. Si eres "Viewer" en una Folder, eres "Viewer" en todos sus proyectos. <strong>No se pueden quitar permisos heredados</strong>, solo añadir más.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-slate-300">
+                                <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-brand-400"></i> Identificación Rápida
+                                </h4>
+                                <p class="text-[11px] mb-4 opacity-70">Memoriza estas asociaciones para las preguntas de escenario:</p>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <div class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center">
+                                        <span class="text-[10px] font-medium">Control Global / Compliance</span>
+                                        <span class="text-[10px] font-bold text-brand-400">Organización</span>
+                                    </div>
+                                    <div class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center">
+                                        <span class="text-[10px] font-medium">Departamentos / Equipos</span>
+                                        <span class="text-[10px] font-bold text-brand-400">Folders</span>
+                                    </div>
+                                    <div class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center">
+                                        <span class="text-[10px] font-medium">Entorno / Facturación</span>
+                                        <span class="text-[10px] font-bold text-brand-400">Proyectos</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IAM Section -->
+            <section id="iam" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Identidad y Accesos (IAM)</h3>
+                </div>
+                <div class="space-y-10">
+                    <div class="premium-card rounded-[2.5rem] p-10 border-indigo-500/10">
+                        <h4 class="text-xl font-bold mb-6">🔥 El Principio de Mínimo Privilegio (Least Privilege)</h4>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Este es el concepto de seguridad más importante en GCP. Significa que cada usuario, grupo o aplicación debe tener <strong>exactamente los permisos que necesita</strong> para hacer su trabajo, y nada más. Esto reduce el "radio de explosión" en caso de una brecha de seguridad.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-200">
+                                <h5 class="font-bold text-slate-900 dark:text-white mb-2 text-sm">Roles Básicos</h5>
+                                <p class="text-[10px] text-slate-500 leading-relaxed mb-4">Owner, Editor, Viewer. Son "Legacy" y demasiado potentes.</p>
+                                <span class="text-[9px] font-bold text-red-500 uppercase italic">⚠️ Evitar en producción</span>
+                            </div>
+                            <div class="p-6 rounded-3xl bg-brand-500/5 border border-brand-500/10">
+                                <h5 class="font-bold text-brand-600 mb-2 text-sm">Roles Predefinidos</h5>
+                                <p class="text-[10px] text-slate-500 leading-relaxed mb-4">Storage Admin, Instance Admin. Creados por Google para tareas específicas.</p>
+                                <span class="text-[9px] font-bold text-green-600 uppercase italic">✅ Recomendado Examen</span>
+                            </div>
+                            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800 border border-slate-200">
+                                <h5 class="font-bold text-slate-900 dark:text-white mb-2 text-sm">Roles Personalizados</h5>
+                                <p class="text-[10px] text-slate-500 leading-relaxed mb-4">Tú eliges los permisos uno a uno. Mayor control.</p>
+                                <span class="text-[9px] font-bold text-slate-500 uppercase italic">🛠️ Para control granular</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">🤖 Cuentas de Servicio (Service Accounts)</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Son identidades especiales para <strong>recursos y aplicaciones</strong> (no para humanos). Permiten que una VM o una Cloud Function acceda a otros servicios de forma segura.</p>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-l-4 border-indigo-500">
+                                    <p class="text-xs font-bold mb-1">Service Account User</p>
+                                    <p class="text-[10px] text-slate-500">Es el rol que necesita un desarrollador para "adjuntar" una Service Account a una VM. ¡Sin este rol no puede crear la VM con esa identidad!</p>
+                                </div>
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-l-4 border-indigo-500">
+                                    <p class="text-xs font-bold mb-1">Scopes vs IAM</p>
+                                    <p class="text-[10px] text-slate-500">Los Scopes son el método antiguo. La recomendación es usar <strong>"Allow full access to all Cloud APIs"</strong> y luego restringir de verdad usando Roles IAM en la Service Account.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="premium-card rounded-[2.5rem] p-8 border-brand-500/20 bg-brand-500/[0.02]">
+                                <h4 class="font-bold text-slate-900 dark:text-white mb-4">� Gestión de Grupos</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed"><strong>SIEMPRE</strong> asigna roles a Grupos de Google, nunca a emails individuales. <br><br>¿Por qué? Porque si alguien deja la empresa, solo lo quitas del grupo y pierde todos los accesos de golpe. Si lo hicieras individual, tendrías que ir proyecto por proyecto limpiando.</p>
+                            </div>
+                            
+                            <div class="premium-card rounded-[2.5rem] p-8 border-indigo-500/20">
+                                <h4 class="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-key text-indigo-500"></i> OS Login
+                                </h4>
+                                <p class="text-xs text-slate-500 mb-4">Es la forma moderna y segura de entrar por SSH a tus VMs. Vincula tu cuenta de Google con el sistema operativo de la VM.</p>
+                                <p class="text-[10px] font-bold text-indigo-600 bg-indigo-500/5 p-3 rounded-xl border border-indigo-500/10 italic">
+                                    🎯 "Pregunta de SSH seguro" → Respuesta: OS Login + IAM Roles (osLogin / osAdminLogin).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-box">
+                        # Añadir una política IAM via CLI
+                        gcloud projects add-iam-policy-binding [PROJECT_ID] \
+                          --member="group:admins@miempresa.com" \
+                          --role="roles/compute.admin"
+                    </div>
+                </div>
+            </section>
+
+            <!-- Compute Section -->
+            <section id="compute" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Servicios de Cómputo</h3>
+                </div>
+                
+                <div class="space-y-12">
+                    <div class="premium-card rounded-[3rem] p-10 overflow-hidden border-slate-200">
+                        <h4 class="text-xl font-bold mb-6">🧠 Guía de Decisión de Cómputo</h4>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Elegir el servicio de cómputo adecuado depende del nivel de control que necesites y de cuánto quieras que Google gestione por ti (Serverless vs IaaS).</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-800">
+                                <p class="font-bold text-sm mb-2">Compute Engine</p>
+                                <p class="text-[10px] text-slate-500 leading-relaxed italic">"Necesito instalar un software específico en el SO."</p>
+                                <p class="text-[9px] mt-4 font-bold text-slate-400">CONTROL MÁXIMO (IaaS)</p>
+                            </div>
+                            <div class="p-6 rounded-[2rem] bg-blue-500/5">
+                                <p class="font-bold text-sm mb-2 text-blue-600">GKE</p>
+                                <p class="text-[10px] text-slate-500 leading-relaxed italic">"Tengo muchos microservicios en contenedores."</p>
+                                <p class="text-[9px] mt-4 font-bold text-blue-400">ORQUESTACIÓN (K8s)</p>
+                            </div>
+                            <div class="p-6 rounded-[2rem] bg-pink-500/5">
+                                <p class="font-bold text-sm mb-2 text-pink-600">Cloud Run</p>
+                                <p class="text-[10px] text-slate-500 leading-relaxed italic">"Solo quiero subir mi contenedor y que escale a cero."</p>
+                                <p class="text-[9px] mt-4 font-bold text-pink-400">SERVERLESS (Containers)</p>
+                            </div>
+                            <div class="p-6 rounded-[2rem] bg-green-500/5">
+                                <p class="font-bold text-sm mb-2 text-green-600">App Engine</p>
+                                <p class="text-[10px] text-slate-500 leading-relaxed italic">"Soy desarrollador web y no quiero saber nada de infra."</p>
+                                <p class="text-[9px] mt-4 font-bold text-green-400">SERVERLESS (Apps)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-orange-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-heart text-green-500"></i> Managed Instance Groups (MIG)
+                            </h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Un MIG es un grupo de VMs idénticas creadas a partir de una <strong>Instance Template</strong>. Son la base de la alta disponibilidad en GCP.</p>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <p class="text-xs font-bold mb-1">Autohealing</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Si una VM falla o su aplicación deja de responder (según un Health Check), el MIG la <strong>borra y crea una nueva</strong> automáticamente.</p>
+                                </div>
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+                                    <p class="text-xs font-bold mb-1">Autoscaling</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Añade o quita VMs según la carga (CPU, tráfico del LB, o métricas personalizadas). 🎯 Clave: "Ahorro de costes + Rendimiento".</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10 border-red-500/10 bg-red-500/[0.01]">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-red-500"></i> Preemptible & Spot VMs
+                            </h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Son VMs con un descuento masivo (hasta 80%), pero con una condición: <strong>Google puede apagarlas en cualquier momento</strong> si necesita capacidad para otros clientes.</p>
+                            <div class="p-6 bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-red-200 dark:border-red-900/30">
+                                <h5 class="text-[10px] font-black uppercase text-red-600 mb-3">🚨 Reglas de Oro Examen:</h5>
+                                <ul class="text-[11px] space-y-3">
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-clock text-red-400 mt-0.5"></i>
+                                        <span>Duran un máximo de <strong>24 horas</strong>.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-green-500 mt-0.5"></i>
+                                        <span>Ideales para <strong>Batch Jobs</strong>, renderizado, o cualquier tarea que pueda reanudarse si se interrumpe.</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i class="fa-solid fa-xmark text-red-500 mt-0.5"></i>
+                                        <span>NUNCA para bases de datos o servidores web críticos.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Storage Section -->
+            <section id="storage" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Almacenamiento y Datos</h3>
+                </div>
+                <div class="space-y-12">
+                    <div class="premium-card rounded-[3rem] p-10 overflow-hidden border-slate-200">
+                        <h4 class="text-xl font-bold mb-6">🧠 Cloud Storage: Clases y Estrategia</h4>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed">Cloud Storage es un servicio de almacenamiento de objetos (archivos). El examen se enfoca en elegir la <strong>clase de almacenamiento</strong> correcta para minimizar costes según la frecuencia de acceso.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-4">
+                                <table class="w-full text-left text-sm">
+                                    <thead>
+                                        <tr class="border-b border-slate-200 dark:border-slate-800">
+                                            <th class="pb-4 font-bold">Clase</th>
+                                            <th class="pb-4 font-bold">Frecuencia / Caso</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-slate-500 dark:text-slate-400">
+                                        <tr class="border-b border-slate-100 dark:border-slate-800/50">
+                                            <td class="py-4 font-bold text-slate-900 dark:text-white">Standard</td>
+                                            <td class="py-4">Acceso diario (Web, Apps).</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100 dark:border-slate-800/50">
+                                            <td class="py-4 font-bold text-slate-900 dark:text-white">Nearline</td>
+                                            <td class="py-4">Acceso < 1 vez al mes.</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100 dark:border-slate-800/50">
+                                            <td class="py-4 font-bold text-slate-900 dark:text-white">Coldline</td>
+                                            <td class="py-4">Acceso < 1 vez al trimestre.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-4 font-bold text-slate-900 dark:text-white">Archive</td>
+                                            <td class="py-4">Acceso < 1 vez al año (Backups).</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-amber-500/5 rounded-[2.5rem] p-8 border border-amber-500/10">
+                                <h5 class="font-bold text-amber-700 mb-4 flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-lightbulb"></i> Lógica de Costes
+                                </h5>
+                                <p class="text-[11px] text-slate-600 leading-relaxed mb-4">A medida que bajas de Standard a Archive:</p>
+                                <ul class="text-[11px] space-y-2 text-slate-500">
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-down text-green-500"></i>
+                                        <span>Baja el coste de <strong>almacenar</strong> el GB.</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-up text-red-500"></i>
+                                        <span>Sube el coste de <strong>acceder/leer</strong> los datos.</span>
+                                    </li>
+                                </ul>
+                                <div class="mt-6 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-amber-200">
+                                    <p class="text-[10px] font-bold text-amber-600 uppercase mb-1">Tip Examen 🎯</p>
+                                    <p class="text-[11px] font-medium leading-relaxed">"Guardar backups por 7 años por cumplimiento" → <strong>Archive</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-brand-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">⚙️ Lifecycle Management (Ciclo de Vida)</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Permite automatizar acciones sobre tus objetos basándose en condiciones (como la edad del archivo o el número de versiones).</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-l-4 border-brand-500">
+                                    <p class="text-xs font-bold mb-1">SetStorageClass</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Mueve archivos de Standard a Coldline automáticamente después de 30 días.</p>
+                                </div>
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-l-4 border-red-500">
+                                    <p class="text-xs font-bold mb-1">Delete</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Borra logs o versiones antiguas después de 1 año para ahorrar espacio.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">Bases de Datos: Cuándo usar cada una</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-database text-xs"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold">Cloud SQL</p>
+                                        <p class="text-[10px] text-slate-500">Relacional (MySQL/Postgres/SQL Server). Regional.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-globe text-xs"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold">Cloud Spanner</p>
+                                        <p class="text-[10px] text-slate-500">Relacional de <strong>Escala Global</strong>. Consistencia fuerte.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-magnifying-glass-chart text-xs"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold">BigQuery</p>
+                                        <p class="text-[10px] text-slate-500">Análisis masivo (Data Warehouse). SQL petabytes.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Networking Section -->
+            <section id="networking" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">VPC y Redes</h3>
+                </div>
+                <div class="prose-ace space-y-8 text-slate-600 dark:text-slate-400">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div class="premium-card rounded-[2.5rem] p-10">
+                            <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-6">🧠 Conceptos Clave de Red</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">A diferencia de otras nubes, la VPC de Google es <strong>Global</strong>. Esto significa que puedes tener una red que abarque todo el mundo sin necesidad de túneles complejos.</p>
+                            <ul class="space-y-6">
+                                <li class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-earth-americas"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold">VPC Global / Subnets Regionales</p>
+                                        <p class="text-[10px] opacity-70">La red es global, pero cada subred vive en una región específica (Ej: us-central1).</p>
+                                    </div>
+                                </li>
+                                <li class="flex gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-shield-halved"></i></div>
+                                    <div>
+                                        <p class="text-xs font-bold">Firewall Stateful</p>
+                                        <p class="text-[10px] opacity-70 leading-relaxed">Si permites el tráfico de entrada (Ingress), la respuesta de salida (Egress) se permite automáticamente. 🎯 Tip: Las prioridades bajas (ej: 100) se ejecutan antes que las altas.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10 border-brand-500/10 bg-brand-500/[0.01]">
+                            <h4 class="text-xl font-bold text-brand-600 mb-6">Conectividad con el Mundo Real</h4>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white mb-1">Cloud VPN</p>
+                                    <p class="text-[10px] text-slate-500">Conexión encriptada a través de la <strong>Internet pública</strong>. Rápida de configurar, pero depende de la calidad de Internet.</p>
+                                </div>
+                                <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white mb-1">Dedicated Interconnect</p>
+                                    <p class="text-[10px] text-slate-500">Un cable físico <strong>directo</strong> entre tu oficina y Google. Máxima velocidad y seguridad, pero más caro y lento de instalar.</p>
+                                </div>
+                                <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200">
+                                    <p class="text-xs font-bold text-slate-900 dark:text-white mb-1">Cloud Router</p>
+                                    <p class="text-[10px] text-slate-500">Intercambia rutas dinámicamente usando el protocolo <strong>BGP</strong>. ¡Imprescindible para VPNs dinámicas!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                        <div class="premium-card rounded-[2.5rem] p-10 bg-slate-900 text-slate-300">
+                            <h4 class="font-bold text-white mb-6 flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-brand-500"></i> Acceso Privado a Google
+                            </h4>
+                            <p class="text-xs leading-relaxed mb-6">Escenario Típico: Tienes una VM <strong>sin IP pública</strong> por seguridad, pero necesita subir archivos a Cloud Storage o consultar BigQuery.</p>
+                            <div class="p-6 bg-white/10 rounded-2xl border border-white/10">
+                                <p class="text-[10px] font-bold text-brand-400 uppercase mb-2">Solución de Examen 🎯</p>
+                                <p class="text-sm font-bold text-white">Private Google Access</p>
+                                <p class="text-[10px] mt-2 opacity-70">Permite usar la IP interna de la VM para hablar con las APIs de Google.</p>
+                            </div>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">Balanceadores (Load Balancers)</h4>
+                            <div class="space-y-4 text-xs">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                    <span><strong>Global HTTP(S):</strong> Para tráfico web. Soporta IPv6 y WebSockets.</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                    <span><strong>Regional Network:</strong> Capa 4 (TCP/UDP). Muy rápido, para apps no web.</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                    <span><strong>Internal:</strong> Balanceo entre tus propios microservicios dentro de la VPC.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Monitoring Section -->
+            <section id="monitoring" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Cloud Operations</h3>
+                </div>
+                
+                <div class="space-y-8">
+                    <p class="text-sm text-slate-500 leading-relaxed max-w-3xl">La suite de Cloud Operations (antes Stackdriver) es el centro de mando para observar la salud de tus aplicaciones. Se divide en tres pilares fundamentales que debes diferenciar en el examen.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="premium-card rounded-[2.5rem] p-8 border-cyan-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-gauge-high text-cyan-500"></i> Monitoring
+                            </h4>
+                            <p class="text-[10px] text-slate-500 leading-relaxed italic">"¿Cómo de rápido va mi app?"</p>
+                            <p class="text-[10px] mt-4">Gestiona <strong>Métricas</strong> (CPU, Latencia, Uso de Disco). Permite crear Dashboards y Uptime Checks.</p>
+                        </div>
+                        <div class="premium-card rounded-[2.5rem] p-8 border-cyan-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-list-ul text-cyan-500"></i> Logging
+                            </h4>
+                            <p class="text-[10px] text-slate-500 leading-relaxed italic">"¿Qué ha pasado exactamente?"</p>
+                            <p class="text-[10px] mt-4">Almacena <strong>Eventos</strong> y mensajes de texto. Esencial para depurar errores y auditorías de seguridad.</p>
+                        </div>
+                        <div class="premium-card rounded-[2.5rem] p-8 border-cyan-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-bell text-cyan-500"></i> Alerting
+                            </h4>
+                            <p class="text-[10px] text-slate-500 leading-relaxed italic">"¡Avísame si algo falla!"</p>
+                            <p class="text-[10px] mt-4">Envía notificaciones cuando una métrica supera un umbral o un log específico aparece.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-brand-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">🧠 Auditoría de Logs (Cae mucho)</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">GCP genera logs de auditoría automáticamente. Debes saber qué tipo de información hay en cada uno para responder preguntas sobre "quién hizo qué".</p>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border-l-4 border-cyan-500">
+                                    <p class="text-xs font-bold mb-1">Admin Activity Logs</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Registran cambios en la configuración o metadatos de los recursos (Ej: alguien borró un disco). Siempre activos y gratuitos.</p>
+                                </div>
+                                <div class="p-4 bg-cyan-500/5 rounded-2xl border-l-4 border-cyan-600">
+                                    <p class="text-xs font-bold mb-1">Data Access Logs 🔥</p>
+                                    <p class="text-[10px] text-slate-500 leading-relaxed">Registran quién ha leído o escrito <strong>dentro</strong> de los recursos (Ej: alguien leyó un archivo en un Bucket). Deben activarse manualmente (pueden generar costes).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10 bg-slate-900 text-slate-300">
+                            <h4 class="font-bold text-white mb-6">Sinks: Exportación de Logs</h4>
+                            <p class="text-xs leading-relaxed mb-6">Por defecto, los logs se borran después de 30-400 días (según el tipo). Si necesitas guardarlos más tiempo o analizarlos a fondo, usas un <strong>Sink</strong>:</p>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div class="px-4 py-3 bg-white/5 rounded-xl border border-white/10 flex items-center gap-4">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-brand-400"></i>
+                                    <div>
+                                        <p class="text-xs font-bold">BigQuery</p>
+                                        <p class="text-[9px] opacity-70">Para análisis SQL masivo de tus logs.</p>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 bg-white/5 rounded-xl border border-white/10 flex items-center gap-4">
+                                    <i class="fa-solid fa-box-archive text-brand-400"></i>
+                                    <div>
+                                        <p class="text-xs font-bold">Cloud Storage</p>
+                                        <p class="text-[9px] opacity-70">Para cumplimiento legal a largo plazo (Barato).</p>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 bg-white/5 rounded-xl border border-white/10 flex items-center gap-4">
+                                    <i class="fa-solid fa-satellite-dish text-brand-400"></i>
+                                    <div>
+                                        <p class="text-xs font-bold">Pub/Sub</p>
+                                        <p class="text-[9px] opacity-70">Para enviar logs a una app externa en tiempo real (Ej: Splunk).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deployment Section -->
+            <section id="deployment" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Despliegue e Infraestructura</h3>
+                </div>
+                
+                <div class="space-y-10">
+                    <div class="premium-card rounded-[3rem] p-10 border-slate-200">
+                        <h4 class="text-xl font-bold mb-6">🧠 Infraestructura como Código (IaC)</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-8">IaC permite definir tu red, tus VMs y tus bases de datos en un <strong>archivo de texto</strong>. Esto hace que tus despliegues sean repetibles, sin errores manuales y versionables en Git.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800 border-l-8 border-rose-500">
+                                <h5 class="font-bold text-sm mb-4">Deployment Manager</h5>
+                                <p class="text-xs text-slate-500 leading-relaxed">Es el servicio <strong>nativo de Google</strong>. Usas archivos <strong>YAML</strong> para describir tus recursos. Si la pregunta menciona "Templates" o "Config files" de Google, la respuesta suele ser esta.</p>
+                            </div>
+                            <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800 border-l-8 border-blue-500">
+                                <h5 class="font-bold text-sm mb-4">Terraform</h5>
+                                <p class="text-xs text-slate-500 leading-relaxed">Es la herramienta estándar de la industria (no solo de Google). Muy potente para gestionar infraestructuras complejas y multi-nube.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-rose-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">CI/CD: Cloud Build</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-6">Cloud Build es el servicio que <strong>ejecuta tus pasos de construcción</strong>. Por ejemplo: descargar el código de Git, compilarlo, crear una imagen de Docker y subirla al Artifact Registry.</p>
+                            <div class="bg-slate-900 p-6 rounded-2xl font-mono text-[10px] text-rose-300 border border-white/5">
+                                # cloudbuild.yaml<br>
+                                steps:<br>
+                                - name: 'gcr.io/cloud-builders/docker'<br>
+                                &nbsp;&nbsp;args: ['build', '-t', 'mi-app', '.']
+                            </div>
+                        </div>
+
+                        <div class="premium-card rounded-[2.5rem] p-10 bg-rose-600 text-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+                            <h4 class="text-xl font-bold mb-6">Marketplace vs Manual</h4>
+                            <p class="text-xs opacity-90 leading-relaxed mb-8 italic">"Tu empresa necesita desplegar un cluster de WordPress en Compute Engine con el mínimo esfuerzo posible."</p>
+                            <div class="p-6 bg-black/20 rounded-2xl border border-white/10">
+                                <p class="text-[10px] font-bold text-rose-200 uppercase mb-2">Respuesta Correcta 🎯</p>
+                                <p class="text-sm font-bold">Cloud Marketplace</p>
+                                <p class="text-[10px] mt-2 opacity-70">Permite desplegar stacks de software completos con un solo clic (ya vienen configurados).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GKE Section -->
+            <section id="gke" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">GKE (Kubernetes Engine)</h3>
+                </div>
+                
+                <div class="space-y-10">
+                    <div class="premium-card rounded-[3rem] p-10 border-slate-200">
+                        <h4 class="text-xl font-bold mb-6">🧠 ¿Qué es GKE?</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-8">Google Kubernetes Engine es un servicio gestionado para ejecutar aplicaciones en contenedores. GKE se encarga de la salud de los nodos, las actualizaciones y el escalado.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800">
+                                <h5 class="font-bold text-sm mb-4">Autopilot (Recomendado)</h5>
+                                <p class="text-xs text-slate-500 leading-relaxed">Google gestiona <strong>toda la infraestructura</strong>, incluyendo los nodos. Tú solo pagas por los Pods que ejecutas. Es la opción con menos pasos operativos.</p>
+                            </div>
+                            <div class="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800 border border-slate-200">
+                                <h5 class="font-bold text-sm mb-4">Standard</h5>
+                                <p class="text-xs text-slate-500 leading-relaxed">Tú tienes el control total de los <strong>nodos (VMs)</strong>. Puedes elegir el tipo de máquina, gestionar tus propios pools de nodos y tienes más flexibilidad, pero más trabajo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="premium-card rounded-[2.5rem] p-10 border-blue-500/10">
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-6">Relación entre Objetos</h4>
+                            <div class="space-y-4">
+                                <div class="flex gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0 font-bold text-xs">Pod</div>
+                                    <div>
+                                        <p class="text-xs font-bold">Unidad Mínima</p>
+                                        <p class="text-[10px] text-slate-500">Donde corre tu contenedor. Los Pods son efímeros (pueden morir y renacer).</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0 font-bold text-xs">Depl</div>
+                                    <div>
+                                        <p class="text-xs font-bold">Deployment</p>
+                                        <p class="text-[10px] text-slate-500">Dice cuántas copias (réplicas) de tu Pod deben estar corriendo.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-colors">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0 font-bold text-xs">Serv</div>
+                                    <div>
+                                        <p class="text-xs font-bold">Service</p>
+                                        <p class="text-[10px] text-slate-500">Da una IP estable para que los usuarios o apps puedan hablar con tus Pods.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="premium-card rounded-[2.5rem] p-8 border-brand-500/20 bg-brand-500/[0.02]">
+                                <h4 class="font-bold text-slate-900 dark:text-white mb-4">Escalado en GKE (Diferencia clave)</h4>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200">
+                                        <p class="text-xs font-bold text-blue-600">HPA (Pod Autoscaler)</p>
+                                        <p class="text-[10px] text-slate-500">Crea más <strong>copias de tu app (Pods)</strong> si hay mucho tráfico.</p>
+                                    </div>
+                                    <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200">
+                                        <p class="text-xs font-bold text-blue-600">Cluster Autoscaler</p>
+                                        <p class="text-[10px] text-slate-500">Crea más <strong>servidores (Nodos/VMs)</strong> si ya no caben más Pods en los actuales.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-slate-300">
+                                <p class="text-[11px] font-bold text-brand-400 uppercase mb-2">🎯 Tip de Examen</p>
+                                <p class="text-xs leading-relaxed">"Necesitas exponer una app al exterior en GKE" → Respuesta: <strong>Service de tipo LoadBalancer</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Patterns Section -->
+            <section id="patterns" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-yellow-500/10 text-yellow-600 flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Patrones de Preguntas (Flash Cards)</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Menos pasos / Mínimo esfuerzo"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 Marketplace / Managed Service</p>
+                    </div>
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Best practice / Seguridad"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 IAM + Least Privilege</p>
+                    </div>
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Serverless / Containers"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 Cloud Run</p>
+                    </div>
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Alta disponibilidad"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 MIG / Multi-zone</p>
+                    </div>
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Análisis masivo de Logs/SQL"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 BigQuery</p>
+                    </div>
+                    <div class="premium-card p-6 rounded-[2rem] border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Si la pregunta dice...</p>
+                        <p class="text-sm font-bold mb-4">"Global + Relacional"</p>
+                        <p class="text-xs text-brand-600 font-bold bg-brand-500/5 p-3 rounded-xl">🎯 Spanner</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final Summary Section -->
+            <section id="summary" class="scroll-mt-32">
+                <div class="premium-card rounded-[3rem] p-12 bg-slate-900 text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/20 rounded-full -mr-48 -mt-48 blur-[100px]"></div>
+                    <h3 class="text-4xl font-heading font-black mb-8 relative z-10">Resumen Final para Aprobar 🧠</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">1</div>
+                                <span class="text-sm">Domina <strong>IAM</strong> (Grupos, Roles predefinidos, Least Privilege).</span>
+                            </li>
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">2</div>
+                                <span class="text-sm">Entiende <strong>Compute Engine</strong> (MIGs, Preemptible).</span>
+                            </li>
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">3</div>
+                                <span class="text-sm">Memoriza las <strong>Clases de Storage</strong> por frecuencia de acceso.</span>
+                            </li>
+                        </ul>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">4</div>
+                                <span class="text-sm">Configuración de <strong>Redes VPC</strong> y Firewalls.</span>
+                            </li>
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">5</div>
+                                <span class="text-sm">Diferencia entre <strong>Monitoring</strong> y <strong>Logging</strong>.</span>
+                            </li>
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-xs italic">6</div>
+                                <span class="text-sm">Saber elegir el <strong>servicio correcto</strong> según el escenario.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Commands Section -->
+            <section id="commands" class="scroll-mt-32">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-900 dark:bg-white/10 text-slate-900 dark:text-white flex items-center justify-center text-3xl shadow-inner">
+                        <i class="fa-solid fa-terminal"></i>
+                    </div>
+                    <h3 class="text-4xl font-heading font-black tracking-tight">Comandos gcloud Indispensables</h3>
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="command-box">
+                        # Autenticación e inicialización
+                        gcloud auth login
+                        gcloud init
+                        gcloud config set project [ID]
+                    </div>
+                    <div class="command-box">
+                        # Gestión de VMs
+                        gcloud compute instances create [NAME] --zone=[ZONE]
+                        gcloud compute instances stop [NAME]
+                    </div>
+                    <div class="command-box">
+                        # Kubernetes
+                        gcloud container clusters get-credentials [CLUSTER_NAME]
+                        kubectl get pods
+                    </div>
+                    <div class="command-box">
+                        # App Engine & Cloud Run
+                        gcloud app deploy
+                        gcloud run deploy --image=[IMAGE_URL]
+                    </div>
+                    <div class="command-box">
+                        # IAM & Config
+                        gcloud auth list
+                        gcloud config list
+                        gcloud iam service-accounts create [NAME]
+                    </div>
+                    <div class="command-box">
+                        # Storage (gsutil es el comando antiguo, gcloud storage es el nuevo)
+                        gcloud storage buckets create gs://[BUCKET_NAME]
+                        gcloud storage cp [LOCAL_FILE] gs://[BUCKET_NAME]
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pb-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-8 border-t border-slate-200 dark:border-slate-800/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 shadow-sm">
+                        <i class="fa-solid fa-graduation-cap text-sm"></i>
+                    </div>
+                    <span class="font-heading font-bold text-lg tracking-tighter">CertHub</span>
+                </div>
+                <div class="text-sm font-medium text-slate-500 dark:text-slate-400">
+                    Guía completa diseñada por <span class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</span>
+                </div>
+                <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-300 dark:text-slate-600">
+                    &copy; 2026 HUB • STUDY GUIDE SERIES
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll highlight logic
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-link');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active-link');
+                }
+            });
+        });
+
+        // Theme check
+        if (localStorage.getItem('theme:dark') === '1' || (!('theme:dark' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html>

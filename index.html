@@ -391,6 +391,13 @@
                                 <i class="fa-solid fa-play"></i> ${currentLang === 'es' ? 'Examen' : 'Exam'}
                             </a>
                         </div>
+                        ${exam.apuntes ? `
+                        <div class="mt-6 text-center">
+                            <a href="${apuntesUrl}" class="text-[10px] font-bold tracking-widest uppercase text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-book-open"></i>
+                                ${currentLang === 'es' ? 'Material de Apoyo' : 'Study Materials'}
+                            </a>
+                        </div>` : ''}
                     `}
                 </div>
             `;

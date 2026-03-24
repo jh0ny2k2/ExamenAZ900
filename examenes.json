@@ -23,9 +23,9 @@
   {
     "name": "Google Cloud Associate Cloud Engineer",
     "title": "GCP • Associate Cloud Engineer",
-    "desc": "Preguntas de práctica importadas (Sin respuestas verificadas).",
+    "desc": "Banco de 297 preguntas sobre despliegue, seguridad y gestión en Google Cloud.",
     "pregunta": "Preguntas/preguntasGCPACE.json",
-    "apuntes": "https://cloud.google.com/certification/cloud-engineer"
+    "apuntes": "Apuntes/apuntesGCPACE.html"
   },
   {
     "name": "HashiCorp Terraform Associate",
@@ -75,6 +75,13 @@
     "desc": "Banco de 109 preguntas de práctica para la certificación de GitHub Copilot.",
     "pregunta": "Preguntas/preguntasGH300.json",
     "apuntes": "https://learn.microsoft.com/en-us/credentials/certifications/github-copilot/"
+  },
+  {
+    "name": "Kubernetes Roadmap",
+    "title": "Plan de Formación Kubernetes",
+    "desc": "De cero a experto: Fundamentos, Arquitectura, Objetos, Networking y Seguridad.",
+    "pregunta": "",
+    "apuntes": "Apuntes/planKubernetes.html"
   },
   {
     "name": "Ka0s Training",
