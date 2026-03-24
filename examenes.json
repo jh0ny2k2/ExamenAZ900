@@ -70,6 +70,13 @@
     "apuntes": "https://www.cncf.io/certification/kcna/"
   },
   {
+    "name": "GH-300",
+    "title": "GH-300 • GitHub Copilot",
+    "desc": "Banco de 109 preguntas de práctica para la certificación de GitHub Copilot.",
+    "pregunta": "Preguntas/preguntasGH300.json",
+    "apuntes": "https://learn.microsoft.com/en-us/credentials/certifications/github-copilot/"
+  },
+  {
     "name": "Ka0s Training",
     "title": "Plan de Formación Ka0s",
     "desc": "Onboarding técnico: arquitectura, automatización y cultura operativa.",

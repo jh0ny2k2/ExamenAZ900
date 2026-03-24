@@ -1,1 +1,51 @@
+# Environment files
 .env
+.env.*
+!.env.example
+!.env.sample
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Coverage and test artifacts
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Caches and temporary files
+.cache/
+.eslintcache
+tmp/
+temp/
+
+# TypeScript incremental builds
+*.tsbuildinfo
+
+# IDE/editor
+.idea/
+*.swp
+*.swo
+*~
+
+# VS Code local workspace settings
+.vscode/*
+!.vscode/extensions.json
+
+# OS files
+.DS_Store
+Thumbs.db

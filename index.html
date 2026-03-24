@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certification Hub • Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="shortcut icon" href="./favicon.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./theme.js"></script>
+    <script src="https://kit.fontawesome.com/8fc38daa34.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -64,7 +66,7 @@
                     </div>
                     <span class="font-bold text-xl tracking-tight">CertHub</span>
                     <a href="./changelog.html" class="ml-4 text-xs font-medium px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
-                        v1.2.0
+                        v1.3.0
                     </a>
                 </div>
                 
@@ -103,6 +105,7 @@
             <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="azure">Azure</button>
             <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="aws">AWS</button>
             <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="google">Google</button>
+            <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="github">GitHub</button>
         </div>
 
         <!-- Section: Certifications -->
@@ -129,7 +132,7 @@
 
     <footer class="bg-white dark:bg-dark-card border-t border-slate-200 dark:border-slate-800 mt-12 py-8">
         <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
-            <p>&copy; 2024 Certification Hub. Open Source Learning.</p>
+            <p>&copy; 2026 Certification Hub. Open Source Learning.</p>
         </div>
     </footer>
 
@@ -160,6 +163,7 @@
             const span = langToggle.querySelector('span');
             span.textContent = currentLang.toUpperCase();
             document.documentElement.lang = currentLang;
+            document.title = currentLang === 'es' ? 'Certification Hub • Panel' : 'Certification Hub • Dashboard';
             
             // Update text content
             document.querySelector('h1').textContent = currentLang === 'es' ? 'Explora Certificaciones' : 'Explore Certifications';
@@ -175,7 +179,17 @@
             if(plansHeader) plansHeader.innerHTML = `<i class="fa-solid fa-book-open text-purple-500"></i> ${currentLang === 'es' ? 'Planes de Estudio' : 'Study Plans'}`;
             
             // Footer
-            document.querySelector('footer p').innerHTML = `&copy; 2024 Certification Hub. ${currentLang === 'es' ? 'Aprendizaje de Código Abierto.' : 'Open Source Learning.'}`;
+            document.querySelector('footer p').innerHTML = `&copy; 2026 Certification Hub. ${currentLang === 'es' ? 'Aprendizaje de Código Abierto.' : 'Open Source Learning.'}`;
+
+            // Dev popup
+            const devTitle = document.querySelector('#dev-popup h3');
+            const devText = document.querySelector('#dev-popup p');
+            if (devTitle) devTitle.textContent = currentLang === 'es' ? 'Plataforma en Desarrollo' : 'Platform in Development';
+            if (devText) {
+                devText.innerHTML = currentLang === 'es'
+                    ? 'Esta pagina se encuentra actualmente en construccion.<br>Si deseas anadir nuevas certificaciones, por favor contacta con <strong class="text-brand-600 dark:text-brand-400">Jhonathan Chaves</strong>.'
+                    : 'This page is currently under development.<br>If you want to add new certifications, please contact <strong class="text-brand-600 dark:text-brand-400">Jhonathan Chaves</strong>.';
+            }
             
             // Re-render cards to update their internal text
             if(window.renderCards) window.renderCards();
@@ -209,22 +223,54 @@
         function getProviderStyle(name, title) {
             const text = (name + title).toLowerCase();
             if (text.includes('azure') || text.includes('microsoft')) 
-                return { color: 'text-[#0078d4]', bg: 'bg-[#0078d4]/10', border: 'border-[#0078d4]/20', icon: 'fa-microsoft' };
+                return { color: 'text-[#0078d4]', bg: 'bg-[#0078d4]/10', border: 'border-[#0078d4]/20', icon: 'fa-microsoft', iconFamily: 'fa-brands' };
             if (text.includes('aws') || text.includes('amazon')) 
-                return { color: 'text-[#ff9900]', bg: 'bg-[#ff9900]/10', border: 'border-[#ff9900]/20', icon: 'fa-aws' };
+                return { color: 'text-[#ff9900]', bg: 'bg-[#ff9900]/10', border: 'border-[#ff9900]/20', icon: 'fa-aws', iconFamily: 'fa-brands' };
             if (text.includes('google') || text.includes('gcp')) 
-                return { color: 'text-[#34a853]', bg: 'bg-[#34a853]/10', border: 'border-[#34a853]/20', icon: 'fa-google' };
-            if (text.includes('terraform') || text.includes('hashicorp')) 
-                return { color: 'text-[#5c4ee5]', bg: 'bg-[#5c4ee5]/10', border: 'border-[#5c4ee5]/20', icon: 'fa-layer-group' };
+                return { color: 'text-[#34a853]', bg: 'bg-[#34a853]/10', border: 'border-[#34a853]/20', icon: 'fa-google', iconFamily: 'fa-brands' };
+            if (text.includes('kubernetes') || text.includes('hashicorp')) 
+                return { color: 'text-[#5c4ee5]', bg: 'bg-[#5c4ee5]/10', border: 'border-[#5c4ee5]/20', icon: 'fa-cube', iconFamily: 'fa-solid' };
+            if (text.includes('mastering github')) 
+                return { color: 'text-[#f05032]', bg: 'bg-[#f05032]/10', border: 'border-[#f05032]/20', icon: 'fa-git-alt', iconFamily: 'fa-brands' };
+            if (text.includes('github')) 
+                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-github', iconFamily: 'fa-brands' };
             if (text.includes('git')) 
-                return { color: 'text-[#f05032]', bg: 'bg-[#f05032]/10', border: 'border-[#f05032]/20', icon: 'fa-git-alt' };
+                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-git', iconFamily: 'fa-brands' };
+            if (text.includes('ka0s training') || text.includes('ka0s')) 
+                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-award', iconFamily: 'fa-solid' };
             
-            return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-certificate' };
+            return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-award', iconFamily: 'fa-solid' };
+        }
+
+        function isStudyPlanItem(exam) {
+            const text = `${exam.name || ''} ${exam.title || ''}`.toLowerCase();
+            return text.includes('ka0s') || text.includes('mastering github');
+        }
+
+        function getLocalizedDescription(exam) {
+            if (currentLang !== 'en') return exam.desc || exam.title || '';
+
+            const map = {
+                'AZ-900': 'True/false, multiple choice, and matching practice questions.',
+                'Google Cloud Digital Leaders': 'Fundamentals practice quiz for Google Cloud.',
+                'AWS Certified Cloud Practitioner': 'AWS fundamentals: services, security, pricing, and support.',
+                'Google Cloud Associate Cloud Engineer': 'Imported practice questions (answers not fully verified).',
+                'HashiCorp Terraform Associate': 'Practice questions on IaC, State, Modules, and Core Workflow.',
+                'Microsoft Azure AI Fundamentals': 'Practice questions on AI/ML concepts and Azure AI services.',
+                'DP-900': 'Questions about relational and non-relational data fundamentals.',
+                'AWS AI Practitioner': 'AWS AI/ML concepts, ethics, and tooling.',
+                'KCNA': 'Entry-level certification for the Kubernetes and cloud-native ecosystem.',
+                'GH-300': 'Practice bank for the GitHub Copilot certification.',
+                'Ka0s Training': 'Technical onboarding: architecture, automation, and operational culture.',
+                'Mastering GitHub': 'Learn professional workflows, pull requests, conflict resolution, and GitHub Actions.'
+            };
+
+            return map[exam.name] || exam.desc || exam.title || '';
         }
 
         function createCard(exam) {
             const style = getProviderStyle(exam.name, exam.title);
-            const isStudyPlan = /ka0s|github/i.test(exam.name);
+            const isStudyPlan = isStudyPlanItem(exam);
             
             // URLs
             const baseUrl = new URL('./Cuestionario/cuestionario.html', location.href);
@@ -253,7 +299,7 @@
             const headerHtml = `
                 <div class="flex justify-between items-start mb-4 relative z-10">
                     <div class="w-12 h-12 rounded-xl ${style.bg} ${style.color} flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
-                        <i class="fa-brands ${style.icon} fa-fw"></i>
+                        <i class="${style.iconFamily || 'fa-brands'} ${style.icon} fa-fw"></i>
                     </div>
                     ${isStudyPlan ? 
                         `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">${currentLang === 'es' ? 'Plan de Estudio' : 'Study Plan'}</span>` :
@@ -265,8 +311,8 @@
             // Body
             const bodyHtml = `
                 <div class="flex-1 relative z-10">
-                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1 line-clamp-1 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors" title="${exam.name}">${exam.name}</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 min-h-[2.5rem]">${exam.desc || exam.title}</p>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1 leading-tight break-words group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors" title="${exam.name}">${exam.name}</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 min-h-[2.5rem]">${getLocalizedDescription(exam)}</p>
                 </div>
             `;
 
@@ -330,6 +376,7 @@
                     if (filterType === 'azure') matchesType = /az|azure|microsoft/i.test(e.name + e.title);
                     else if (filterType === 'aws') matchesType = /aws|amazon/i.test(e.name + e.title);
                     else if (filterType === 'google') matchesType = /google|gcp/i.test(e.name + e.title);
+                    else if (filterType === 'github') matchesType = /github|copilot/i.test(e.name + e.title);
                     
                     return matchesSearch && matchesType;
                 });
@@ -338,7 +385,7 @@
                 let planCount = 0;
 
                 filtered.forEach(e => {
-                    const isPlan = /ka0s|github/i.test(e.name);
+                    const isPlan = isStudyPlanItem(e);
                     if (isPlan) {
                         plansGrid.appendChild(createCard(e));
                         planCount++;
