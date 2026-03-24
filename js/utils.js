@@ -143,14 +143,14 @@ export function processText(text) {
 }
 
 export function linkify(text) {
-    return (text || '').replace(/https?:\/\/\S+/g, (url) => `<a href="${url}" target="_blank" class="underline text-brand-600 hover:text-brand-700">${url}</a>`);
+    return (text || '').replace(/https?:\/\/\S+/g, (url) => `<a href="${url}" target="_blank" class="underline decoration-brand-500/30 underline-offset-4 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors font-medium">${url}</a>`);
 }
 
 export function createButton(text, value, onClick) {
     const btn = document.createElement('button');
     btn.textContent = text;
     // Modern professional button style
-    btn.className = 'option-btn w-full text-left px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 font-medium text-base hover:bg-slate-50 dark:hover:bg-slate-800 transition-all';
+    btn.className = 'option-btn w-full text-left px-6 py-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.99] shadow-sm';
     btn.dataset.value = value;
     btn.addEventListener('click', onClick);
     return btn;

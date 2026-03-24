@@ -8,7 +8,7 @@ export function clearOptions() {
     els.options.innerHTML = '';
     els.feedback.innerHTML = '';
     els.feedback.classList.add('hidden');
-    els.feedback.className = 'mt-8 hidden animate-fade-in-up';
+    els.feedback.className = 'mt-10 hidden animate-premium-in';
 }
 
 export function showFeedback(isCorrect, q) {
@@ -16,20 +16,24 @@ export function showFeedback(isCorrect, q) {
     const isEs = params.lang === 'es';
     
     const baseMsg = isCorrect 
-        ? (isEs ? 'Correcto' : 'Correct') 
-        : (isEs ? 'Incorrecto' : 'Incorrect');
+        ? (isEs ? 'Brilliant!' : 'Brilliant!') 
+        : (isEs ? 'Not quite right' : 'Not quite right');
     
-    const colorClass = isCorrect ? 'text-green-700 bg-green-50 border-green-100 dark:bg-green-900/10 dark:text-green-400 dark:border-green-900/30' : 'text-red-700 bg-red-50 border-red-100 dark:bg-red-900/10 dark:text-red-400 dark:border-red-900/30';
-    const icon = isCorrect ? 'fa-check-circle' : 'fa-xmark-circle';
+    const colorClass = isCorrect 
+        ? 'text-green-800 bg-green-50 border-green-200 dark:bg-green-900/10 dark:text-green-400 dark:border-green-900/30' 
+        : 'text-red-800 bg-red-50 border-red-200 dark:bg-red-900/10 dark:text-red-400 dark:border-red-900/30';
+    const icon = isCorrect ? 'fa-circle-check' : 'fa-circle-xmark';
 
     const explanationText = q.explanation || getAutoExplanation(q, params.lang);
 
     els.feedback.innerHTML = `
-    <div class="p-4 rounded-xl border ${colorClass} flex gap-4 items-start">
-        <i class="fa-solid ${icon} text-xl mt-0.5"></i>
-        <div>
-            <div class="font-bold text-lg">${baseMsg}</div>
-            <div class="mt-1 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+    <div class="p-6 rounded-2xl border ${colorClass} flex gap-5 items-start shadow-sm backdrop-blur-sm">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-white/50 dark:bg-black/20 shadow-sm">
+            <i class="fa-solid ${icon} text-xl"></i>
+        </div>
+        <div class="flex-1">
+            <div class="font-heading font-bold text-lg mb-1">${baseMsg}</div>
+            <div class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
                 ${linkify(explanationText)}
             </div>
         </div>
@@ -79,17 +83,17 @@ export function renderQuestion() {
 function renderHotspotYesNo(q) {
     // ... (existing container creation code) ...
     const container = document.createElement('div');
-    container.className = 'w-full overflow-x-auto mt-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm';
+    container.className = 'w-full overflow-x-auto mt-8 bg-white dark:bg-slate-800/30 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm';
 
     const table = document.createElement('table');
     table.className = 'w-full text-left border-collapse min-w-[600px]';
 
     const thead = document.createElement('thead');
     thead.innerHTML = `
-      <tr class="bg-slate-50 dark:bg-slate-900/50">
-          <th class="p-4 border-b border-slate-200 dark:border-slate-700 font-semibold text-slate-900 dark:text-white w-full">Statement</th>
-          <th class="p-4 border-b border-slate-200 dark:border-slate-700 font-semibold text-slate-900 dark:text-white text-center w-24">Yes</th>
-          <th class="p-4 border-b border-slate-200 dark:border-slate-700 font-semibold text-slate-900 dark:text-white text-center w-24">No</th>
+      <tr class="bg-slate-50 dark:bg-slate-900/40">
+          <th class="p-5 border-b border-slate-200 dark:border-slate-700 font-heading font-bold text-slate-900 dark:text-white w-full text-sm uppercase tracking-wider">Statement</th>
+          <th class="p-5 border-b border-slate-200 dark:border-slate-700 font-heading font-bold text-slate-900 dark:text-white text-center w-28 text-sm uppercase tracking-wider">Yes</th>
+          <th class="p-5 border-b border-slate-200 dark:border-slate-700 font-heading font-bold text-slate-900 dark:text-white text-center w-28 text-sm uppercase tracking-wider">No</th>
       </tr>
   `;
     table.appendChild(thead);
@@ -99,24 +103,24 @@ function renderHotspotYesNo(q) {
 
     q.statements.forEach((stmt, idx) => {
         const row = document.createElement('tr');
-        row.className = 'border-b border-slate-100 dark:border-slate-800 last:border-0 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors';
+        row.className = 'border-b border-slate-100 dark:border-slate-800/50 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors';
 
         const textCell = document.createElement('td');
-        textCell.className = 'p-4 text-slate-700 dark:text-slate-300 leading-relaxed';
+        textCell.className = 'p-5 text-slate-700 dark:text-slate-300 leading-relaxed font-medium';
         textCell.innerHTML = processText(stmt.text);
 
         const createRadio = (val) => {
             const cell = document.createElement('td');
-            cell.className = 'p-4 text-center';
+            cell.className = 'p-5 text-center';
 
             const label = document.createElement('label');
-            label.className = 'inline-flex items-center justify-center cursor-pointer p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors';
+            label.className = 'inline-flex items-center justify-center cursor-pointer p-3 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all active:scale-90';
 
             const input = document.createElement('input');
             input.type = 'radio';
             input.name = `stmt-${idx}`;
             input.value = val;
-            input.className = 'w-5 h-5 text-brand-600 border-slate-300 focus:ring-brand-500 cursor-pointer accent-brand-600';
+            input.className = 'w-6 h-6 text-brand-600 border-slate-300 focus:ring-4 focus:ring-brand-500/10 cursor-pointer accent-brand-600';
 
             input.onchange = () => {
                 if (state.answered) return;

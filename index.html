@@ -10,6 +10,8 @@
     <script src="./theme.js"></script>
     <script src="https://kit.fontawesome.com/8fc38daa34.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/premium.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -17,6 +19,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
                     },
                     colors: {
                         brand: {
@@ -44,37 +47,29 @@
         .dark .glass-effect {
             background: rgba(30, 41, 59, 0.7);
         }
-        
-        .exam-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .exam-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
     </style>
 </head>
 <body class="h-full bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-slate-100 transition-colors duration-200">
 
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 glass-effect">
+    <nav class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 premium-glass">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
-                        <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-tight">CertHub</span>
-                    <a href="./changelog.html" class="ml-4 text-xs font-medium px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                    <span class="font-heading font-bold text-2xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">CertHub</span>
+                    <a href="./changelog.html" class="ml-4 text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded bg-slate-900 text-white dark:bg-white dark:text-slate-900 opacity-80 hover:opacity-100 transition-opacity">
                         v1.3.0
                     </a>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <button id="langToggle" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors font-medium text-sm flex items-center gap-1">
+                    <button id="langToggle" class="px-3 py-1.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-all font-semibold text-xs flex items-center gap-2 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
                         <i class="fa-solid fa-globe"></i> <span>EN</span>
                     </button>
-                    <button id="themeToggle" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors">
+                    <button id="themeToggle" class="w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-all flex items-center justify-center border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
                         <i class="fa-solid fa-moon dark:hidden"></i>
                         <i class="fa-solid fa-sun hidden dark:block"></i>
                     </button>
@@ -84,79 +79,139 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 animate-reveal">
         
-        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Explore Certifications</h1>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">Practice exams and study guides to help you succeed.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-10 mb-24 text-center md:text-left">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-[10px] font-bold tracking-widest uppercase mb-6 border border-brand-500/20">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                    </span>
+                    Professional Training Platform
+                </div>
+                <h1 class="text-5xl md:text-7xl font-heading font-extrabold text-slate-900 dark:text-white mb-6 tracking-tighter leading-tight">
+                    Elevate Your <span class="premium-gradient-text">Certification</span> Journey
+                </h1>
+                <p class="text-slate-500 dark:text-slate-400 text-xl md:text-2xl leading-relaxed font-light">
+                    The ultimate practice platform for cloud engineers and developers. 
+                    Master your exams with our curated question banks.
+                </p>
             </div>
             
-            <div class="w-full md:w-auto relative">
-                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="searchInput" placeholder="Search..." 
-                    class="w-full md:w-80 pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all shadow-sm">
+            <div class="w-full md:w-auto relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-indigo-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-focus-within:duration-200"></div>
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
+                    <input type="text" id="searchInput" placeholder="Search..." 
+                        class="w-full md:w-80 pl-12 pr-4 py-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-900 dark:text-white focus:ring-0 focus:border-brand-500 outline-none transition-all shadow-sm backdrop-blur-xl">
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-40 group-focus-within:opacity-0 transition-opacity">
+                        <kbd class="px-1.5 py-0.5 text-[10px] font-sans border border-slate-300 dark:border-slate-600 rounded bg-slate-50 dark:bg-slate-800">Ctrl</kbd>
+                        <kbd class="px-1.5 py-0.5 text-[10px] font-sans border border-slate-300 dark:border-slate-600 rounded bg-slate-50 dark:bg-slate-800">K</kbd>
+                    </div>
+                </div>
             </div>
         </div>
         
         <!-- Filter Bar -->
-        <div class="flex gap-2 overflow-x-auto w-full pb-4 mb-8 no-scrollbar">
-            <button class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm" data-filter="all">All</button>
-            <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="azure">Azure</button>
-            <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="aws">AWS</button>
-            <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="google">Google</button>
-            <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700 transition-colors" data-filter="github">GitHub</button>
+        <div class="flex gap-4 overflow-x-auto w-full pb-8 mb-16 no-scrollbar scroll-smooth">
+            <button class="filter-btn active px-8 py-3 rounded-2xl text-sm font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xl shadow-slate-900/20 transition-all hover:scale-105" data-filter="all">All Modules</button>
+            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="azure">Azure</button>
+            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="aws">AWS Cloud</button>
+            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="google">Google Cloud</button>
+            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="terraform">Terraform</button>
+            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="git">Git & GitHub</button>
         </div>
 
         <!-- Section: Certifications -->
-        <div id="certsSection">
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-certificate text-brand-500"></i> Certifications
-            </h2>
-            <div id="examGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div id="certsSection" class="mb-24">
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
+                <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 flex items-center gap-3">
+                    <i class="fa-solid fa-certificate text-brand-500"></i>
+                    Official Certifications
+                </h2>
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
+            </div>
+            <div id="examGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <!-- Cert Cards injected here -->
             </div>
         </div>
 
         <!-- Section: Study Plans -->
         <div id="plansSection">
-            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-book-open text-purple-500"></i> Study Plans
-            </h2>
-            <div id="plansGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
+                <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 flex items-center gap-3">
+                    <i class="fa-solid fa-book-open text-purple-500"></i>
+                    Personalized Study Plans
+                </h2>
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
+            </div>
+            <div id="plansGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <!-- Plan Cards injected here -->
             </div>
         </div>
 
     </main>
 
-    <footer class="bg-white dark:bg-dark-card border-t border-slate-200 dark:border-slate-800 mt-12 py-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
-            <p>&copy; 2026 Certification Hub. Open Source Learning.</p>
+    <footer class="mt-40 pb-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-8 border-t border-slate-200 dark:border-slate-800/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 shadow-sm">
+                        <i class="fa-solid fa-graduation-cap text-sm"></i>
+                    </div>
+                    <span class="font-heading font-bold text-lg tracking-tighter">CertHub</span>
+                </div>
+
+                <div id="footerAuthor" class="text-sm font-medium text-slate-500 dark:text-slate-400">
+                    Crafted with <span class="text-red-500/80">❤</span> by <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>
+                </div>
+
+                <div class="flex items-center gap-5">
+                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-brands fa-linkedin-in text-lg"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-regular fa-envelope text-lg"></i></a>
+                </div>
+            </div>
+            <p id="footerCopy" class="text-center text-[10px] font-bold tracking-[0.2em] uppercase text-slate-300 dark:text-slate-600 mt-4">
+                &copy; 2026 HUB • ALL RIGHTS RESERVED
+            </p>
         </div>
     </footer>
 
     <!-- Dev Popup -->
-    <div id="dev-popup" class="fixed bottom-4 right-4 z-50 max-w-md w-full bg-white dark:bg-slate-800 shadow-xl rounded-xl border border-slate-200 dark:border-slate-700 p-4 transform transition-all duration-500 flex items-start gap-4 animate-bounce-in">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
-            <i class="fa-solid fa-code"></i>
+    <div id="dev-popup" class="fixed bottom-8 right-8 z-50 max-w-sm w-full premium-glass rounded-[2.5rem] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.25)] animate-reveal group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 via-orange-600 to-amber-500 rounded-[2.5rem] opacity-10 blur group-hover:opacity-30 transition duration-1000"></div>
+        <div class="relative">
+            <div class="flex items-start gap-5 mb-4">
+                <div class="flex-shrink-0 w-14 h-14 rounded-[1.2rem] bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white shadow-[0_10px_20px_rgba(245,158,11,0.3)] rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+                </div>
+                <div class="flex-1 pt-1">
+                    <h3 class="text-lg font-heading font-black text-slate-900 dark:text-white leading-none mb-1">New Features Incoming!</h3>
+                    <p class="text-[10px] font-bold tracking-widest uppercase text-amber-600 dark:text-amber-400">Development Mode</p>
+                </div>
+                <button onclick="this.closest('#dev-popup').remove()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <p id="popupText" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                    This page is currently under construction. If you wish to add new certifications, please contact <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.
+                </p>
+                <div class="h-1 w-full bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-amber-500 w-2/3 animate-pulse"></div>
+                </div>
+            </div>
         </div>
-        <div class="flex-1 pt-0.5">
-            <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Plataforma en Desarrollo</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Esta página se encuentra actualmente en construcción.
-                <br>
-                Si deseas añadir nuevas certificaciones, por favor contacta con <strong class="text-brand-600 dark:text-brand-400">Jhonathan Chaves</strong>.
-            </p>
-        </div>
-        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-500 dark:hover:text-slate-300 transition-colors">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
     </div>
 
     <script>
         // Language Logic
-        let currentLang = localStorage.getItem('lang') || 'en';
+        let currentLang = localStorage.getItem('hub_lang') || 'en';
+
         const langToggle = document.getElementById('langToggle');
         
         function updateLangUI() {
@@ -165,39 +220,76 @@
             document.documentElement.lang = currentLang;
             document.title = currentLang === 'es' ? 'Certification Hub • Panel' : 'Certification Hub • Dashboard';
             
+            const isEs = currentLang === 'es';
+
             // Update text content
-            document.querySelector('h1').textContent = currentLang === 'es' ? 'Explora Certificaciones' : 'Explore Certifications';
-            document.querySelector('p.text-lg').textContent = currentLang === 'es' ? 'Exámenes de práctica y guías de estudio para ayudarte a triunfar.' : 'Practice exams and study guides to help you succeed.';
-            document.querySelector('#searchInput').placeholder = currentLang === 'es' ? 'Buscar...' : 'Search...';
-            document.querySelector('.filter-btn[data-filter="all"]').textContent = currentLang === 'es' ? 'Todos' : 'All';
+            document.querySelector('h1').innerHTML = isEs 
+                ? `Eleva tu camino de <span class="premium-gradient-text">Certificación</span>`
+                : `Elevate Your <span class="premium-gradient-text">Certification</span> Journey`;
+            
+            document.querySelector('main p.text-xl').textContent = isEs 
+                ? 'La plataforma definitiva para ingenieros cloud y desarrolladores. Domina tus exámenes con nuestros bancos de preguntas.'
+                : 'The ultimate practice platform for cloud engineers and developers. Master your exams with our curated question banks.';
+            
+            document.querySelector('#searchInput').placeholder = isEs ? 'Buscar...' : 'Search...';
+            
+            // Update Filters
+            const filters = {
+                'all': isEs ? 'Todos los Módulos' : 'All Modules',
+                'azure': isEs ? 'Azure' : 'Azure',
+                'aws': isEs ? 'AWS Cloud' : 'AWS Cloud',
+                'google': isEs ? 'Google Cloud' : 'Google Cloud',
+                'terraform': isEs ? 'Terraform' : 'Terraform',
+                'git': isEs ? 'Git & GitHub' : 'Git & GitHub'
+            };
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const type = btn.dataset.filter;
+                if (filters[type]) btn.textContent = filters[type];
+            });
             
             // Update section titles
             const certsHeader = document.querySelector('#certsSection h2');
-            if(certsHeader) certsHeader.innerHTML = `<i class="fa-solid fa-certificate text-brand-500"></i> ${currentLang === 'es' ? 'Certificaciones' : 'Certifications'}`;
-            
-            const plansHeader = document.querySelector('#plansSection h2');
-            if(plansHeader) plansHeader.innerHTML = `<i class="fa-solid fa-book-open text-purple-500"></i> ${currentLang === 'es' ? 'Planes de Estudio' : 'Study Plans'}`;
-            
-            // Footer
-            document.querySelector('footer p').innerHTML = `&copy; 2026 Certification Hub. ${currentLang === 'es' ? 'Aprendizaje de Código Abierto.' : 'Open Source Learning.'}`;
-
-            // Dev popup
-            const devTitle = document.querySelector('#dev-popup h3');
-            const devText = document.querySelector('#dev-popup p');
-            if (devTitle) devTitle.textContent = currentLang === 'es' ? 'Plataforma en Desarrollo' : 'Platform in Development';
-            if (devText) {
-                devText.innerHTML = currentLang === 'es'
-                    ? 'Esta pagina se encuentra actualmente en construccion.<br>Si deseas anadir nuevas certificaciones, por favor contacta con <strong class="text-brand-600 dark:text-brand-400">Jhonathan Chaves</strong>.'
-                    : 'This page is currently under development.<br>If you want to add new certifications, please contact <strong class="text-brand-600 dark:text-brand-400">Jhonathan Chaves</strong>.';
+            if(certsHeader) {
+                certsHeader.innerHTML = `
+                    <i class="fa-solid fa-certificate text-brand-500"></i>
+                    ${isEs ? 'Certificaciones Oficiales' : 'Official Certifications'}
+                `;
             }
             
+            const plansHeader = document.querySelector('#plansSection h2');
+            if(plansHeader) {
+                plansHeader.innerHTML = `
+                    <i class="fa-solid fa-book-open text-purple-500"></i>
+                    ${isEs ? 'Planes de Estudio Personalizados' : 'Personalized Study Plans'}
+                `;
+            }
+            
+            // Footer
+            document.getElementById('footerAuthor').innerHTML = isEs 
+                ? `Creado con <span class="text-red-500/80">❤</span> por <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>`
+                : `Crafted with <span class="text-red-500/80">❤</span> by <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>`;
+            
+            document.getElementById('footerCopy').textContent = isEs
+                ? `© 2026 HUB • TODOS LOS DERECHOS RESERVADOS`
+                : `© 2026 HUB • ALL RIGHTS RESERVED`;
+            
+            // Dev Popup
+            const devPopup = document.getElementById('dev-popup');
+            if (devPopup) {
+                devPopup.querySelector('h3').textContent = isEs ? '¡Nuevas funciones!' : 'New Features Incoming!';
+                document.getElementById('popupText').innerHTML = isEs 
+                    ? `Esta página se encuentra actualmente en construcción. Si deseas añadir nuevas certificaciones, por favor contacta con <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.`
+                    : `This page is currently under construction. If you wish to add new certifications, please contact <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.`;
+            }
+
             // Re-render cards to update their internal text
             if(window.renderCards) window.renderCards();
         }
 
         langToggle.addEventListener('click', () => {
             currentLang = currentLang === 'en' ? 'es' : 'en';
-            localStorage.setItem('lang', currentLang);
+            localStorage.setItem('hub_lang', currentLang);
             updateLangUI();
         });
 
@@ -247,27 +339,6 @@
             return text.includes('ka0s') || text.includes('mastering github');
         }
 
-        function getLocalizedDescription(exam) {
-            if (currentLang !== 'en') return exam.desc || exam.title || '';
-
-            const map = {
-                'AZ-900': 'True/false, multiple choice, and matching practice questions.',
-                'Google Cloud Digital Leaders': 'Fundamentals practice quiz for Google Cloud.',
-                'AWS Certified Cloud Practitioner': 'AWS fundamentals: services, security, pricing, and support.',
-                'Google Cloud Associate Cloud Engineer': 'Imported practice questions (answers not fully verified).',
-                'HashiCorp Terraform Associate': 'Practice questions on IaC, State, Modules, and Core Workflow.',
-                'Microsoft Azure AI Fundamentals': 'Practice questions on AI/ML concepts and Azure AI services.',
-                'DP-900': 'Questions about relational and non-relational data fundamentals.',
-                'AWS AI Practitioner': 'AWS AI/ML concepts, ethics, and tooling.',
-                'KCNA': 'Entry-level certification for the Kubernetes and cloud-native ecosystem.',
-                'GH-300': 'Practice bank for the GitHub Copilot certification.',
-                'Ka0s Training': 'Technical onboarding: architecture, automation, and operational culture.',
-                'Mastering GitHub': 'Learn professional workflows, pull requests, conflict resolution, and GitHub Actions.'
-            };
-
-            return map[exam.name] || exam.desc || exam.title || '';
-        }
-
         function createCard(exam) {
             const style = getProviderStyle(exam.name, exam.title);
             const isStudyPlan = isStudyPlanItem(exam);
@@ -285,66 +356,44 @@
                 baseUrl.searchParams.set('apuntes', ap);
             }
             
-            // Pass language param
             baseUrl.searchParams.set('lang', currentLang);
-            
             const examenUrl = new URL(baseUrl.href); examenUrl.searchParams.set('mode', 'examen');
             const practicaUrl = new URL(baseUrl.href); practicaUrl.searchParams.set('mode', 'practica');
             const apuntesUrl = exam.apuntes || '#';
 
             const card = document.createElement('div');
-            card.className = `exam-card bg-white dark:bg-dark-card rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col h-full relative overflow-hidden group`;
-            
-            // Header
-            const headerHtml = `
-                <div class="flex justify-between items-start mb-4 relative z-10">
-                    <div class="w-12 h-12 rounded-xl ${style.bg} ${style.color} flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
-                        <i class="${style.iconFamily || 'fa-brands'} ${style.icon} fa-fw"></i>
+            card.className = `premium-card group rounded-[2.5rem] p-8 flex flex-col h-full`;
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-8 relative z-10">
+                    <div class="w-16 h-16 rounded-3xl ${style.bg} ${style.color} flex items-center justify-center text-4xl group-hover:scale-110 transition-all duration-700 shadow-inner">
+                        <i class="fa-brands ${style.icon} fa-fw"></i>
                     </div>
-                    ${isStudyPlan ? 
-                        `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">${currentLang === 'es' ? 'Plan de Estudio' : 'Study Plan'}</span>` :
-                        `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">${currentLang === 'es' ? 'Certificación' : 'Certification'}</span>`
-                    }
+                    <span class="px-4 py-1.5 rounded-xl text-[10px] font-bold tracking-widest uppercase ${isStudyPlan ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' : 'bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-500/20'} border">
+                        ${isStudyPlan ? (currentLang === 'es' ? 'Plan de Estudio' : 'Study Plan') : (currentLang === 'es' ? 'Certificación' : 'Certification')}
+                    </span>
                 </div>
-            `;
-
-            // Body
-            const bodyHtml = `
                 <div class="flex-1 relative z-10">
-                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1 leading-tight break-words group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors" title="${exam.name}">${exam.name}</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 min-h-[2.5rem]">${getLocalizedDescription(exam)}</p>
+                    <h3 class="text-2xl font-heading font-extrabold text-slate-900 dark:text-white mb-3 line-clamp-1 group-hover:premium-gradient-text transition-all duration-300" title="${exam.name}">${exam.name}</h3>
+                    <p class="text-base text-slate-500 dark:text-slate-400 mb-10 line-clamp-3 min-h-[4.5rem] leading-relaxed font-light">${exam.desc || exam.title}</p>
+                </div>
+                <div class="relative z-10 mt-auto pt-8 border-t border-slate-100 dark:border-slate-800/50">
+                    ${isStudyPlan ? `
+                        <a href="${apuntesUrl}" class="premium-btn flex items-center justify-between w-full px-6 py-4 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold transition-all shadow-2xl shadow-slate-900/20">
+                            <span>${currentLang === 'es' ? 'Abrir Guía de Estudio' : 'Open Study Guide'}</span>
+                            <i class="fa-solid fa-arrow-right text-sm opacity-50 group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    ` : `
+                        <div class="grid grid-cols-2 gap-4">
+                            <a href="${practicaUrl.href}" class="premium-btn flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold transition-all text-sm">
+                                <i class="fa-regular fa-compass"></i> ${currentLang === 'es' ? 'Práctica' : 'Practice'}
+                            </a>
+                            <a href="${examenUrl.href}" class="premium-btn flex items-center justify-center gap-2 py-4 rounded-2xl bg-brand-600 text-white font-bold transition-all shadow-xl shadow-brand-500/25 text-sm">
+                                <i class="fa-solid fa-play"></i> ${currentLang === 'es' ? 'Examen' : 'Exam'}
+                            </a>
+                        </div>
+                    `}
                 </div>
             `;
-
-            // Footer / Actions
-            let actionsHtml = '';
-            if (isStudyPlan) {
-                actionsHtml = `
-                    <div class="relative z-10 mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
-                        <a href="${apuntesUrl}" class="flex items-center justify-between w-full px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-medium transition-all group-hover:shadow-md">
-                            <span>${currentLang === 'es' ? 'Abrir Guía' : 'Open Guide'}</span>
-                            <i class="fa-solid fa-arrow-right text-sm opacity-50 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </div>
-                `;
-            } else {
-                actionsHtml = `
-                    <div class="grid grid-cols-2 gap-3 relative z-10 mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
-                        <a href="${practicaUrl.href}" class="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 font-medium transition-colors text-sm">
-                            <i class="fa-regular fa-compass"></i> ${currentLang === 'es' ? 'Práctica' : 'Practice'}
-                        </a>
-                        <a href="${examenUrl.href}" class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium transition-colors shadow-sm shadow-brand-500/20 text-sm">
-                            <i class="fa-solid fa-play"></i> ${currentLang === 'es' ? 'Examen' : 'Exam'}
-                        </a>
-                    </div>
-                    ${exam.apuntes ? `
-                    <div class="mt-3 text-center">
-                        <a href="${apuntesUrl}" class="text-xs text-slate-500 hover:text-brand-600 transition-colors">${currentLang === 'es' ? 'Ver Material de Estudio' : 'View Study Materials'}</a>
-                    </div>` : ''}
-                `;
-            }
-
-            card.innerHTML = headerHtml + bodyHtml + actionsHtml;
             return card;
         }
 
@@ -370,13 +419,17 @@
                 const q = query.toLowerCase();
                 
                 const filtered = allItems.filter(e => {
-                    const matchesSearch = (e.name + e.title + e.desc).toLowerCase().includes(q);
+                    const searchStr = (e.name + (e.title || '') + (e.desc || '')).toLowerCase();
+                    const matchesSearch = searchStr.includes(q);
                     
                     let matchesType = true;
-                    if (filterType === 'azure') matchesType = /az|azure|microsoft/i.test(e.name + e.title);
-                    else if (filterType === 'aws') matchesType = /aws|amazon/i.test(e.name + e.title);
-                    else if (filterType === 'google') matchesType = /google|gcp/i.test(e.name + e.title);
-                    else if (filterType === 'github') matchesType = /github|copilot/i.test(e.name + e.title);
+                    const typeStr = (e.name + (e.title || '')).toLowerCase();
+                    
+                    if (filterType === 'azure') matchesType = /az|azure|microsoft|ai-900|dp-900/i.test(typeStr);
+                    else if (filterType === 'aws') matchesType = /aws|amazon/i.test(typeStr);
+                    else if (filterType === 'google') matchesType = /google|gcp/i.test(typeStr);
+                    else if (filterType === 'terraform') matchesType = /terraform|hashicorp/i.test(typeStr);
+                    else if (filterType === 'git') matchesType = /git|github|ka0s/i.test(typeStr);
                     
                     return matchesSearch && matchesType;
                 });

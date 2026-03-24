@@ -42,8 +42,16 @@ export function updateStatus() {
     }
 
     // Progress Bar
-    const pct = Math.round(((state.currentIndex) / Math.max(1, state.questions.length)) * 100);
+    const total = Math.max(1, state.questions.length);
+    const pct = Math.round(((state.currentIndex) / total) * 100);
     if (els.progressBar) els.progressBar.style.width = `${pct}%`;
+    
+    // Progress Percent Text
+    const progressPercent = document.getElementById('progressPercent');
+    if (progressPercent) {
+        const isEs = getParams().lang === 'es';
+        progressPercent.textContent = isEs ? `${pct}% Completado` : `${pct}% Complete`;
+    }
 }
 
 export function handleAnswer(clickedBtn, q) {
@@ -213,8 +221,8 @@ export async function init() {
             
             els.modeSwitch.textContent = state.mode === 'examen' ? practiceText : examText;
             els.modeSwitch.className = state.mode === 'examen'
-                ? 'text-xs font-medium px-4 py-2 rounded-lg bg-slate-900 text-white border border-slate-900 hover:bg-slate-800 transition-colors shadow-sm'
-                : 'text-xs font-medium px-4 py-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 dark:bg-dark-card dark:border-slate-700 dark:hover:bg-slate-800 transition-colors shadow-sm';
+                ? 'text-[10px] font-bold tracking-widest uppercase px-6 py-2.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xl shadow-slate-900/10 hover:scale-105 active:scale-95 transition-all'
+                : 'text-[10px] font-bold tracking-widest uppercase px-6 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 shadow-sm hover:scale-105 active:scale-95 transition-all';
         };
         updateModeBtn();
 

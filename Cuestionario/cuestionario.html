@@ -8,6 +8,7 @@
     <script src="../theme.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/premium.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -15,9 +16,12 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
                     },
                     colors: {
                         brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
                             500: '#0ea5e9',
                             600: '#0284c7',
                         },
@@ -32,10 +36,11 @@
     </script>
     <style>
         .option-btn {
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .option-btn:hover:not(:disabled) {
-            transform: translateY(-1px);
+            transform: translateX(4px);
+            background-color: rgba(14, 165, 233, 0.05);
         }
         
         /* Correct/Incorrect States */
@@ -43,6 +48,7 @@
             background-color: #f0fdf4 !important; /* green-50 */
             border-color: #22c55e !important; /* green-500 */
             color: #15803d !important; /* green-700 */
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
         }
         .dark .state-correct {
             background-color: rgba(34, 197, 94, 0.1) !important;
@@ -54,6 +60,7 @@
             background-color: #fef2f2 !important; /* red-50 */
             border-color: #ef4444 !important; /* red-500 */
             color: #b91c1c !important; /* red-700 */
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
         }
         .dark .state-incorrect {
             background-color: rgba(239, 68, 68, 0.1) !important;
@@ -64,41 +71,36 @@
         .state-selected {
             background-color: #f0f9ff !important; /* sky-50 */
             border-color: #0ea5e9 !important; /* sky-500 */
-            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
         }
         .dark .state-selected {
             background-color: rgba(14, 165, 233, 0.1) !important;
             border-color: #0ea5e9 !important;
         }
     </style>
-    <script>
-        // Apply Language
-        const lang = localStorage.getItem('lang') || 'en';
-        document.documentElement.lang = lang;
-    </script>
 </head>
 <body class="h-full bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-slate-100 transition-colors duration-200 flex flex-col">
 
     <!-- Navbar -->
-    <nav class="bg-white dark:bg-dark-card border-b border-slate-200 dark:border-slate-800 h-16 flex-shrink-0">
+    <nav class="premium-glass h-16 flex-shrink-0 z-50 sticky top-0">
         <div class="max-w-5xl mx-auto px-4 h-full flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <a href="../index.html" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            <div class="flex items-center gap-5">
+                <a href="../index.html" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-brand-600 dark:hover:text-brand-400 shadow-sm border border-slate-200 dark:border-slate-700 transition-all active:scale-90">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
-                <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+                <div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
                 <div>
-                    <h1 id="examTitle" class="font-bold text-sm md:text-base leading-tight">Loading...</h1>
-                    <p id="examSubtitle" class="text-xs text-slate-500 dark:text-slate-400">Certification Prep</p>
+                    <h1 id="examTitle" class="font-heading font-bold text-sm md:text-lg leading-tight text-slate-900 dark:text-white">Loading...</h1>
+                    <p id="examSubtitle" class="text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Certification Prep</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <div id="scoreContainer" class="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                    <i class="fa-solid fa-crosshairs"></i>
+            <div class="flex items-center gap-4">
+                <div id="scoreContainer" class="hidden md:flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 shadow-sm">
+                    <i class="fa-solid fa-bullseye text-brand-500"></i>
                     <span id="accuracy">0%</span>
                 </div>
-                <button id="modeSwitch" class="text-xs font-medium px-4 py-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 dark:bg-dark-card dark:border-slate-700 dark:hover:bg-slate-800 transition-colors shadow-sm">
+                <button id="modeSwitch" class="text-xs font-bold px-5 py-2.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:opacity-90 transition-all shadow-md shadow-slate-900/10 active:scale-95">
                     Exam Mode
                 </button>
             </div>
@@ -106,81 +108,91 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8 flex flex-col">
+    <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-16 flex flex-col animate-reveal">
         
         <!-- Progress -->
-        <div class="mb-8">
-            <div class="flex justify-between text-xs font-medium text-slate-500 mb-2">
-                <span>Question <span id="current">1</span> of <span id="total">--</span></span>
-                <span>Progress</span>
+        <div class="mb-12">
+            <div class="flex justify-between text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">
+                <span>Question <span id="current" class="text-slate-900 dark:text-white text-sm">1</span> <span class="mx-2 opacity-30">/</span> <span id="total" class="opacity-60">--</span></span>
+                <span id="progressPercent" class="text-brand-500">0% Complete</span>
             </div>
-            <div class="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                <div id="progressBar" class="h-full bg-brand-500 transition-all duration-500 ease-out" style="width: 0%"></div>
+            <div class="h-1.5 w-full bg-slate-200 dark:bg-slate-800/30 rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-gradient-to-r from-brand-500 via-indigo-500 to-brand-500 bg-[length:200%_100%] animate-shimmer rounded-full transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(14,165,233,0.3)]" style="width: 0%"></div>
             </div>
         </div>
 
         <!-- Question Card -->
-        <div id="card" class="bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 md:p-10 flex-1 flex flex-col animate-fade-in">
+        <div id="card" class="premium-card rounded-[3rem] p-10 md:p-16 flex-1 flex flex-col relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-brand-500/10 transition-colors duration-1000"></div>
             
-            <div class="flex-1">
-                <h2 id="question" class="text-xl md:text-2xl font-semibold mb-8 text-slate-900 dark:text-white leading-relaxed">
-                    Initializing question bank...
-                </h2>
+            <div class="flex-1 relative z-10">
+                <div class="mb-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-bold tracking-widest uppercase bg-slate-100 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50 mb-6">
+                        <i class="fa-solid fa-layer-group text-brand-500"></i> Knowledge Check
+                    </div>
+                    <h2 id="question" class="text-3xl md:text-4xl font-heading font-extrabold text-slate-900 dark:text-white leading-[1.2] tracking-tight">
+                        Initializing question bank...
+                    </h2>
+                </div>
 
-                <div id="options" class="flex flex-col gap-3">
+                <div id="options" class="grid grid-cols-1 gap-4">
                     <!-- Options injected here -->
                 </div>
             </div>
 
             <!-- Feedback -->
-            <div id="feedback" class="mt-8 hidden animate-fade-in-up">
+            <div id="feedback" class="mt-12 hidden animate-reveal">
                 <!-- Feedback content -->
             </div>
 
-        <!-- Footer Actions -->
-        <div class="mt-10 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-            <button id="resetBtn" class="text-sm font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors order-2 md:order-1">
-                Restart Session
-            </button>
-            
-            <div class="flex gap-3 w-full md:w-auto order-1 md:order-2">
-                <button id="checkBtn" class="hidden flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-semibold shadow-lg shadow-slate-900/10 transition-all transform active:scale-95 justify-center">
-                    Check Answer
+            <!-- Footer Actions -->
+            <div class="mt-16 pt-10 border-t border-slate-100 dark:border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+                <button id="resetBtn" class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 hover:text-red-500 transition-all flex items-center gap-3 active:scale-95">
+                    <i class="fa-solid fa-rotate-right"></i> Restart Session
                 </button>
-                <button id="nextBtn" class="hidden flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-brand-600 text-white hover:bg-brand-700 font-semibold shadow-lg shadow-brand-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                    Next Question <i class="fa-solid fa-arrow-right text-xs"></i>
-                </button>
+                
+                <div class="flex gap-4 w-full md:w-auto order-1 md:order-2">
+                    <button id="checkBtn" class="hidden flex-1 md:flex-none px-10 py-5 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold shadow-2xl shadow-slate-900/20 transition-all active:scale-95 justify-center premium-btn">
+                        Check Answer
+                    </button>
+                    <button id="nextBtn" class="hidden flex-1 md:flex-none px-10 py-5 rounded-2xl bg-brand-600 text-white font-bold shadow-2xl shadow-brand-500/30 transition-all active:scale-95 flex items-center justify-center gap-4 premium-btn">
+                        Next Question <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
         <!-- Final Screen -->
-        <div id="final" class="hidden flex-1 flex flex-col items-center justify-center bg-white dark:bg-dark-card border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 md:p-10 text-center">
-            <div class="w-24 h-24 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-6 text-yellow-500 text-4xl shadow-sm">
-                <i class="fa-solid fa-trophy"></i>
-            </div>
+        <div id="final" class="hidden flex-1 flex flex-col items-center justify-center premium-card rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-500/5 via-transparent to-transparent"></div>
             
-            <h2 class="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Session Complete!</h2>
-            <p class="text-slate-500 mb-8">You've reached the end of this module.</p>
-            
-            <div class="grid grid-cols-2 gap-4 md:gap-8 mb-10 w-full max-w-sm">
-                <div class="text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-800">
-                    <div class="text-sm text-slate-500 mb-1">Score</div>
-                    <div id="finalScore" class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">0%</div>
+            <div class="relative z-10 w-full max-w-2xl">
+                <div class="w-32 h-32 rounded-[2.5rem] bg-gradient-to-br from-yellow-300 via-orange-500 to-red-600 flex items-center justify-center mx-auto mb-10 text-white text-6xl shadow-[0_20px_50px_rgba(249,115,22,0.3)] rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
-                <div class="text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-800">
-                    <div class="text-sm text-slate-500 mb-1">Questions</div>
-                    <div id="finalTotal" class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">0</div>
+                
+                <h2 class="text-5xl md:text-6xl font-heading font-extrabold mb-4 text-slate-900 dark:text-white tracking-tighter">Session Complete!</h2>
+                <p class="text-slate-500 dark:text-slate-400 mb-16 text-xl font-light">Outstanding effort. Here's your performance breakdown.</p>
+                
+                <div class="grid grid-cols-2 gap-8 mb-16 w-full">
+                    <div class="text-center p-10 rounded-[2.5rem] bg-white/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-sm">
+                        <div class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">Accuracy</div>
+                        <div id="finalScore" class="text-5xl font-heading font-bold text-slate-900 dark:text-white">0%</div>
+                    </div>
+                    <div class="text-center p-10 rounded-[2.5rem] bg-white/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-sm">
+                        <div class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 mb-4">Questions</div>
+                        <div id="finalTotal" class="text-5xl font-heading font-bold text-slate-900 dark:text-white">0</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <a href="../index.html" class="px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center">
-                    Back to Dashboard
-                </a>
-                <button id="restartBtn" class="px-6 py-3 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-lg shadow-brand-500/20 transition-colors flex items-center justify-center">
-                    Try Again
-                </button>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <a href="../index.html" class="px-10 py-5 rounded-2xl border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-3 active:scale-95">
+                        <i class="fa-solid fa-house text-sm"></i> Dashboard
+                    </a>
+                    <button id="restartBtn" class="px-12 py-5 rounded-2xl bg-brand-600 text-white font-bold hover:bg-brand-700 shadow-2xl shadow-brand-500/30 transition-all active:scale-95 flex items-center justify-center gap-3 premium-btn">
+                        <i class="fa-solid fa-rotate-left text-sm"></i> Retake Quiz
+                    </button>
+                </div>
             </div>
         </div>
 
