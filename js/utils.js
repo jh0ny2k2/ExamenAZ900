@@ -143,15 +143,23 @@ export function processText(text) {
 }
 
 export function linkify(text) {
-    return (text || '').replace(/https?:\/\/\S+/g, (url) => `<a href="${url}" target="_blank" class="underline decoration-brand-500/30 underline-offset-4 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors font-medium">${url}</a>`);
+    return (text || '').replace(/https?:\/\/\S+/g, (url) => `<a href="${url}" target="_blank" rel="noopener">${url}</a>`);
 }
 
 export function createButton(text, value, onClick) {
     const btn = document.createElement('button');
-    btn.textContent = text;
-    // Modern professional button style
-    btn.className = 'option-btn w-full text-left px-6 py-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.99] shadow-sm';
+    const index = document.querySelectorAll('#options .option').length;
+    btn.className = 'option';
     btn.dataset.value = value;
+
+    const key = document.createElement('span');
+    key.className = 'key';
+    key.textContent = String.fromCharCode(65 + index);
+    const label = document.createElement('span');
+    label.className = 'text';
+    label.textContent = text;
+
+    btn.append(key, label);
     btn.addEventListener('click', onClick);
     return btn;
 }
@@ -160,14 +168,79 @@ export function formatUserAnswer(ans) {
     if (ans.type === 'multiselect' || Array.isArray(ans.selected)) {
         return Array.isArray(ans.selected) ? ans.selected.join(', ') : ans.selected;
     }
+    if (ans.type === 'ordering') return (ans.selected || []).join(' → ');
+    if (ans.type === 'matching') return (ans.details || []).map(d => `${d.left} → ${d.selected}`).join('; ');
+    if (ans.type === 'hotspot-yes-no') return (ans.details || []).map(d => d.selected).join(', ');
     if (ans.type === 'matching' || ans.type === 'hotspot-yes-no') {
-        return 'See details in question context'; // Simplified
+        return t('seeDetails');
     }
     return ans.selected;
 }
 
 export function formatCorrectAnswer(q) {
     if (Array.isArray(q.answer)) return q.answer.join(', ');
-    if (typeof q.answer === 'object') return 'Complex Answer';
+    if (q.type === 'ordering') return (q.correctOrder || []).join(' → ');
+    if (q.type === 'matching') {
+        // Some banks store the matching solution as plain text instead of a map
+        if (q.correctMap && typeof q.correctMap === 'object') return Object.entries(q.correctMap).map(([k, v]) => `${k} → ${v}`).join('; ');
+        return String(q.answer ?? '');
+    }
+    if (q.type === 'hotspot-yes-no') return (q.statements || []).map(st => st.correct).join(', ');
+    if (typeof q.answer === 'object') return t('seeDetails');
     return q.answer;
+}
+
+const STRINGS = {
+    es: {
+        practiceMode: 'Modo práctica', examMode: 'Modo examen',
+        toExam: 'Cambiar a examen', toPractice: 'Cambiar a práctica',
+        question: 'Pregunta', accuracy: 'Acierto', complete: 'completado',
+        check: 'Comprobar', next: 'Siguiente', finish: 'Ver resultado', restart: 'Reiniciar',
+        correct: 'Correcto', incorrect: 'Incorrecto',
+        result: 'Resultado', review: 'Revisar respuestas', retry: 'Repetir', home: 'Volver al inicio',
+        resultLine: (ok, total, time) => `${ok} de ${total} correctas${time ? ` · ${time}` : ''}`,
+        passed: 'Por encima del 70 %, el umbral habitual para aprobar.',
+        failed: 'Por debajo del 70 %, el umbral habitual para aprobar.',
+        statement: 'Afirmación', yes: 'Sí', no: 'No',
+        answerAll: 'Responde todas las afirmaciones.',
+        selectExactly: (n) => `Selecciona ${n} respuestas.`,
+        selectOption: 'Elige una opción…', selectMatch: 'Elige la correspondencia…',
+        available: 'Pasos disponibles', sequence: 'Tu orden',
+        allSelected: 'No quedan pasos.', buildSequence: 'Pulsa los pasos en el orden correcto.',
+        correctOrder: 'Orden correcto:',
+        reviewTitle: 'Revisión', reviewSub: (s, n) => `${s} de ${n} correctas`,
+        yourAnswer: 'Tu respuesta', correctAnswer: 'Respuesta correcta', explanation: 'Explicación',
+        noAnswers: 'Todavía no has respondido ninguna pregunta.', close: 'Cerrar',
+        all: 'Todas', onlyWrong: 'Solo falladas',
+        seeDetails: 'Ver detalle en la pregunta',
+    },
+    en: {
+        practiceMode: 'Practice mode', examMode: 'Exam mode',
+        toExam: 'Switch to exam', toPractice: 'Switch to practice',
+        question: 'Question', accuracy: 'Accuracy', complete: 'complete',
+        check: 'Check', next: 'Next', finish: 'See result', restart: 'Restart',
+        correct: 'Correct', incorrect: 'Incorrect',
+        result: 'Result', review: 'Review answers', retry: 'Try again', home: 'Back to home',
+        resultLine: (ok, total, time) => `${ok} of ${total} correct${time ? ` · ${time}` : ''}`,
+        passed: 'Above 70%, the usual passing threshold.',
+        failed: 'Below 70%, the usual passing threshold.',
+        statement: 'Statement', yes: 'Yes', no: 'No',
+        answerAll: 'Answer every statement.',
+        selectExactly: (n) => `Select ${n} answers.`,
+        selectOption: 'Choose an option…', selectMatch: 'Choose a match…',
+        available: 'Available steps', sequence: 'Your order',
+        allSelected: 'No steps left.', buildSequence: 'Tap the steps in the right order.',
+        correctOrder: 'Correct order:',
+        reviewTitle: 'Review', reviewSub: (s, n) => `${s} of ${n} correct`,
+        yourAnswer: 'Your answer', correctAnswer: 'Correct answer', explanation: 'Explanation',
+        noAnswers: "You haven't answered any questions yet.", close: 'Close',
+        all: 'All', onlyWrong: 'Only wrong',
+        seeDetails: 'See details in the question',
+    }
+};
+
+export function t(key, ...args) {
+    const lang = getParams().lang === 'es' ? 'es' : 'en';
+    const value = STRINGS[lang][key];
+    return typeof value === 'function' ? value(...args) : value;
 }

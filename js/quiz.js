@@ -1,21 +1,24 @@
 
 // Main Quiz Logic
 import { state, els } from './state.js';
-import { getParams, resolvePath, normalizeQuestion, shuffle, chooseExamSubset } from './utils.js';
+import { getParams, resolvePath, normalizeQuestion, shuffle, chooseExamSubset, t } from './utils.js';
 import { renderQuestion, showFeedback, renderReviewSummary, clearOptions } from './renderers.js';
+
+function formatElapsed() {
+    if (!state.startTime) return '';
+    const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
 
 export function startTimer() {
     if (state.timerInterval) clearInterval(state.timerInterval);
     state.startTime = Date.now();
+    if (els.timeDisplay) els.timeDisplay.textContent = '00:00';
 
-    // Update timer every second
     state.timerInterval = setInterval(() => {
-        const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
-        const minutes = Math.floor(elapsed / 60);
-        const seconds = elapsed % 60;
-        if (els.timeDisplay) {
-            els.timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
+        if (els.timeDisplay) els.timeDisplay.textContent = formatElapsed();
     }, 1000);
 
     if (els.timer) els.timer.classList.remove('hidden');
@@ -31,6 +34,7 @@ export function stopTimer() {
 export function updateStatus() {
     if (els.current) els.current.textContent = state.currentIndex + 1;
     if (els.total) els.total.textContent = state.questions.length;
+    if (els.examSubtitle) els.examSubtitle.textContent = state.mode === 'examen' ? t('examMode') : t('practiceMode');
 
     // In Exam Mode, hide accuracy until the end
     if (state.mode === 'examen') {
@@ -41,16 +45,14 @@ export function updateStatus() {
         if (els.accuracy) els.accuracy.textContent = `${answeredPct}%`;
     }
 
-    // Progress Bar
+    // Progress counts answered questions, so the bar fills completely on the last one
     const total = Math.max(1, state.questions.length);
-    const pct = Math.round(((state.currentIndex) / total) * 100);
-    if (els.progressBar) els.progressBar.style.width = `${pct}%`;
-    
-    // Progress Percent Text
-    const progressPercent = document.getElementById('progressPercent');
-    if (progressPercent) {
-        const isEs = getParams().lang === 'es';
-        progressPercent.textContent = isEs ? `${pct}% Completado` : `${pct}% Complete`;
+    const done = state.currentIndex + (state.answered ? 1 : 0);
+    if (els.progressBar) els.progressBar.style.width = `${Math.round((done / total) * 100)}%`;
+
+    if (els.nextBtn) {
+        const isLast = state.currentIndex >= state.questions.length - 1;
+        els.nextBtn.textContent = isLast ? t('finish') : t('next');
     }
 }
 
@@ -62,7 +64,6 @@ export function handleAnswer(clickedBtn, q) {
     const correctAnswer = q.answer;
     const isCorrect = clickedBtn.dataset.value === correctAnswer;
 
-    // Store user answer for later review
     state.userAnswers.push({
         questionIndex: state.currentIndex,
         isCorrect: isCorrect,
@@ -73,44 +74,35 @@ export function handleAnswer(clickedBtn, q) {
     if (isCorrect) state.score += 1;
 
     const buttons = Array.from(els.options.querySelectorAll('button'));
+    els.options.classList.add('answered');
 
-    // If in Exam Mode, just highlight selected answer and move on
     if (state.mode === 'examen') {
+        // Exam Mode: only mark the chosen answer, no correction
         buttons.forEach(b => {
             b.disabled = true;
-            if (b === clickedBtn) {
-                b.classList.add('state-selected');
-            }
+            if (b === clickedBtn) b.classList.add('state-selected');
         });
-        // Auto-advance or show next button without feedback
-        if (els.nextBtn) els.nextBtn.classList.remove('hidden');
     } else {
-        // Practice Mode: Show immediate feedback
         buttons.forEach((b) => {
             b.disabled = true;
-            b.classList.add('cursor-default', 'opacity-80');
             const v = b.dataset.value;
-
-            if (v === correctAnswer) {
-                b.classList.add('state-correct');
-                b.classList.remove('bg-white', 'dark:bg-slate-800/50', 'border-slate-200');
-            } else if (b === clickedBtn && !isCorrect) {
-                b.classList.add('state-incorrect');
-                b.classList.remove('bg-white', 'dark:bg-slate-800/50', 'border-slate-200');
-            }
+            if (v === correctAnswer) b.classList.add('state-correct');
+            else if (b === clickedBtn && !isCorrect) b.classList.add('state-incorrect');
         });
         showFeedback(isCorrect, q);
-        if (els.nextBtn) els.nextBtn.classList.remove('hidden');
     }
 
+    if (els.nextBtn) els.nextBtn.classList.remove('hidden');
     updateStatus();
 }
 
 export function nextQuestion() {
     if (state.currentIndex < state.questions.length - 1) {
         state.currentIndex += 1;
-        updateStatus();
+        state.answered = false;
         renderQuestion();
+        updateStatus();
+        window.scrollTo({ top: 0 });
     } else {
         showFinal();
     }
@@ -127,51 +119,46 @@ export function resetQuiz() {
     if (state.mode === 'examen') {
         startTimer();
     } else {
+        state.startTime = null;
         if (els.timer) els.timer.classList.add('hidden');
     }
 
     if (els.final) els.final.classList.add('hidden');
     if (els.card) els.card.classList.remove('hidden');
     shuffle(state.questions);
-    updateStatus();
     renderQuestion();
+    updateStatus();
 }
 
 export function showFinal() {
     if (!els.final) return;
 
+    const time = state.mode === 'examen' ? formatElapsed() : '';
     stopTimer();
 
-    const finalPct = Math.round((state.score / Math.max(1, state.questions.length)) * 100);
+    const total = Math.max(1, state.questions.length);
+    const finalPct = Math.round((state.score / total) * 100);
 
     if (els.finalScore) els.finalScore.textContent = `${finalPct}%`;
     if (els.finalTotal) els.finalTotal.textContent = state.questions.length;
-
-    // Show review button if in exam mode or always
-    if (els.reviewBtn) {
-        els.reviewBtn.classList.remove('hidden');
-        els.reviewBtn.onclick = () => {
-            renderReviewSummary();
-        };
+    const line = document.getElementById('finalLine');
+    if (line) line.textContent = t('resultLine', state.score, state.questions.length, time);
+    const verdict = document.getElementById('finalVerdict');
+    if (verdict) {
+        verdict.textContent = finalPct >= 70 ? t('passed') : t('failed');
+        verdict.className = `result-verdict ${finalPct >= 70 ? 'ok' : 'bad'}`;
     }
+
+    if (els.reviewBtn) els.reviewBtn.onclick = () => renderReviewSummary();
 
     if (els.card) els.card.classList.add('hidden');
     els.final.classList.remove('hidden');
-
-    // Trigger confetti
-    if (finalPct >= 70 && window.confetti) {
-        window.confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-    }
+    if (els.progressBar) els.progressBar.style.width = '100%';
 }
 
 async function loadQuestions() {
     const params = getParams();
     const src = resolvePath(params.preguntas);
-    // Pass language param to normalizeQuestion
     const processData = (data) => Array.isArray(data) ? data.map(q => normalizeQuestion(q, params.lang)) : window.FALLBACK_QUESTIONS.map(q => normalizeQuestion(q, params.lang));
 
     if (src) {
@@ -188,7 +175,7 @@ async function loadQuestions() {
 
     // Default fallback
     try {
-        const res = await fetch('./Preguntas/preguntasAZ900.json', { cache: 'no-store' });
+        const res = await fetch('../Preguntas/preguntasAZ900.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('error');
         return processData(await res.json());
     } catch (e) {
@@ -196,41 +183,66 @@ async function loadQuestions() {
     }
 }
 
+function applyStaticText() {
+    const params = getParams();
+    document.documentElement.lang = params.lang === 'es' ? 'es' : 'en';
+    document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+
+    const title = params.title || params.name || 'CertHub';
+    if (els.examTitle) els.examTitle.textContent = title;
+    document.title = `${title} · CertHub`;
+}
+
+// A–Z picks an option, Enter checks or moves on
+function bindKeyboard() {
+    document.addEventListener('keydown', (e) => {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (document.querySelector('.review-backdrop')) return;
+        if (/select|input|textarea/i.test(document.activeElement?.tagName)) return;
+        if (els.card?.classList.contains('hidden')) return;
+
+        if (e.key === 'Enter') {
+            const target = [els.checkBtn, els.nextBtn].find(b => b && !b.classList.contains('hidden'));
+            // Leave Enter alone on other focused controls (links, restart, mode switch)
+            const focused = document.activeElement;
+            const free = !focused || focused === document.body || focused.matches('.option, .order-item');
+            if (target && free) {
+                e.preventDefault();
+                target.click();
+            }
+            return;
+        }
+
+        if (/^[a-z]$/i.test(e.key)) {
+            const options = els.options.querySelectorAll('.option');
+            const option = options[e.key.toUpperCase().charCodeAt(0) - 65];
+            if (option && !option.disabled) {
+                e.preventDefault();
+                option.click();
+            }
+        }
+    });
+}
+
 export async function init() {
     const params = getParams();
-    if (els.examTitle) els.examTitle.textContent = params.title || params.name || 'Practice Session';
-    
-    // Apply language to UI
-    const lang = params.lang || 'en';
-    if (lang === 'es') {
-        if(els.examSubtitle) els.examSubtitle.textContent = 'Preparación para Certificación';
-        if(document.querySelector('#current').previousSibling) document.querySelector('#current').previousSibling.textContent = 'Pregunta ';
-        if(document.querySelector('#total').previousSibling) document.querySelector('#total').previousSibling.textContent = ' de '; // Simplified
-        // We might need to update other static UI text here if we want full localization in quiz view
-    }
+    applyStaticText();
 
-    // Set initial mode from URL or default
     state.mode = params.mode === 'examen' ? 'examen' : 'practica';
 
     if (els.modeSwitch) {
-        // Update button text based on current state
         const updateModeBtn = () => {
-            const isEs = params.lang === 'es';
-            const examText = isEs ? 'Cambiar a Examen' : 'Switch to Exam';
-            const practiceText = isEs ? 'Cambiar a Práctica' : 'Switch to Practice';
-            
-            els.modeSwitch.textContent = state.mode === 'examen' ? practiceText : examText;
-            els.modeSwitch.className = state.mode === 'examen'
-                ? 'text-[10px] font-bold tracking-widest uppercase px-6 py-2.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xl shadow-slate-900/10 hover:scale-105 active:scale-95 transition-all'
-                : 'text-[10px] font-bold tracking-widest uppercase px-6 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 shadow-sm hover:scale-105 active:scale-95 transition-all';
+            els.modeSwitch.textContent = state.mode === 'examen' ? t('toPractice') : t('toExam');
         };
         updateModeBtn();
 
         els.modeSwitch.addEventListener('click', () => {
-            // Toggle mode
             state.mode = state.mode === 'examen' ? 'practica' : 'examen';
+            const url = new URL(location.href);
+            url.searchParams.set('mode', state.mode);
+            history.replaceState(null, '', url);
             updateModeBtn();
-            resetQuiz(); // Restart session when mode changes
+            resetQuiz();
         });
     }
 
@@ -238,12 +250,11 @@ export async function init() {
     const shuffled = shuffle(loaded);
     state.questions = state.mode === 'examen' ? chooseExamSubset(shuffled) : shuffled;
 
-    if (state.mode === 'examen') {
-        startTimer();
-    }
+    if (state.mode === 'examen') startTimer();
 
-    updateStatus();
     renderQuestion();
+    updateStatus();
+    bindKeyboard();
 
     if (els.nextBtn) els.nextBtn.addEventListener('click', nextQuestion);
     if (els.resetBtn) els.resetBtn.addEventListener('click', resetQuiz);

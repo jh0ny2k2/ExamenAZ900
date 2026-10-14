@@ -1,505 +1,362 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Certification Hub • Dashboard</title>
+    <title>CertHub</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="shortcut icon" href="./favicon.svg" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="./theme.js"></script>
-    <script src="https://kit.fontawesome.com/8fc38daa34.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/premium.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0ea5e9">
+    <meta name="theme-color" content="#fbfbfa">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="CertHub">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/11516/11516757.png">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9', // Sky 500
-                            600: '#0284c7', // Sky 600
-                            900: '#0c4a6e',
-                        },
-                        dark: {
-                            bg: '#0f172a', // Slate 900
-                            card: '#1e293b', // Slate 800
-                            border: '#334155', // Slate 700
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="./css/site.css">
     <style>
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
+        /* Intro */
+        .intro { padding-top: 72px; padding-bottom: 48px; }
+        .intro h1 {
+            margin: 0 0 16px;
+            font-size: clamp(30px, 4.2vw, 44px);
+            line-height: 1.12;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            max-width: 20ch;
         }
-        .dark .glass-effect {
-            background: rgba(30, 41, 59, 0.7);
+        .intro p { margin: 0; max-width: 58ch; font-size: 17px; color: var(--muted); }
+        .intro .note { margin-top: 20px; font-size: 14px; color: var(--faint); }
+
+        /* Toolbar */
+        .toolbar {
+            position: sticky; top: 0; z-index: 10;
+            background: color-mix(in srgb, var(--bg) 92%, transparent);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+        .toolbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .search { position: relative; flex-shrink: 0; width: 200px; }
+        .search .field { height: 34px; padding-right: 34px; }
+        .search input::-webkit-search-cancel-button { display: none; }
+        .search kbd { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        .search input:focus + kbd, .search input:not(:placeholder-shown) + kbd { display: none; }
+
+        /* Catalog */
+        .catalog { padding-top: 16px; padding-bottom: 96px; flex: 1; }
+        .group { margin-top: 40px; }
+        .group-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--text); }
+        .group-head h2 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+        .group-head span { font: 12px var(--mono); color: var(--faint); }
+
+        .row {
+            display: grid;
+            grid-template-columns: 112px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 24px;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--line);
+            transition: background .15s, box-shadow .15s;
+        }
+        /* Hover fill bleeds past the column without moving the divider lines */
+        .row:hover { background: var(--hover); box-shadow: -12px 0 0 var(--hover), 12px 0 0 var(--hover); }
+        .code { display: flex; align-items: center; gap: 9px; font: 500 13px var(--mono); color: var(--muted); white-space: nowrap; }
+        .dot { width: 7px; height: 7px; border-radius: 2px; background: var(--accent); flex-shrink: 0; }
+        .code.guide { color: var(--faint); font-weight: 400; }
+        .info { min-width: 0; }
+        .info h3 { margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.005em; }
+        .info p { margin: 2px 0 0; font-size: 14px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .actions { display: flex; align-items: center; gap: 8px; }
+        .actions .link { height: 32px; padding: 0 4px 0 6px; font-size: 13.5px; }
+
+        .empty { padding: 72px 0; color: var(--muted); }
+        .empty button { margin-top: 8px; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+
+        .skeleton-row { height: 69px; border-bottom: 1px solid var(--line); position: relative; }
+        .skeleton-row::before, .skeleton-row::after { content: ""; position: absolute; top: 20px; height: 12px; border-radius: 3px; background: var(--hover); }
+        .skeleton-row::before { left: 0; width: 72px; }
+        .skeleton-row::after { left: 136px; width: 40%; }
+
+        @media (max-width: 760px) {
+            .intro { padding-top: 48px; padding-bottom: 32px; }
+            .intro p { font-size: 16px; }
+            .toolbar .wrap { flex-direction: column-reverse; align-items: stretch; gap: 0; padding-top: 12px; }
+            .search { width: 100%; }
+            .search kbd { display: none; }
+            .row { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px 0; }
+            .row:hover { background: none; box-shadow: none; }
+            .info p { white-space: normal; }
+            .actions .btn { flex: 1; height: 36px; }
         }
     </style>
 </head>
-<body class="h-full bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-slate-100 transition-colors duration-200">
+<body>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 premium-glass">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
-                        <i class="fa-solid fa-graduation-cap text-lg"></i>
-                    </div>
-                    <span class="font-heading font-bold text-2xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">CertHub</span>
-                    <a href="./changelog.html" class="ml-4 text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded bg-slate-900 text-white dark:bg-white dark:text-slate-900 opacity-80 hover:opacity-100 transition-opacity">
-                        v1.3.0
-                    </a>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <button id="langToggle" class="px-3 py-1.5 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-all font-semibold text-xs flex items-center gap-2 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                        <i class="fa-solid fa-globe"></i> <span>EN</span>
-                    </button>
-                    <button id="themeToggle" class="w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-all flex items-center justify-center border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                        <i class="fa-solid fa-moon dark:hidden"></i>
-                        <i class="fa-solid fa-sun hidden dark:block"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 animate-reveal">
-        
-        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-10 mb-24 text-center md:text-left">
-            <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-[10px] font-bold tracking-widest uppercase mb-6 border border-brand-500/20">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                    </span>
-                    Professional Training Platform
-                </div>
-                <h1 class="text-5xl md:text-7xl font-heading font-extrabold text-slate-900 dark:text-white mb-6 tracking-tighter leading-tight">
-                    Elevate Your <span class="premium-gradient-text">Certification</span> Journey
-                </h1>
-                <p class="text-slate-500 dark:text-slate-400 text-xl md:text-2xl leading-relaxed font-light">
-                    The ultimate practice platform for cloud engineers and developers. 
-                    Master your exams with our curated question banks.
-                </p>
-            </div>
-            
-            <div class="w-full md:w-auto relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-indigo-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-focus-within:duration-200"></div>
-                <div class="relative">
-                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
-                    <input type="text" id="searchInput" placeholder="Search..." 
-                        class="w-full md:w-80 pl-12 pr-4 py-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-900 dark:text-white focus:ring-0 focus:border-brand-500 outline-none transition-all shadow-sm backdrop-blur-xl">
-                    <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-40 group-focus-within:opacity-0 transition-opacity">
-                        <kbd class="px-1.5 py-0.5 text-[10px] font-sans border border-slate-300 dark:border-slate-600 rounded bg-slate-50 dark:bg-slate-800">Ctrl</kbd>
-                        <kbd class="px-1.5 py-0.5 text-[10px] font-sans border border-slate-300 dark:border-slate-600 rounded bg-slate-50 dark:bg-slate-800">K</kbd>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Filter Bar -->
-        <div class="flex gap-4 overflow-x-auto w-full pb-8 mb-16 no-scrollbar scroll-smooth">
-            <button class="filter-btn active px-8 py-3 rounded-2xl text-sm font-bold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xl shadow-slate-900/20 transition-all hover:scale-105" data-filter="all">All Modules</button>
-            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="azure">Azure</button>
-            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="aws">AWS Cloud</button>
-            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="google">Google Cloud</button>
-            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="terraform">Terraform</button>
-            <button class="filter-btn px-8 py-3 rounded-2xl text-sm font-bold bg-white/50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-all hover:scale-105" data-filter="git">Git & GitHub</button>
-        </div>
-
-        <!-- Section: Certifications -->
-        <div id="certsSection" class="mb-24">
-            <div class="flex items-center gap-4 mb-10">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
-                <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 flex items-center gap-3">
-                    <i class="fa-solid fa-certificate text-brand-500"></i>
-                    Official Certifications
-                </h2>
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
-            </div>
-            <div id="examGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Cert Cards injected here -->
-            </div>
-        </div>
-
-        <!-- Section: Study Plans -->
-        <div id="plansSection">
-            <div class="flex items-center gap-4 mb-10">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
-                <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 flex items-center gap-3">
-                    <i class="fa-solid fa-book-open text-purple-500"></i>
-                    Personalized Study Plans
-                </h2>
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent"></div>
-            </div>
-            <div id="plansGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Plan Cards injected here -->
-            </div>
-        </div>
-
-    </main>
-
-    <footer class="mt-40 pb-16 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-8 border-t border-slate-200 dark:border-slate-800/50">
-                <div class="flex items-center gap-4">
-                    <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 shadow-sm">
-                        <i class="fa-solid fa-graduation-cap text-sm"></i>
-                    </div>
-                    <span class="font-heading font-bold text-lg tracking-tighter">CertHub</span>
-                </div>
-
-                <div id="footerAuthor" class="text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Crafted with <span class="text-red-500/80">❤</span> by <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>
-                </div>
-
-                <div class="flex items-center gap-5">
-                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
-                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-brands fa-linkedin-in text-lg"></i></a>
-                    <a href="#" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fa-regular fa-envelope text-lg"></i></a>
-                </div>
-            </div>
-            <p id="footerCopy" class="text-center text-[10px] font-bold tracking-[0.2em] uppercase text-slate-300 dark:text-slate-600 mt-4">
-                &copy; 2026 HUB • ALL RIGHTS RESERVED
-            </p>
-        </div>
-    </footer>
-
-    <!-- Dev Popup -->
-    <div id="dev-popup" class="fixed bottom-8 right-8 z-50 max-w-sm w-full premium-glass rounded-[2.5rem] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.25)] animate-reveal group">
-        <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 via-orange-600 to-amber-500 rounded-[2.5rem] opacity-10 blur group-hover:opacity-30 transition duration-1000"></div>
-        <div class="relative">
-            <div class="flex items-start gap-5 mb-4">
-                <div class="flex-shrink-0 w-14 h-14 rounded-[1.2rem] bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white shadow-[0_10px_20px_rgba(245,158,11,0.3)] rotate-3 group-hover:rotate-0 transition-transform duration-500">
-                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
-                </div>
-                <div class="flex-1 pt-1">
-                    <h3 class="text-lg font-heading font-black text-slate-900 dark:text-white leading-none mb-1">New Features Incoming!</h3>
-                    <p class="text-[10px] font-bold tracking-widest uppercase text-amber-600 dark:text-amber-400">Development Mode</p>
-                </div>
-                <button onclick="this.closest('#dev-popup').remove()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all">
-                    <i class="fa-solid fa-xmark"></i>
+    <header class="site-header">
+        <div class="wrap">
+            <a href="./" class="wordmark"><img src="./favicon.svg" alt="">CertHub</a>
+            <nav class="header-nav">
+                <a href="./changelog.html" data-i18n="changelog"></a>
+                <button id="langToggle" class="lang-switch" aria-label="Idioma / Language">
+                    <span data-lang="es">ES</span><span>/</span><span data-lang="en">EN</span>
                 </button>
-            </div>
-            <div class="space-y-3">
-                <p id="popupText" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                    This page is currently under construction. If you wish to add new certifications, please contact <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.
-                </p>
-                <div class="h-1 w-full bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
-                    <div class="h-full bg-amber-500 w-2/3 animate-pulse"></div>
-                </div>
-            </div>
+                <button id="themeToggle" class="theme-toggle" aria-label="Tema / Theme">
+                    <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="intro wrap">
+        <h1 data-i18n="h1"></h1>
+        <p id="introText"></p>
+        <p class="note" data-i18n="note"></p>
+    </section>
+
+    <div class="toolbar">
+        <div class="wrap">
+            <div id="tabs" class="tabs" role="tablist"></div>
+            <label class="search">
+                <input type="search" id="searchInput" class="field" autocomplete="off" placeholder=" ">
+                <kbd>/</kbd>
+            </label>
         </div>
     </div>
 
+    <main class="catalog wrap" id="catalog"></main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <span><span data-i18n="madeBy"></span> <strong>Jhonathan Chaves</strong> · 2026</span>
+            <a href="./changelog.html">v1.4.0</a>
+        </div>
+    </footer>
+
     <script>
-        // Language Logic
-        let currentLang = localStorage.getItem('hub_lang') || 'en';
-
-        const langToggle = document.getElementById('langToggle');
-        
-        function updateLangUI() {
-            const span = langToggle.querySelector('span');
-            span.textContent = currentLang.toUpperCase();
-            document.documentElement.lang = currentLang;
-            document.title = currentLang === 'es' ? 'Certification Hub • Panel' : 'Certification Hub • Dashboard';
-            
-            const isEs = currentLang === 'es';
-
-            // Update text content
-            document.querySelector('h1').innerHTML = isEs 
-                ? `Eleva tu camino de <span class="premium-gradient-text">Certificación</span>`
-                : `Elevate Your <span class="premium-gradient-text">Certification</span> Journey`;
-            
-            document.querySelector('main p.text-xl').textContent = isEs 
-                ? 'La plataforma definitiva para ingenieros cloud y desarrolladores. Domina tus exámenes con nuestros bancos de preguntas.'
-                : 'The ultimate practice platform for cloud engineers and developers. Master your exams with our curated question banks.';
-            
-            document.querySelector('#searchInput').placeholder = isEs ? 'Buscar...' : 'Search...';
-            
-            // Update Filters
-            const filters = {
-                'all': isEs ? 'Todos los Módulos' : 'All Modules',
-                'azure': isEs ? 'Azure' : 'Azure',
-                'aws': isEs ? 'AWS Cloud' : 'AWS Cloud',
-                'google': isEs ? 'Google Cloud' : 'Google Cloud',
-                'terraform': isEs ? 'Terraform' : 'Terraform',
-                'git': isEs ? 'Git & GitHub' : 'Git & GitHub'
-            };
-
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                const type = btn.dataset.filter;
-                if (filters[type]) btn.textContent = filters[type];
-            });
-            
-            // Update section titles
-            const certsHeader = document.querySelector('#certsSection h2');
-            if(certsHeader) {
-                certsHeader.innerHTML = `
-                    <i class="fa-solid fa-certificate text-brand-500"></i>
-                    ${isEs ? 'Certificaciones Oficiales' : 'Official Certifications'}
-                `;
+        const I18N = {
+            es: {
+                title: 'CertHub · Bancos de preguntas para certificaciones cloud',
+                changelog: 'Novedades',
+                h1: 'Bancos de preguntas para preparar certificaciones cloud.',
+                intro: (exams, guides) => `${exams} exámenes y ${guides} guías de estudio. En modo práctica ves la corrección y la explicación después de cada pregunta; en modo examen respondes todo seguido y ves la nota al final.`,
+                note: 'Sigo añadiendo contenido. Si echas en falta alguna certificación, avísame.',
+                search: 'Buscar',
+                all: 'Todo', other: 'Otros',
+                practice: 'Práctica', exam: 'Examen', notes: 'Apuntes', official: 'Guía oficial', openGuide: 'Abrir guía',
+                guide: 'guía',
+                empty: (q) => q ? `No hay nada que coincida con «${q}».` : 'No hay nada en esta categoría.',
+                clear: 'Ver todo',
+                madeBy: 'Hecho por',
+            },
+            en: {
+                title: 'CertHub · Question banks for cloud certifications',
+                changelog: 'Changelog',
+                h1: 'Question banks to prepare for cloud certifications.',
+                intro: (exams, guides) => `${exams} exams and ${guides} study guides. Practice mode shows the answer and explanation after every question; exam mode runs straight through and grades you at the end.`,
+                note: "I'm still adding content. If a certification is missing, let me know.",
+                search: 'Search',
+                all: 'All', other: 'Other',
+                practice: 'Practice', exam: 'Exam', notes: 'Notes', official: 'Official guide', openGuide: 'Open guide',
+                guide: 'guide',
+                empty: (q) => q ? `Nothing matches “${q}”.` : 'Nothing in this category.',
+                clear: 'Show everything',
+                madeBy: 'Made by',
             }
-            
-            const plansHeader = document.querySelector('#plansSection h2');
-            if(plansHeader) {
-                plansHeader.innerHTML = `
-                    <i class="fa-solid fa-book-open text-purple-500"></i>
-                    ${isEs ? 'Planes de Estudio Personalizados' : 'Personalized Study Plans'}
-                `;
-            }
-            
-            // Footer
-            document.getElementById('footerAuthor').innerHTML = isEs 
-                ? `Creado con <span class="text-red-500/80">❤</span> por <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>`
-                : `Crafted with <span class="text-red-500/80">❤</span> by <span class="text-slate-900 dark:text-white font-bold hover:premium-gradient-text transition-all cursor-default">Jhonathan Chaves</span>`;
-            
-            document.getElementById('footerCopy').textContent = isEs
-                ? `© 2026 HUB • TODOS LOS DERECHOS RESERVADOS`
-                : `© 2026 HUB • ALL RIGHTS RESERVED`;
-            
-            // Dev Popup
-            const devPopup = document.getElementById('dev-popup');
-            if (devPopup) {
-                devPopup.querySelector('h3').textContent = isEs ? '¡Nuevas funciones!' : 'New Features Incoming!';
-                document.getElementById('popupText').innerHTML = isEs 
-                    ? `Esta página se encuentra actualmente en construcción. Si deseas añadir nuevas certificaciones, por favor contacta con <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.`
-                    : `This page is currently under construction. If you wish to add new certifications, please contact <strong class="text-slate-900 dark:text-white font-bold">Jhonathan Chaves</strong>.`;
-            }
+        };
 
-            // Re-render cards to update their internal text
-            if(window.renderCards) window.renderCards();
+        const PROVIDERS = {
+            azure:      { label: 'Microsoft Azure', color: '#0078d4' },
+            aws:        { label: 'AWS',             color: '#ff9900' },
+            google:     { label: 'Google Cloud',    color: '#34a853' },
+            kubernetes: { label: 'Kubernetes',      color: '#326ce5' },
+            terraform:  { label: 'Terraform',       color: '#7b42bc' },
+            git:        { label: 'Git & GitHub',    color: '#f05032' },
+            other:      { label: null,              color: '#9d9da3' },
+        };
+
+        const ARROW_OUT = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+        const ARROW_RIGHT = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+        let lang = localStorage.getItem('hub_lang') || 'es';
+        let activeTab = 'all';
+        let items = [];
+
+        const $ = (id) => document.getElementById(id);
+        const t = (key) => I18N[lang][key];
+        const esc = (s = '') => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const isExternal = (url) => /^https?:\/\//i.test(url || '');
+        const searchInput = $('searchInput');
+
+        function getProvider(exam) {
+            const text = `${exam.name} ${exam.title || ''}`.toLowerCase();
+            if (/kubernetes|kcna/.test(text)) return 'kubernetes';
+            if (/terraform|hashicorp/.test(text)) return 'terraform';
+            if (/github|\bgit\b|gh-\d/.test(text)) return 'git';
+            if (/aws|amazon/.test(text)) return 'aws';
+            if (/google|gcp/.test(text)) return 'google';
+            if (/azure|microsoft|\b(az|ai|dp)-\d{3}\b/.test(text)) return 'azure';
+            return 'other';
         }
 
-        langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'en' ? 'es' : 'en';
-            localStorage.setItem('hub_lang', currentLang);
-            updateLangUI();
+        // Entries without a question bank only link to notes
+        const isGuide = (exam) => !exam.pregunta;
+        const providerLabel = (key) => PROVIDERS[key].label || t('other');
+
+        function getCode(exam) {
+            if (exam.code) return exam.code;
+            const m = `${exam.name} ${exam.title || ''}`.match(/\b[A-Z]{2,4}-\d{3}\b/);
+            if (m) return m[0];
+            return /^[A-Z0-9]{3,6}$/.test(exam.name) ? exam.name : '';
+        }
+
+        // "AZ-900 • Fundamentos de Azure" -> "Fundamentos de Azure"
+        const getHeading = (exam) => (exam.title || exam.name).split(' • ').pop();
+
+        function quizUrl(exam, mode) {
+            const url = new URL('./Cuestionario/cuestionario.html', location.href);
+            url.searchParams.set('name', exam.name);
+            if (exam.title) url.searchParams.set('title', exam.title);
+            url.searchParams.set('preguntas', isExternal(exam.pregunta) ? exam.pregunta : `../${exam.pregunta}`);
+            if (exam.apuntes) url.searchParams.set('apuntes', isExternal(exam.apuntes) ? exam.apuntes : `../${exam.apuntes}`);
+            url.searchParams.set('lang', lang);
+            url.searchParams.set('mode', mode);
+            return url.href;
+        }
+
+        function rowHtml(exam) {
+            const key = getProvider(exam);
+            const guide = isGuide(exam);
+            const ext = isExternal(exam.apuntes);
+            const target = ext ? ' target="_blank" rel="noopener"' : '';
+
+            const actions = guide
+                ? `<a class="btn" href="${esc(exam.apuntes)}"${target}>${t('openGuide')} ${ARROW_RIGHT}</a>`
+                : `${exam.apuntes ? `<a class="link" href="${esc(exam.apuntes)}"${target}>${ext ? t('official') : t('notes')}${ext ? ARROW_OUT : ''}</a>` : ''}
+                   <a class="btn" href="${quizUrl(exam, 'practica')}">${t('practice')}</a>
+                   <a class="btn btn-primary" href="${quizUrl(exam, 'examen')}">${t('exam')}</a>`;
+
+            return `
+                <div class="row" style="--accent:${PROVIDERS[key].color}">
+                    <div class="code${guide ? ' guide' : ''}"><span class="dot"></span>${guide ? t('guide') : esc(getCode(exam))}</div>
+                    <div class="info">
+                        <h3>${esc(getHeading(exam))}</h3>
+                        <p title="${esc(exam.desc || '')}">${esc(exam.desc || '')}</p>
+                    </div>
+                    <div class="actions">${actions}</div>
+                </div>`;
+        }
+
+        function matches(exam, q) {
+            if (!q) return true;
+            const haystack = `${exam.name} ${exam.title || ''} ${exam.desc || ''} ${providerLabel(getProvider(exam))}`.toLowerCase();
+            return q.split(/\s+/).every(w => haystack.includes(w));
+        }
+
+        function renderTabs() {
+            const counts = { all: items.length };
+            items.forEach(e => { const k = getProvider(e); counts[k] = (counts[k] || 0) + 1; });
+            const keys = ['all', ...Object.keys(PROVIDERS).filter(k => counts[k])];
+
+            $('tabs').innerHTML = keys.map(k => `
+                <button class="tab" role="tab" data-key="${k}" aria-selected="${k === activeTab}">
+                    ${esc(k === 'all' ? t('all') : providerLabel(k))}<span class="n">${counts[k]}</span>
+                </button>`).join('');
+        }
+
+        function renderCatalog() {
+            const q = searchInput.value.trim().toLowerCase();
+            const visible = items.filter(e => (activeTab === 'all' || getProvider(e) === activeTab) && matches(e, q));
+
+            if (!visible.length) {
+                $('catalog').innerHTML = `<div class="empty">${esc(t('empty')(searchInput.value.trim()))}<br><button id="clearAll">${t('clear')}</button></div>`;
+                return;
+            }
+
+            // Group by provider, exams before guides inside each group
+            const groups = Object.keys(PROVIDERS)
+                .map(key => ({ key, list: visible.filter(e => getProvider(e) === key).sort((a, b) => isGuide(a) - isGuide(b)) }))
+                .filter(g => g.list.length);
+
+            $('catalog').innerHTML = groups.map(g => `
+                <section class="group">
+                    <div class="group-head"><h2>${esc(providerLabel(g.key))}</h2><span>${g.list.length}</span></div>
+                    ${g.list.map(rowHtml).join('')}
+                </section>`).join('');
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = lang;
+            document.title = t('title');
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+            document.querySelectorAll('#langToggle [data-lang]').forEach(el => el.classList.toggle('on', el.dataset.lang === lang));
+            searchInput.placeholder = t('search');
+            if (items.length) {
+                $('introText').textContent = t('intro')(items.filter(e => !isGuide(e)).length, items.filter(isGuide).length);
+                renderTabs();
+                renderCatalog();
+            }
+        }
+
+        $('langToggle').addEventListener('click', () => {
+            lang = lang === 'es' ? 'en' : 'es';
+            localStorage.setItem('hub_lang', lang);
+            applyLanguage();
         });
 
-        // Theme Toggle Logic
-        const toggleBtn = document.getElementById('themeToggle');
-        toggleBtn.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
+        $('themeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme:dark', isDark ? '1' : '0');
         });
 
-        // Load Exams
-        async function loadExams() {
+        $('tabs').addEventListener('click', (e) => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
+            activeTab = tab.dataset.key;
+            renderTabs();
+            renderCatalog();
+        });
+
+        $('catalog').addEventListener('click', (e) => {
+            if (e.target.id !== 'clearAll') return;
+            searchInput.value = '';
+            activeTab = 'all';
+            renderTabs();
+            renderCatalog();
+        });
+
+        searchInput.addEventListener('input', renderCatalog);
+
+        // "/" or Ctrl/⌘+K focuses the search, Escape clears it
+        document.addEventListener('keydown', (e) => {
+            const typing = /input|textarea|select/i.test(document.activeElement.tagName);
+            if ((e.key === '/' && !typing) || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                renderCatalog();
+                searchInput.blur();
+            }
+        });
+
+        (async function init() {
+            applyLanguage();
+            $('catalog').innerHTML = '<section class="group">' + '<div class="skeleton-row"></div>'.repeat(6) + '</section>';
+
             try {
                 const res = await fetch('./examenes.json', { cache: 'no-store' });
-                return await res.json();
+                items = await res.json();
             } catch (e) {
                 console.error(e);
-                return [];
+                items = [];
             }
-        }
-
-        function getProviderStyle(name, title) {
-            const text = (name + title).toLowerCase();
-            if (text.includes('azure') || text.includes('microsoft')) 
-                return { color: 'text-[#0078d4]', bg: 'bg-[#0078d4]/10', border: 'border-[#0078d4]/20', icon: 'fa-microsoft', iconFamily: 'fa-brands' };
-            if (text.includes('aws') || text.includes('amazon')) 
-                return { color: 'text-[#ff9900]', bg: 'bg-[#ff9900]/10', border: 'border-[#ff9900]/20', icon: 'fa-aws', iconFamily: 'fa-brands' };
-            if (text.includes('google') || text.includes('gcp')) 
-                return { color: 'text-[#34a853]', bg: 'bg-[#34a853]/10', border: 'border-[#34a853]/20', icon: 'fa-google', iconFamily: 'fa-brands' };
-            if (text.includes('kubernetes') || text.includes('hashicorp')) 
-                return { color: 'text-[#5c4ee5]', bg: 'bg-[#5c4ee5]/10', border: 'border-[#5c4ee5]/20', icon: 'fa-cube', iconFamily: 'fa-solid' };
-            if (text.includes('mastering github')) 
-                return { color: 'text-[#f05032]', bg: 'bg-[#f05032]/10', border: 'border-[#f05032]/20', icon: 'fa-git-alt', iconFamily: 'fa-brands' };
-            if (text.includes('github')) 
-                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-github', iconFamily: 'fa-brands' };
-            if (text.includes('git')) 
-                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-git', iconFamily: 'fa-brands' };
-            if (text.includes('ka0s training') || text.includes('ka0s')) 
-                return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-award', iconFamily: 'fa-solid' };
-            
-            return { color: 'text-slate-600', bg: 'bg-slate-100', border: 'border-slate-200', icon: 'fa-award', iconFamily: 'fa-solid' };
-        }
-
-        function isStudyPlanItem(exam) {
-            const text = `${exam.name || ''} ${exam.title || ''}`.toLowerCase();
-            return text.includes('ka0s') || text.includes('mastering github');
-        }
-
-        function createCard(exam) {
-            const style = getProviderStyle(exam.name, exam.title);
-            const isStudyPlan = isStudyPlanItem(exam);
-            
-            // URLs
-            const baseUrl = new URL('./Cuestionario/cuestionario.html', location.href);
-            baseUrl.searchParams.set('name', exam.name);
-            if (exam.title) baseUrl.searchParams.set('title', exam.title);
-            if (exam.pregunta) {
-                const preg = /^https?:\/\//i.test(exam.pregunta) ? exam.pregunta : `../${exam.pregunta}`;
-                baseUrl.searchParams.set('preguntas', preg);
-            }
-            if (exam.apuntes) {
-                const ap = /^https?:\/\//i.test(exam.apuntes) ? exam.apuntes : `../${exam.apuntes}`;
-                baseUrl.searchParams.set('apuntes', ap);
-            }
-            
-            baseUrl.searchParams.set('lang', currentLang);
-            const examenUrl = new URL(baseUrl.href); examenUrl.searchParams.set('mode', 'examen');
-            const practicaUrl = new URL(baseUrl.href); practicaUrl.searchParams.set('mode', 'practica');
-            const apuntesUrl = exam.apuntes || '#';
-
-            const card = document.createElement('div');
-            card.className = `premium-card group rounded-[2.5rem] p-8 flex flex-col h-full`;
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-8 relative z-10">
-                    <div class="w-16 h-16 rounded-3xl ${style.bg} ${style.color} flex items-center justify-center text-4xl group-hover:scale-110 transition-all duration-700 shadow-inner">
-                        <i class="fa-brands ${style.icon} fa-fw"></i>
-                    </div>
-                    <span class="px-4 py-1.5 rounded-xl text-[10px] font-bold tracking-widest uppercase ${isStudyPlan ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' : 'bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-500/20'} border">
-                        ${isStudyPlan ? (currentLang === 'es' ? 'Plan de Estudio' : 'Study Plan') : (currentLang === 'es' ? 'Certificación' : 'Certification')}
-                    </span>
-                </div>
-                <div class="flex-1 relative z-10">
-                    <h3 class="text-2xl font-heading font-extrabold text-slate-900 dark:text-white mb-3 line-clamp-1 group-hover:premium-gradient-text transition-all duration-300" title="${exam.name}">${exam.name}</h3>
-                    <p class="text-base text-slate-500 dark:text-slate-400 mb-10 line-clamp-3 min-h-[4.5rem] leading-relaxed font-light">${exam.desc || exam.title}</p>
-                </div>
-                <div class="relative z-10 mt-auto pt-8 border-t border-slate-100 dark:border-slate-800/50">
-                    ${isStudyPlan ? `
-                        <a href="${apuntesUrl}" class="premium-btn flex items-center justify-between w-full px-6 py-4 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold transition-all shadow-2xl shadow-slate-900/20">
-                            <span>${currentLang === 'es' ? 'Abrir Guía de Estudio' : 'Open Study Guide'}</span>
-                            <i class="fa-solid fa-arrow-right text-sm opacity-50 group-hover:translate-x-2 transition-transform"></i>
-                        </a>
-                    ` : `
-                        <div class="grid grid-cols-2 gap-4">
-                            <a href="${practicaUrl.href}" class="premium-btn flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 font-bold transition-all text-sm">
-                                <i class="fa-regular fa-compass"></i> ${currentLang === 'es' ? 'Práctica' : 'Practice'}
-                            </a>
-                            <a href="${examenUrl.href}" class="premium-btn flex items-center justify-center gap-2 py-4 rounded-2xl bg-brand-600 text-white font-bold transition-all shadow-xl shadow-brand-500/25 text-sm">
-                                <i class="fa-solid fa-play"></i> ${currentLang === 'es' ? 'Examen' : 'Exam'}
-                            </a>
-                        </div>
-                        ${exam.apuntes ? `
-                        <div class="mt-6 text-center">
-                            <a href="${apuntesUrl}" class="text-[10px] font-bold tracking-widest uppercase text-slate-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-book-open"></i>
-                                ${currentLang === 'es' ? 'Material de Apoyo' : 'Study Materials'}
-                            </a>
-                        </div>` : ''}
-                    `}
-                </div>
-            `;
-            return card;
-        }
-
-        // Init
-        (async function() {
-            const examGrid = document.getElementById('examGrid');
-            const plansGrid = document.getElementById('plansGrid');
-            const certsSection = document.getElementById('certsSection');
-            const plansSection = document.getElementById('plansSection');
-            const searchInput = document.getElementById('searchInput');
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            
-            const allItems = await loadExams();
-            
-            // Expose render function for language toggle
-            window.renderCards = function() {
-                 render(document.querySelector('.filter-btn.active').dataset.filter, searchInput.value);
-            };
-            
-            function render(filterType = 'all', query = '') {
-                examGrid.innerHTML = '';
-                plansGrid.innerHTML = '';
-                const q = query.toLowerCase();
-                
-                const filtered = allItems.filter(e => {
-                    const searchStr = (e.name + (e.title || '') + (e.desc || '')).toLowerCase();
-                    const matchesSearch = searchStr.includes(q);
-                    
-                    let matchesType = true;
-                    const typeStr = (e.name + (e.title || '')).toLowerCase();
-                    
-                    if (filterType === 'azure') matchesType = /az|azure|microsoft|ai-900|dp-900/i.test(typeStr);
-                    else if (filterType === 'aws') matchesType = /aws|amazon/i.test(typeStr);
-                    else if (filterType === 'google') matchesType = /google|gcp/i.test(typeStr);
-                    else if (filterType === 'terraform') matchesType = /terraform|hashicorp/i.test(typeStr);
-                    else if (filterType === 'git') matchesType = /git|github|ka0s/i.test(typeStr);
-                    
-                    return matchesSearch && matchesType;
-                });
-
-                let certCount = 0;
-                let planCount = 0;
-
-                filtered.forEach(e => {
-                    const isPlan = isStudyPlanItem(e);
-                    if (isPlan) {
-                        plansGrid.appendChild(createCard(e));
-                        planCount++;
-                    } else {
-                        examGrid.appendChild(createCard(e));
-                        certCount++;
-                    }
-                });
-                
-                // Toggle sections visibility based on content
-                certsSection.style.display = certCount > 0 ? 'block' : 'none';
-                plansSection.style.display = planCount > 0 ? 'block' : 'none';
-
-                if (certCount === 0 && planCount === 0) {
-                    certsSection.style.display = 'block'; // Show empty state in main area
-                    examGrid.innerHTML = `
-                        <div class="col-span-full text-center py-12">
-                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-4">
-                                <i class="fa-solid fa-inbox text-2xl"></i>
-                            </div>
-                            <h3 class="text-lg font-medium text-slate-900 dark:text-white">${currentLang === 'es' ? 'Sin resultados' : 'No results found'}</h3>
-                            <p class="text-slate-500">${currentLang === 'es' ? 'Intenta ajustar tu búsqueda o filtros.' : 'Try adjusting your search or filters.'}</p>
-                        </div>
-                    `;
-                }
-            }
-
-            // Events
-            searchInput.addEventListener('input', (e) => {
-                const activeBtn = document.querySelector('.filter-btn.active');
-                render(activeBtn.dataset.filter, e.target.value);
-            });
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => {
-                        b.classList.remove('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
-                        b.classList.add('bg-white', 'text-slate-600', 'dark:bg-slate-800', 'dark:text-slate-300');
-                    });
-                    btn.classList.remove('bg-white', 'text-slate-600', 'dark:bg-slate-800', 'dark:text-slate-300');
-                    btn.classList.add('active', 'bg-slate-900', 'text-white', 'dark:bg-white', 'dark:text-slate-900');
-                    
-                    render(btn.dataset.filter, searchInput.value);
-                });
-            });
-
-            // Initial render
-            updateLangUI(); // This calls renderCards() internally
+            applyLanguage();
         })();
 
         // Register Service Worker for PWA

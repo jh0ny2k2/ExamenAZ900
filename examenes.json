@@ -8,6 +8,7 @@
   },
   {
     "name": "Google Cloud Digital Leaders",
+    "code": "CDL",
     "title": "Google Cloud • Digital Leaders",
     "desc": "Cuestionario de fundamentos de Google Cloud.",
     "pregunta": "Preguntas/preguntasGCDL.json",
@@ -15,6 +16,7 @@
   },
   {
     "name": "AWS Certified Cloud Practitioner",
+    "code": "CLF-C02",
     "title": "AWS • Certified Cloud Practitioner",
     "desc": "Fundamentos de AWS: servicios, seguridad, precios y soporte.",
     "pregunta": "Preguntas/preguntasAWSCCP.json",
@@ -22,6 +24,7 @@
   },
   {
     "name": "Google Cloud Associate Cloud Engineer",
+    "code": "ACE",
     "title": "GCP • Associate Cloud Engineer",
     "desc": "Banco de 297 preguntas sobre despliegue, seguridad y gestión en Google Cloud.",
     "pregunta": "Preguntas/preguntasGCPACE.json",
@@ -29,6 +32,7 @@
   },
   {
     "name": "HashiCorp Terraform Associate",
+    "code": "003",
     "title": "Terraform • Associate (003)",
     "desc": "Preguntas de práctica sobre IaC, State, Modules y Core Workflow.",
     "pregunta": "Preguntas/preguntasTerraform.json",
@@ -50,6 +54,7 @@
   },
   {
     "name": "AWS AI Practitioner",
+    "code": "AIF-C01",
     "title": "AWS • AI Practitioner",
     "desc": "Conceptos de IA/ML en AWS, ética y herramientas.",
     "pregunta": "Preguntas/preguntasAWSAI.json",

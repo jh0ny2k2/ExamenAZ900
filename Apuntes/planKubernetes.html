@@ -1,187 +1,153 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>K8s Training • Step-by-Step Roadmap</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/premium.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            500: '#326ce5', /* K8s Blue */
-                            600: '#2856c0',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/site.css">
+    <link rel="stylesheet" href="../css/notes.css">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <style>
-        .prose h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: #1e293b; }
-        .dark .prose h2 { color: #f8fafc; }
-        .prose p { font-size: 0.95rem; line-height: 1.6; color: #64748b; margin-bottom: 1rem; }
-        .dark .prose p { color: #94a3b8; }
-        .prose code { background: rgba(50, 108, 229, 0.1); padding: 0.2rem 0.4rem; border-radius: 0.4rem; font-size: 0.85em; color: #326ce5; }
-        
-        .terminal-window { background: #0d1117; border: 1px solid #30363d; }
-        .terminal-body { font-family: 'Fira Code', monospace; }
-        .prompt-user { color: #238636; font-weight: bold; }
-        .prompt-path { color: #58a6ff; }
-        
-        .cursor-blink {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background: #58a6ff;
-            margin-left: 4px;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
+        .progress { display: flex; align-items: center; gap: 10px; padding: 0 10px; font: 12.5px var(--mono); color: var(--muted); }
+        .progress .meter { width: 96px; }
 
-        .object-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .module-pick { margin-top: 22px; max-width: 360px; }
+        .module-pick label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+        .toc nav a { cursor: pointer; }
+
+        .lesson { padding-top: 40px; }
+        .lesson h2 { margin: 0 0 14px; padding-bottom: 10px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; border-bottom: 1px solid var(--text); }
+
+        .mission { margin-top: 28px; }
+        .mission #task-desc { font-family: var(--mono); font-size: 13.5px; }
+
+        .block { margin-top: 36px; }
+        .block-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .block-head h3 { margin: 0; font-size: 15px; font-weight: 600; }
+
+        #visualizer {
+            min-height: 168px; padding: 16px;
+            display: flex; flex-wrap: wrap; align-content: flex-start; gap: 12px;
+            border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
         }
-        .object-card:hover { transform: scale(1.05); }
+        .viz-empty { flex: 1; align-self: stretch; display: grid; place-items: center; min-height: 134px; margin: 0; font: 12.5px var(--mono); color: var(--faint); }
+        .obj { width: 184px; flex-shrink: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+        .obj-kind { display: flex; align-items: center; gap: 6px; font: 12px var(--mono); color: var(--muted); margin-bottom: 6px; }
+        .obj-kind svg { width: 13px; height: 13px; color: var(--faint); }
+        .obj-name { margin: 0; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .obj-meta { margin: 4px 0 0; font: 12px var(--mono); color: var(--faint); }
+        .replicas { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+        .replicas span { width: 8px; height: 8px; border-radius: 2px; border: 1px solid var(--ok); background: var(--ok-bg); }
+
+        .terminal-intro { color: #8b8b92; margin-bottom: 12px; white-space: normal; }
+        .terminal-intro .kw { color: #e4e4e7; padding: 0 4px; border: 1px solid #27272a; border-radius: 4px; }
+        .terminal .user { color: #5cc27a; }
+        .terminal .path { color: #7aa7ec; }
+        .terminal .out { white-space: pre; tab-size: 8; }
+        .terminal .done { margin-top: 6px; font-weight: 500; }
+        .terminal-in .prompt { flex-shrink: 0; }
+        .terminal-out { min-height: 200px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #3a3a3f transparent; }
+
+        .pager .indicator { font: 12.5px var(--mono); color: var(--faint); }
+
+        @media (max-width: 760px) {
+            .progress .lbl { display: none; }
+            .progress .meter { width: 56px; }
+            .obj { width: calc(50% - 6px); }
+        }
     </style>
 </head>
-<body class="h-screen overflow-hidden flex flex-col bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<body>
 
-    <!-- Header -->
-    <header class="h-16 shrink-0 premium-glass border-b border-slate-200 dark:border-white/5 flex items-center justify-between px-6 z-50">
-        <div class="flex items-center gap-4">
-            <a href="../index.html" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-brand-600 shadow-sm border border-slate-200 dark:border-white/5 transition-all">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-600 flex items-center justify-center text-lg">
-                    <i class="fa-solid fa-dharmachakra"></i>
-                </div>
-                <div>
-                    <h1 class="font-heading font-black text-sm tracking-tight leading-none">Kubernetes Training</h1>
-                    <p class="text-[9px] font-bold tracking-widest uppercase text-slate-400 mt-0.5">Step-by-Step Protocol</p>
-                </div>
+    <header class="site-header sticky">
+        <div class="wrap">
+            <div class="crumbs">
+                <a href="../index.html" class="wordmark"><img src="../favicon.svg" alt="">CertHub</a>
+                <span class="sep">/</span><span class="here">Kubernetes Training</span>
             </div>
-        </div>
-
-        <div class="flex items-center gap-6">
-            <div class="hidden md:flex items-center gap-3">
-                <div class="text-right">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase">Progreso Global</p>
-                    <p id="progress-percent" class="text-xs font-black text-brand-500">0%</p>
-                </div>
-                <div class="w-32 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-brand-500 transition-all duration-500" style="width: 0%"></div>
-                </div>
-            </div>
-            <button id="themeToggle" class="w-10 h-10 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center justify-center border border-slate-200 dark:border-white/5">
-                <i class="fa-solid fa-moon dark:hidden"></i>
-                <i class="fa-solid fa-sun hidden dark:block"></i>
-            </button>
+            <nav class="header-nav">
+                <span class="progress">
+                    <span class="lbl">Progreso Global</span>
+                    <span class="meter"><span id="progress-bar"></span></span>
+                    <span id="progress-percent">0%</span>
+                </span>
+                <button id="themeToggle" class="theme-toggle" aria-label="Tema">
+                    <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+                </button>
+            </nav>
         </div>
     </header>
 
-    <div class="flex-1 flex overflow-hidden">
-        
-        <!-- Left Panel: Lesson Content -->
-        <aside class="w-full md:w-[450px] lg:w-[500px] shrink-0 flex flex-col border-r border-slate-200 dark:border-white/5 bg-white dark:bg-[#0d1117] transition-all">
-            <div class="p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#161b22]">
-                <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Módulo Actual</label>
-                <select id="module-select" class="w-full bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-white/10 text-sm rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-brand-500/20 cursor-pointer transition-all">
-                    <!-- Populated by JS -->
-                </select>
-            </div>
+    <div class="doc wrap">
+        <aside class="toc">
+            <p class="toc-title">Módulos</p>
+            <nav id="module-nav"></nav>
+        </aside>
 
-            <div id="lesson-body" class="flex-1 overflow-y-auto p-8 prose dark:prose-invert max-w-none scroll-smooth">
+        <article class="doc-body">
+            <header class="doc-head">
+                <p class="doc-kicker">Step-by-Step Protocol</p>
+                <h1>Kubernetes Training</h1>
+                <div class="module-pick">
+                    <label for="module-select">Módulo Actual</label>
+                    <select id="module-select" class="field">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+            </header>
+
+            <div id="lesson-body" class="lesson prose">
                 <!-- Content injected here -->
             </div>
 
-            <div class="p-6 border-t border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-[#161b22] flex justify-between items-center">
-                <button id="prev-btn" class="flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all disabled:opacity-30" disabled>
-                    <i class="fa-solid fa-arrow-left"></i> Anterior
-                </button>
-                <span id="page-indicator" class="text-[10px] font-mono font-bold text-slate-400 uppercase">1 / 8</span>
-                <button id="next-btn" class="flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 transition-all disabled:opacity-30" disabled>
-                    Siguiente <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Right Panel: Visualizer & Terminal -->
-        <main class="flex-1 flex flex-col bg-slate-100 dark:bg-[#020617] relative">
-            
-            <!-- Visualizer Panel -->
-            <div class="h-1/2 p-6 overflow-hidden flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Cluster Visualizer</h3>
-                    <div class="flex gap-2">
-                        <span class="px-2 py-0.5 rounded bg-brand-500/10 text-brand-600 text-[9px] font-bold border border-brand-500/20">Namespace: default</span>
-                    </div>
-                </div>
-                <div id="visualizer" class="flex-1 premium-card rounded-[2rem] bg-white dark:bg-[#0d1117] border-slate-200 p-6 flex flex-wrap content-start gap-4 overflow-y-auto">
-                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
-                        <i class="fa-solid fa-microchip text-4xl mb-4"></i>
-                        <p class="text-xs font-mono">Inicia el cluster para ver objetos...</p>
-                    </div>
-                </div>
+            <div class="callout plain mission">
+                <span class="callout-title">Misión Actual</span>
+                <div id="task-desc">Cargando misión...</div>
             </div>
 
-            <!-- Terminal Panel -->
-            <div class="h-1/2 flex flex-col terminal-window border-t border-slate-200 dark:border-white/5">
-                <div class="h-10 px-4 bg-[#161b22] border-b border-white/5 flex items-center justify-between shrink-0">
-                    <div class="flex gap-1.5">
-                        <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                        <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                        <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-                    </div>
-                    <span class="text-[9px] font-mono text-slate-500 uppercase tracking-widest">kube-shell — user@ka0s — v1.28</span>
+            <section class="block">
+                <div class="block-head">
+                    <h3>Cluster Visualizer</h3>
+                    <span class="tag">Namespace: default</span>
                 </div>
+                <div id="visualizer">
+                    <p class="viz-empty">Inicia el cluster para ver objetos...</p>
+                </div>
+            </section>
 
-                <!-- Mission Bar -->
-                <div class="px-6 py-3 bg-brand-500/5 border-b border-brand-500/10 shrink-0">
-                    <div class="flex items-start gap-3">
-                        <div class="mt-1 w-2 h-2 bg-brand-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(50,108,229,0.5)]"></div>
-                        <div class="flex-1">
-                            <div class="text-[9px] uppercase font-black text-brand-500 tracking-wider mb-0.5">Misión Actual</div>
-                            <div id="task-desc" class="text-slate-600 dark:text-slate-300 font-mono text-xs">Cargando misión...</div>
-                        </div>
+            <section class="block">
+                <div class="terminal">
+                    <div class="terminal-bar">
+                        <span>kube-shell — user@ka0s — v1.28</span>
+                    </div>
+                    <div id="terminal-output" class="terminal-out"><div class="terminal-intro">Kubernetes Interactive Terminal Simulator [v1.0.0]<br>Type <span class="kw">help</span> for commands.</div></div>
+                    <div class="terminal-in">
+                        <span class="prompt"><span class="user">user@ka0s</span>:<span class="path">~</span><span class="dim">$</span></span>
+                        <input type="text" id="terminal-input" aria-label="Comando" autocomplete="off" spellcheck="false">
                     </div>
                 </div>
+            </section>
 
-                <!-- Output Area -->
-                <div id="terminal-output" class="flex-1 p-6 terminal-body text-xs text-slate-300 overflow-y-auto space-y-1 scroll-smooth">
-                    <div class="text-slate-500 mb-4">
-                        Kubernetes Interactive Terminal Simulator [v1.0.0]<br>
-                        Type <span class="text-white px-1 bg-slate-800 rounded">help</span> for commands.
-                    </div>
-                </div>
-
-                <!-- Input Area -->
-                <div class="p-4 bg-[#0d1117] border-t border-white/5 shrink-0">
-                    <div class="flex items-center gap-2 font-mono text-xs">
-                        <span class="prompt-user">user@ka0s</span>
-                        <span class="prompt-sep">:</span>
-                        <span class="prompt-path">~</span>
-                        <span class="text-slate-500">$</span>
-                        <input type="text" id="terminal-input" class="flex-1 bg-transparent border-none outline-none text-white placeholder-slate-700" autocomplete="off" spellcheck="false" autofocus>
-                        <span class="cursor-blink"></span>
-                    </div>
-                </div>
-            </div>
-        </main>
+            <nav class="pager">
+                <button id="prev-btn" class="btn" disabled>← Anterior</button>
+                <span id="page-indicator" class="indicator">1 / 8</span>
+                <button id="next-btn" class="btn btn-primary" disabled>Siguiente →</button>
+            </nav>
+        </article>
     </div>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <span>Kubernetes Training · Step-by-Step Protocol</span>
+            <a href="../index.html">← Volver al inicio</a>
+        </div>
+    </footer>
 
     <script>
         /* --- CORE: K8S SIMULATION ENGINE --- */
@@ -427,19 +393,35 @@
         const terminalOutput = document.getElementById('terminal-output');
         const lessonBody = document.getElementById('lesson-body');
         const moduleSelect = document.getElementById('module-select');
+        const moduleNav = document.getElementById('module-nav');
         const visualizer = document.getElementById('visualizer');
 
+        const ICONS = {
+            deployment: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/></svg>',
+            service: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/></svg>',
+        };
+
+        function escapeHtml(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
         function init() {
-            // Populate select
+            // Populate select + module list
             CURRICULUM.forEach((m, i) => {
                 const opt = document.createElement('option');
                 opt.value = i;
                 opt.textContent = m.title;
                 moduleSelect.appendChild(opt);
+
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = m.title;
+                a.addEventListener('click', (e) => { e.preventDefault(); currentIdx = i; updateUI(); });
+                moduleNav.appendChild(a);
             });
 
             updateUI();
-            
+
             terminalInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     const cmd = terminalInput.value;
@@ -455,13 +437,14 @@
 
             document.getElementById('prev-btn').onclick = () => { if(currentIdx > 0) { currentIdx--; updateUI(); } };
             document.getElementById('next-btn').onclick = () => { if(currentIdx < CURRICULUM.length - 1) { currentIdx++; updateUI(); } };
-            
+
             // Theme toggle
             document.getElementById('themeToggle').onclick = () => {
                 document.documentElement.classList.toggle('dark');
                 localStorage.setItem('theme:dark', document.documentElement.classList.contains('dark') ? '1' : '0');
             };
-            if (localStorage.getItem('theme:dark') === '1') document.documentElement.classList.add('dark');
+
+            terminalInput.focus({ preventScroll: true });
         }
 
         function updateUI() {
@@ -470,6 +453,7 @@
             document.getElementById('task-desc').textContent = m.task.desc;
             document.getElementById('page-indicator').textContent = `${currentIdx + 1} / ${CURRICULUM.length}`;
             moduleSelect.value = currentIdx;
+            [...moduleNav.children].forEach((a, i) => a.classList.toggle('active', i === currentIdx));
 
             // Progress
             const progress = ((currentIdx) / (CURRICULUM.length - 1)) * 100;
@@ -485,13 +469,13 @@
 
         function handleCommand(cmd) {
             const line = document.createElement('div');
-            line.innerHTML = `<span class="prompt-user">user@ka0s</span><span class="prompt-sep">:</span><span class="prompt-path">~</span><span class="text-slate-500">$</span> <span class="text-white">${cmd}</span>`;
+            line.innerHTML = `<span class="user">user@ka0s</span>:<span class="path">~</span><span class="dim">$</span> ${escapeHtml(cmd)}`;
             terminalOutput.appendChild(line);
 
             const out = k8s.execute(cmd);
             setTimeout(() => {
                 const res = document.createElement('div');
-                res.className = out.startsWith('error') ? 'text-red-400' : 'text-slate-300 whitespace-pre font-mono';
+                res.className = out.startsWith('error') ? 'out bad' : 'out';
                 res.textContent = out;
                 terminalOutput.appendChild(res);
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
@@ -499,8 +483,8 @@
                 // Check mission
                 if (CURRICULUM[currentIdx].task.check(cmd, out, k8s)) {
                     const success = document.createElement('div');
-                    success.className = 'text-green-400 font-bold mt-2';
-                    success.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Misión completada! Ya puedes avanzar.';
+                    success.className = 'ok done';
+                    success.textContent = '✓ ¡Misión completada! Ya puedes avanzar.';
                     terminalOutput.appendChild(success);
                     document.getElementById('next-btn').disabled = false;
                     terminalOutput.scrollTop = terminalOutput.scrollHeight;
@@ -511,28 +495,21 @@
 
         function updateVisualizer() {
             visualizer.innerHTML = '';
-            
+
             if (k8s.state.deployments.length === 0 && k8s.state.services.length === 0) {
-                visualizer.innerHTML = `
-                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 opacity-50">
-                        <i class="fa-solid fa-microchip text-4xl mb-4"></i>
-                        <p class="text-xs font-mono">Inicia el cluster para ver objetos...</p>
-                    </div>`;
+                visualizer.innerHTML = `<p class="viz-empty">Inicia el cluster para ver objetos...</p>`;
                 return;
             }
 
             // Render Deployments
             k8s.state.deployments.forEach(d => {
                 const el = document.createElement('div');
-                el.className = 'object-card p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 w-48 shrink-0';
+                el.className = 'obj';
                 el.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-layer-group text-indigo-500 text-xs"></i>
-                        <span class="text-[10px] font-bold uppercase text-slate-500">Deployment</span>
-                    </div>
-                    <p class="text-xs font-black truncate">${d.name}</p>
-                    <div class="mt-3 flex gap-1">
-                        ${Array(d.replicas).fill(0).map(() => `<div class="w-2 h-2 rounded-full bg-green-500"></div>`).join('')}
+                    <div class="obj-kind">${ICONS.deployment}<span>Deployment</span></div>
+                    <p class="obj-name">${escapeHtml(d.name)}</p>
+                    <div class="replicas" title="${d.replicas} réplicas">
+                        ${Array(d.replicas).fill(0).map(() => `<span></span>`).join('')}
                     </div>
                 `;
                 visualizer.appendChild(el);
@@ -541,14 +518,11 @@
             // Render Services
             k8s.state.services.forEach(s => {
                 const el = document.createElement('div');
-                el.className = 'object-card p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 w-48 shrink-0';
+                el.className = 'obj';
                 el.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-network-wired text-purple-500 text-xs"></i>
-                        <span class="text-[10px] font-bold uppercase text-slate-500">Service</span>
-                    </div>
-                    <p class="text-xs font-black truncate">${s.name}</p>
-                    <p class="text-[9px] text-slate-400 font-mono mt-1">${s.clusterIP}</p>
+                    <div class="obj-kind">${ICONS.service}<span>Service</span></div>
+                    <p class="obj-name">${escapeHtml(s.name)}</p>
+                    <p class="obj-meta">${s.clusterIP}</p>
                 `;
                 visualizer.appendChild(el);
             });

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mastering GitHub: Zero to Hero</title>
+    <title>Git &amp; GitHub: De Zero a Hero · CertHub</title>
     <script>
       // Auth Guard
       try {
@@ -13,132 +13,101 @@
       } catch (e) {
         console.error("Auth Error", e);
       }
-      
-      // Theme Check
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['Fira Code', 'monospace'],
-              serif: ['Merriweather', 'serif'],
-            },
-            colors: {
-              github: {
-                dark: '#0d1117',
-                darker: '#010409',
-                border: '#30363d',
-                light: '#ffffff',
-                accent: '#238636',
-                link: '#58a6ff'
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/site.css">
+    <link rel="stylesheet" href="../css/notes.css">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <style>
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar { width: 8px; height: 8px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-      .dark ::-webkit-scrollbar-thumb { background: #30363d; }
-      ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-      .dark ::-webkit-scrollbar-thumb:hover { background: #8b949e; }
+      :root { --wrap: 1280px; }
 
-      /* Prose Typography Overrides for Dark/Light */
-      .prose h2 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: 700; color: #111827; }
-      .dark .prose h2 { color: #e5e7eb; }
-      
-      .prose h3 { margin-top: 1.2em; margin-bottom: 0.5em; font-weight: 600; color: #374151; }
-      .dark .prose h3 { color: #d1d5db; }
-      
-      .prose p { margin-bottom: 1em; line-height: 1.7; color: #4b5563; }
-      .dark .prose p { color: #9ca3af; }
-      
-      .prose strong { color: #111827; font-weight: 600; }
-      .dark .prose strong { color: #f3f4f6; }
-      
-      .prose code { background: rgba(175, 184, 193, 0.2); padding: 0.2em 0.4em; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85em; color: #24292f; }
-      .dark .prose code { background: rgba(110, 118, 129, 0.4); color: #c9d1d9; }
-      
-      .prose pre { background: #f6f8fa; padding: 1em; border-radius: 6px; overflow-x: auto; margin-bottom: 1em; border: 1px solid #d0d7de; }
-      .dark .prose pre { background: #161b22; border: 1px solid #30363d; }
-      
-      .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; color: #1f2328; }
-      .dark .prose ul { color: #c9d1d9; }
-      
-      /* GitHub Alert Styles */
-      .analogy-box {
-          border-left: 3px solid #a371f7;
-          background-color: #f8faff;
-          padding: 16px;
-          margin-bottom: 16px;
-          border-radius: 0 6px 6px 0;
-          color: #24292f;
-          position: relative;
-      }
-      .dark .analogy-box {
-          background-color: rgba(163, 113, 247, 0.1);
-          color: #c9d1d9;
-          border-left-color: #bc8cff;
-      }
-      .analogy-box::before {
-          content: "💡 Note";
-          display: block;
-          font-weight: 600;
-          margin-bottom: 8px;
-          color: #a371f7;
-          font-size: 0.9em;
-      }
-      .dark .analogy-box::before { color: #bc8cff; }
-      
-      .tech-box {
-          border-left: 3px solid #2da44e;
-          background-color: #f6fff8;
-          padding: 16px;
-          margin-bottom: 16px;
-          border-radius: 0 6px 6px 0;
-          color: #24292f;
-      }
-      .dark .tech-box {
-          background-color: rgba(45, 164, 78, 0.1);
-          color: #c9d1d9;
-          border-left-color: #3fb950;
-      }
-      .tech-box::before {
-          content: "⚡ Tip";
-          display: block;
-          font-weight: 600;
-          margin-bottom: 8px;
-          color: #2da44e;
-          font-size: 0.9em;
-      }
-      .dark .tech-box::before { color: #3fb950; }
+      /* Loading overlay */
+      .loading { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; transition: opacity .3s; }
+      .loading-ring { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line); border-top-color: var(--text); animation: spin .8s linear infinite; }
+      .loading.is-error .loading-ring { animation: none; border-color: var(--bad); }
+      .loading-text { margin: 0; font: 13px var(--mono); color: var(--muted); }
+      .loading-error { max-width: 520px; padding: 0 16px; text-align: center; font-size: 13.5px; color: var(--bad); }
+      .loading-error .faint { font: 12px var(--mono); }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
-      /* Typing Animation Cursor */
-      .cursor-blink { animation: blink 1s step-end infinite; }
-      @keyframes blink { 50% { opacity: 0; } }
+      /* Progress under the header */
+      .progress-meter { position: sticky; top: 60px; z-index: 19; border-radius: 0; height: 2px; }
+
+      /* Layout: lesson + lab */
+      .gh { flex: 1; width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 40px 24px 96px;
+            display: grid; grid-template-columns: minmax(0, 680px) minmax(0, 1fr); gap: 56px; align-items: start; align-content: start; }
+      .lesson-col { min-width: 0; }
+      .module-pick { display: block; margin-bottom: 32px; }
+      .module-pick span { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+
+      .lesson-kicker { margin: 0 0 12px; font: 500 12.5px var(--mono); color: var(--muted); }
+      .lesson-body h2 { margin: 0 0 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line);
+                        font-size: clamp(26px, 3.2vw, 34px); line-height: 1.15; font-weight: 600; letter-spacing: -0.03em; }
+      .lesson-body h3 { margin: 26px 0 8px; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+      .lesson-body .callout ul { margin-top: 6px; }
+      .lesson-body .steps { margin-top: 6px; }
+      .pager-num { font: 12.5px var(--mono); color: var(--faint); }
+
+      /* Lab column */
+      .lab { position: sticky; top: 86px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+      .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+      .panel-head .mono { font-size: 12px; color: var(--faint); }
+
+      .graph { height: 210px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
+               overflow-x: auto; overflow-y: hidden; display: flex; align-items: center; scrollbar-width: thin; }
+      .graph svg { display: block; flex-shrink: 0; }
+      .graph-empty { margin: auto; font: 12.5px var(--mono); color: var(--faint); padding: 0 16px; text-align: center; }
+      .g-edge { fill: none; stroke: var(--faint); stroke-width: 1.5; }
+      .g-node { fill: var(--text); stroke: var(--surface); stroke-width: 2; }
+      .g-node.alt { fill: var(--info); }
+      .g-hash { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+      .g-msg { font-family: var(--sans); font-size: 9.5px; fill: var(--faint); }
+      .g-ref { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+      .g-ref-text { font-family: var(--mono); font-size: 10px; fill: var(--text); }
+      .g-ref.head { stroke: var(--ok); }
+      .g-ref-text.head, .g-head { fill: var(--ok); }
+      .g-head { font-family: var(--mono); font-size: 10px; font-weight: 500; }
+
+      /* Terminal (always dark; local tokens) */
+      .terminal { --t-text: #e4e4e7; --t-dim: #8b8b92; --t-ok: #5cc27a; --t-bad: #f07a68; --t-hl: #e0a84a; --t-info: #7aa7ec; --t-line: #27272a; }
+      .terminal .hl { color: var(--t-hl); }
+      .terminal .path { color: var(--t-info); }
+      .terminal-out { height: 300px; max-height: none; cursor: text; }
+      .terminal-out code { padding: 0 4px; border: 1px solid var(--t-line); border-radius: 4px; color: var(--t-text); }
+      .t-line { margin-top: 8px; }
+      .t-out { margin-bottom: 6px; color: var(--t-dim); }
+      .t-cmd { color: var(--t-text); }
+      .t-success { margin: 10px 0; padding: 2px 0 2px 10px; border-left: 2px solid var(--t-ok); white-space: normal; }
+      .t-success strong { display: block; font-weight: 500; color: var(--t-ok); }
+      .t-success span { color: var(--t-text); }
+      .task { padding: 10px 12px; border-top: 1px solid var(--t-line); font-size: 12.5px; }
+      .task-label { display: block; color: var(--t-dim); margin-bottom: 2px; }
+      #taskHint { color: var(--t-hl); }
+      .prompt { display: inline-flex; flex-wrap: wrap; flex-shrink: 0; white-space: pre; }
+      .terminal-in input::placeholder { color: #4a4a50; }
+
+      @media (max-width: 1040px) {
+        .gh { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+        .lab { position: static; }
+      }
+      @media (max-width: 760px) {
+        .gh { padding: 28px 16px 72px; }
+        .header-nav #progressText { display: none; }
+        .terminal-out { height: 260px; }
+        .prompt .host { display: none; }
+      }
     </style>
   </head>
-  <body class="bg-white dark:bg-[#010409] text-gray-900 dark:text-[#c9d1d9] font-sans h-screen overflow-hidden flex flex-col transition-colors duration-200">
-    
+  <body>
+
     <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 z-[100] bg-gray-900 flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#238636] mb-4"></div>
-        <h2 class="text-white text-xl font-bold font-mono">Initializing Ka0s System...</h2>
-        <div id="loadingError" class="mt-4 text-red-400 text-sm hidden max-w-lg text-center px-4"></div>
+    <div id="loadingOverlay" class="loading">
+        <div class="loading-ring"></div>
+        <p class="loading-text">Cargando simulador…</p>
+        <div id="loadingError" class="loading-error hidden"></div>
     </div>
 
     <!-- Global Error Handler -->
@@ -147,156 +116,88 @@
             const errorDiv = document.getElementById('loadingError');
             if (errorDiv) {
                 errorDiv.classList.remove('hidden');
-                errorDiv.innerHTML = `<strong>System Error:</strong> ${msg}<br><span class="text-xs text-gray-500">${url}:${line}:${col}</span>`;
-                // Stop the spinner
-                document.querySelector('.animate-spin').classList.remove('animate-spin');
-                document.querySelector('.animate-spin').classList.add('border-red-500');
+                errorDiv.innerHTML = `<strong>Error del sistema:</strong> ${msg}<br><span class="faint">${url}:${line}:${col}</span>`;
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) overlay.classList.add('is-error');
             }
             return false;
         };
     </script>
 
-    <!-- Header -->
-    <header class="h-14 border-b border-gray-200 dark:border-[#30363d] bg-gray-50 dark:bg-[#0d1117] flex items-center justify-between px-4 shrink-0 z-50 transition-colors duration-200">
-      <div class="flex items-center gap-3">
-        <svg height="32" viewBox="0 0 16 16" width="32" class="fill-black dark:fill-white">
-            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
-        </svg>
-        <div>
-            <h1 class="font-bold text-sm md:text-base leading-tight text-gray-900 dark:text-white">Mastering GitHub</h1>
-            <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">Zero to Hero Protocol v2.0</p>
+    <header class="site-header sticky">
+      <div class="wrap">
+        <div class="crumbs">
+          <a href="../index.html" class="wordmark"><img src="../favicon.svg" alt="">CertHub</a>
+          <span class="sep">/</span><span class="here">Git &amp; GitHub · Guía</span>
         </div>
-      </div>
-      
-      <div class="flex items-center gap-4">
-        <div class="hidden md:flex items-center gap-2 text-xs">
-            <span class="text-gray-500 dark:text-gray-400">Progreso:</span>
-            <div class="w-32 h-2 bg-gray-200 dark:bg-[#30363d] rounded-full overflow-hidden">
-                <div id="globalProgress" class="h-full bg-[#238636] transition-all duration-500" style="width: 0%"></div>
-            </div>
-            <span id="progressText" class="font-mono font-bold text-gray-700 dark:text-white">0%</span>
-        </div>
-
-        <!-- Theme Toggle -->
-        <button id="themeToggle" class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors">
-            <!-- Sun Icon -->
-            <svg id="sunIcon" class="hidden dark:block w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <!-- Moon Icon -->
-            <svg id="moonIcon" class="block dark:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-        </button>
-
-        <button onclick="location.href='../index.html'" class="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white border border-gray-300 dark:border-[#30363d] px-3 py-1.5 rounded hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-          Salir al Menú
-        </button>
+        <nav class="header-nav">
+          <span id="progressText" class="mono" style="font-size:12.5px"></span>
+          <button id="themeToggle" class="theme-toggle" aria-label="Tema">
+            <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+          </button>
+        </nav>
       </div>
     </header>
+    <div class="meter progress-meter"><span id="globalProgress"></span></div>
 
-    <!-- Main Split Layout -->
-    <div class="flex-1 flex overflow-hidden">
-        
-        <!-- Left Panel: Educational Content -->
-        <aside class="w-1/2 flex flex-col border-r border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] transition-colors duration-200">
-            <!-- Module Navigation -->
-            <div class="p-3 border-b border-gray-200 dark:border-[#30363d] bg-gray-50 dark:bg-[#161b22]">
-                <label class="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase block mb-1">Módulo Actual</label>
-                <select id="moduleSelect" class="w-full bg-white dark:bg-[#0d1117] border border-gray-300 dark:border-[#30363d] text-gray-900 dark:text-white text-sm rounded-md px-3 py-2 focus:border-[#58a6ff] focus:ring-1 focus:ring-[#58a6ff] outline-none appearance-none cursor-pointer">
-                    <!-- Populated by JS -->
-                </select>
-            </div>
+    <main class="gh">
+        <!-- Lesson column -->
+        <div class="lesson-col">
+            <label class="module-pick">
+                <span>Módulo actual</span>
+                <select id="moduleSelect" class="field"></select>
+            </label>
 
-            <!-- Scrollable Content -->
-            <div id="lessonContent" class="flex-1 overflow-y-auto p-8 prose max-w-none">
-                <!-- Content injected here -->
-            </div>
+            <article id="lessonContent"></article>
 
-            <!-- Footer Navigation -->
-            <div class="p-4 border-t border-gray-200 dark:border-[#30363d] bg-gray-50 dark:bg-[#161b22] flex justify-between items-center shrink-0">
-                <button id="prevBtn" class="text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white flex items-center gap-1 disabled:opacity-30" disabled>
-                    &larr; Anterior
-                </button>
-                <span id="pageIndicator" class="text-xs text-gray-500 font-mono">1/12</span>
-                <button id="nextBtn" class="text-sm text-[#0969da] dark:text-[#58a6ff] hover:underline font-medium flex items-center gap-1 disabled:opacity-30" disabled>
-                    Siguiente &rarr;
-                </button>
-            </div>
+            <nav class="pager">
+                <button id="prevBtn" class="btn" disabled>&larr; Anterior</button>
+                <span id="pageIndicator" class="pager-num">1/25</span>
+                <button id="nextBtn" class="btn" disabled>Siguiente &rarr;</button>
+            </nav>
+        </div>
+
+        <!-- Lab column -->
+        <aside class="lab">
+            <section>
+                <div class="panel-head"><span>Grafo de commits</span><span class="mono">git graph</span></div>
+                <div id="graphContainer" class="graph">
+                    <div class="graph-empty">Esperando inicialización del repositorio...</div>
+                </div>
+            </section>
+
+            <section>
+                <div class="panel-head"><span>Terminal</span><span class="mono">escribe <code>help</code> para ver comandos</span></div>
+                <div class="terminal">
+                    <div class="terminal-bar"><span>ka0s-shell — git</span><span class="ok">online</span></div>
+                    <div id="terminalOutput" class="terminal-out" onclick="document.getElementById('cmdInput').focus()"><div class="dim">Welcome to Ka0s Git Simulator v5.0.0 (Extended)
+Type <code>help</code> for available commands.
+
+<span class="ok">System ready.</span> Waiting for input...</div></div>
+                    <div class="task">
+                        <span class="task-label">Misión actual</span>
+                        <div id="taskHint">Cargando misión...</div>
+                    </div>
+                    <div class="terminal-in">
+                        <label for="cmdInput" class="prompt"><span class="host"><span class="ok">user@ka0s</span><span class="dim">:</span></span><span class="path">~/project</span><span id="gitBranchLabel" class="dim"></span><span class="dim"> $</span></label>
+                        <input type="text" id="cmdInput" autocomplete="off" spellcheck="false" aria-label="Comando" placeholder="git …">
+                    </div>
+                </div>
+            </section>
         </aside>
-
-        <!-- Right Panel: Interactive Terminal -->
-        <main class="w-1/2 flex flex-col bg-gray-900 dark:bg-[#010409] relative transition-colors duration-200">
-            <!-- Visualizer Panel -->
-            <div class="h-[35%] bg-gray-50 dark:bg-[#0d1117] border-b border-gray-200 dark:border-[#30363d] relative overflow-hidden flex flex-col transition-colors duration-200">
-                <div class="absolute top-2 right-2 z-10 opacity-50 hover:opacity-100 transition-opacity">
-                     <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 bg-white dark:bg-black">Git Graph v1.0</span>
-                </div>
-                <div id="graphContainer" class="flex-1 w-full h-full overflow-x-auto overflow-y-hidden p-4 flex items-center bg-[#f6f8fa] dark:bg-[#0d1117]">
-                    <!-- SVG injected here -->
-                     <div class="text-gray-400 text-xs font-mono m-auto opacity-50">Esperando inicialización del repositorio...</div>
-                </div>
-            </div>
-
-            <!-- Terminal Toolbar -->
-            <div class="bg-gray-800 dark:bg-[#161b22] px-4 py-2 border-b border-gray-700 dark:border-[#30363d] flex justify-between items-center shrink-0 h-10 transition-colors duration-200">
-                <div class="flex items-center gap-2 group">
-                    <div class="flex gap-1.5">
-                        <span class="w-3 h-3 rounded-full bg-[#ff5f56] group-hover:bg-[#ff5f56] opacity-70 group-hover:opacity-100 transition-opacity"></span>
-                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e] group-hover:bg-[#ffbd2e] opacity-70 group-hover:opacity-100 transition-opacity"></span>
-                        <span class="w-3 h-3 rounded-full bg-[#27c93f] group-hover:bg-[#27c93f] opacity-70 group-hover:opacity-100 transition-opacity"></span>
-                    </div>
-                    <span class="ml-3 text-xs font-mono text-gray-400 dark:text-gray-500">ka0s-shell — git — main</span>
-                </div>
-                <div class="text-[10px] uppercase font-bold tracking-wider text-[#238636] border border-[#238636] px-2 py-0.5 rounded-full bg-[#238636]/10">
-                    Online
-                </div>
-            </div>
-
-            <!-- Output Area -->
-            <div id="terminalOutput" class="flex-1 p-4 font-mono text-sm overflow-y-auto text-gray-300 dark:text-[#c9d1d9] space-y-1 scroll-smooth" onclick="document.getElementById('cmdInput').focus()">
-                <div class="text-gray-500 mb-6">
-                    Welcome to Ka0s Git Simulator v5.0.0 (Extended)<br>
-                    Type <span class="text-gray-300 bg-gray-700 px-1 rounded">help</span> for available commands.<br>
-                    <br>
-                    <span class="text-[#238636]">System ready.</span> Waiting for input...
-                </div>
-            </div>
-
-            <!-- Mission Status Bar -->
-            <div class="bg-gray-800/90 dark:bg-[#161b22]/90 backdrop-blur border-t border-gray-700 dark:border-[#30363d] p-3 text-sm shrink-0 transition-colors duration-200">
-                <div class="flex items-start gap-3">
-                    <div class="mt-1 w-2 h-2 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
-                    <div class="flex-1">
-                        <div class="text-[10px] uppercase font-bold text-gray-500 tracking-wider mb-0.5">Misión Actual</div>
-                        <div id="taskHint" class="text-yellow-400 font-mono text-xs md:text-sm">Cargando misión...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Input Area -->
-            <div class="bg-gray-900 dark:bg-[#0d1117] p-3 border-t border-gray-700 dark:border-[#30363d] shrink-0 transition-colors duration-200">
-                <div class="flex items-center gap-2 font-mono text-sm">
-                    <span class="text-[#238636] font-bold">user@ka0s</span>
-                    <span class="text-gray-500">:</span>
-                    <span class="text-[#58a6ff]">~/project</span>
-                    <span class="text-gray-500" id="gitBranchLabel"></span>
-                    <span class="text-gray-400">$</span>
-                    <input type="text" id="cmdInput" class="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-700" autocomplete="off" spellcheck="false" autofocus>
-                </div>
-            </div>
-        </main>
-    </div>
+    </main>
 
     <script>
         /* ------------------------------------------------
-           THEME TOGGLE
+           THEME TOGGLE (shares 'theme:dark' with ../theme.js)
            ------------------------------------------------ */
-        const themeToggleBtn = document.getElementById('themeToggle');
-        
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const dark = !document.documentElement.classList.contains('dark');
+            if (typeof setDark === 'function') setDark(dark);
+            else {
+                document.documentElement.classList.toggle('dark', dark);
+                localStorage.setItem('theme:dark', dark ? '1' : '0');
             }
         });
 
@@ -348,10 +249,10 @@
             status() {
                 if (!this.initialized) return "fatal: not a git repo";
                 let out = `On branch ${this.currentBranch}\n`;
-                
+
                 const headCommit = this.commits.find(c => c.id === this.getCurrentHead());
                 const headFiles = headCommit ? headCommit.files : {};
-                
+
                 const staged = [], modified = [], untracked = [];
 
                 Object.keys(this.fs).forEach(f => {
@@ -372,15 +273,15 @@
                 else {
                     if (staged.length > 0) {
                         out += "Changes to be committed:\n";
-                        staged.forEach(f => out += `\t<span class="text-green-400">new file:   ${f}</span>\n`);
+                        staged.forEach(f => out += `\t<span class="ok">new file:   ${f}</span>\n`);
                     }
                     if (modified.length > 0) {
                         out += "Changes not staged for commit:\n";
-                        modified.forEach(f => out += `\t<span class="text-red-400">modified:   ${f}</span>\n`);
+                        modified.forEach(f => out += `\t<span class="bad">modified:   ${f}</span>\n`);
                     }
                     if (untracked.length > 0) {
                         out += "Untracked files:\n";
-                        untracked.forEach(f => out += `\t<span class="text-red-400">${f}</span>\n`);
+                        untracked.forEach(f => out += `\t<span class="bad">${f}</span>\n`);
                     }
                 }
                 return out;
@@ -401,7 +302,7 @@
                 const mIndex = args.indexOf('-m');
                 if (mIndex === -1 || !args[mIndex+1]) return "error: switch `m' requires a value";
                 const msg = args.slice(mIndex+1).join(' ').replace(/['"]/g, '');
-                
+
                 if (Object.keys(this.index).length === 0) return "nothing to commit";
 
                 const newCommit = {
@@ -428,9 +329,9 @@
                     if (!c) break;
                     const oneline = args && args.includes('--oneline');
                     if (oneline) {
-                        output += `<span class="text-yellow-400">${c.id}</span> ${c.msg}\n`;
+                        output += `<span class="hl">${c.id}</span> ${c.msg}\n`;
                     } else {
-                        output += `<span class="text-yellow-400">commit ${c.id}</span>\nAuthor: ${c.author}\nDate: ${c.date.toDateString()}\n    ${c.msg}\n\n`;
+                        output += `<span class="hl">commit ${c.id}</span>\nAuthor: ${c.author}\nDate: ${c.date.toDateString()}\n    ${c.msg}\n\n`;
                     }
                     currentId = c.parent;
                     count++;
@@ -441,8 +342,8 @@
             branch(args) {
                 if (!this.initialized) return "fatal: not a git repo";
                 if (args.length === 0) {
-                    return Object.keys(this.branches).map(b => 
-                        b === this.currentBranch ? `* <span class="text-green-400">${b}</span>` : `  ${b}`
+                    return Object.keys(this.branches).map(b =>
+                        b === this.currentBranch ? `* <span class="ok">${b}</span>` : `  ${b}`
                     ).join('\n');
                 }
                 if (args[0] === '-d' || args[0] === '-D') {
@@ -484,14 +385,14 @@
 
             merge(args) {
                 if (!this.initialized) return "fatal: not a git repo";
-                
+
                 // Support "git merge origin main"
                 if (args.length >= 2 && this.remotes[args[0]]) {
-                     return "Already up to date."; 
+                     return "Already up to date.";
                 }
 
                 const target = args[0];
-                
+
                 // Support "git merge origin/main"
                 if (target.includes('/')) {
                      return "Already up to date.";
@@ -499,7 +400,7 @@
 
                 const targetId = this.branches[target];
                 if (!targetId) return `merge: ${target} - not something we can merge`;
-                
+
                 this.branches[this.currentBranch] = targetId;
                 const commit = this.commits.find(c => c.id === targetId);
                 if (commit) {
@@ -520,7 +421,7 @@
             push() { return "Everything up-to-date"; }
             pull() { return "Already up to date."; }
             clone() { return "Cloning into 'project'...\ndone."; }
-            
+
             // --- Advanced Commands ---
             reset(args) {
                 if (args && args.includes('--hard')) {
@@ -542,7 +443,7 @@
                 this.tags[args[0]] = this.getCurrentHead();
                 return "";
             }
-            
+
             rebase(args) {
                 return "Successfully rebased and updated refs/heads/" + this.currentBranch;
             }
@@ -561,19 +462,19 @@
             {
                 title: "1. Identidad: ¿Quién eres?",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Tu Pasaporte en Git</h2>
+                    <h2>Tu Pasaporte en Git</h2>
                     <p>¡Bienvenido, recluta! Antes de tocar nada, necesitamos saber quién eres. Imagina que Git es un libro de registro gigante donde se anota cada cambio que se hace en el código.</p>
-                    
-                    <div class="analogy-box">
+
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Es como firmar una obra de arte. Si pintas un cuadro (escribes código), quieres que la gente sepa que fuiste tú, ¿verdad? Y si alguien rompe algo... bueno, también queremos saber quién fue.
                     </div>
 
-                    <h3 class="text-xl font-semibold mb-3">¿Por qué es obligatorio?</h3>
+                    <h3>¿Por qué es obligatorio?</h3>
                     <p>Git no te dejará guardar nada (hacer "commit") si no tienes un nombre y un correo configurados. Es una medida de seguridad y organización básica.</p>
 
-                    <div class="tech-box">
-                        <p class="font-bold mb-2">Comandos a utilizar:</p>
-                        <ul class="list-disc pl-5 space-y-1">
+                    <div class="callout">
+                        <p class="callout-title">Comandos a utilizar:</p>
+                        <ul>
                             <li><code>git config --global user.name "Tu Nombre"</code>: Define cómo te llamarás.</li>
                             <li><code>git config --global user.email "tu@email.com"</code>: Tu contacto.</li>
                         </ul>
@@ -588,14 +489,14 @@
             {
                 title: "2. Init: El Big Bang",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Creando un Universo</h2>
+                    <h2>Creando un Universo</h2>
                     <p>Ahora mismo, tu carpeta de proyecto es solo eso: una carpeta aburrida de Windows. No tiene superpoderes. Para que Git empiece a vigilarla, necesitamos "inicializarla".</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Imagina que contratas a un mayordomo invisible (Git) para que vigile tu habitación. Al hacer <code>git init</code>, el mayordomo entra, se sienta en una esquina y saca su libreta.
                     </div>
 
-                    <h3 class="text-xl font-semibold mb-3">¿Qué pasa realmente?</h3>
+                    <h3>¿Qué pasa realmente?</h3>
                     <p>Se crea una carpeta oculta llamada <code>.git</code>. ¡Nunca la borres! Ahí es donde Git guarda todos sus secretos, historias y copias de seguridad.</p>
                 `,
                 task: {
@@ -607,14 +508,14 @@
             {
                 title: "3. Working Directory: Tu Mesa",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">El Área de Trabajo</h2>
+                    <h2>El Área de Trabajo</h2>
                     <p>El <strong>Working Directory</strong> es simplemente tu carpeta actual con tus archivos. Es donde escribes, borras y editas.</p>
-                    
-                    <div class="analogy-box">
+
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Es tu mesa de trabajo física. Puede estar llena de papeles, borradores y notas adhesivas. Git ve el desorden, pero no guarda nada automáticamente.
                     </div>
 
-                    <h3 class="text-xl font-semibold mb-3">El Estado "Untracked"</h3>
+                    <h3>El Estado "Untracked"</h3>
                     <p>Cuando creas un archivo nuevo, Git te dice: "Oye, veo algo nuevo, pero no lo estoy vigilando". Aparecerá en rojo cuando preguntes el estado.</p>
                 `,
                 task: {
@@ -626,12 +527,12 @@
             {
                 title: "4. Staging Area: El Carrito",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Preparando el Envío</h2>
+                    <h2>Preparando el Envío</h2>
                     <p>Aquí es donde mucha gente se lía. Git tiene un paso intermedio antes de guardar: el <strong>Staging Area</strong> (o Index).</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía del Supermercado:</strong>
-                        <ul class="list-disc pl-5 mt-2">
+                        <ul>
                             <li><strong>Working Directory:</strong> Son las estanterías de la tienda (llenas de cosas).</li>
                             <li><strong>Staging Area:</strong> Es tu carrito de la compra. Solo pones ahí lo que realmente te vas a llevar.</li>
                             <li><strong>Commit (siguiente paso):</strong> Es pasar por caja y pagar (confirmar la compra).</li>
@@ -649,14 +550,14 @@
             {
                 title: "5. Commit: La Foto",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Guardando la Partida</h2>
+                    <h2>Guardando la Partida</h2>
                     <p>Llegamos al momento de la verdad. Hacer un <strong>Commit</strong> es crear un punto de guardado permanente en la historia.</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> ¿Juegas videojuegos? Un commit es un <strong>Save Point</strong>. Si luego te mata el jefe final (rompes el código), siempre puedes volver a cargar este punto exacto.
                     </div>
 
-                    <h3 class="text-xl font-semibold mb-3">El Mensaje (-m)</h3>
+                    <h3>El Mensaje (-m)</h3>
                     <p>Cada commit necesita una nota. No pongas "asdasd". Pon algo útil como "Añadida página de inicio". Tu "yo" del futuro te lo agradecerá.</p>
                 `,
                 task: {
@@ -668,10 +569,10 @@
             {
                 title: "6. Log: El Historial",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Viaje al Pasado</h2>
+                    <h2>Viaje al Pasado</h2>
                     <p>¿De qué sirve guardar cosas si no puedes verlas? El comando <code>git log</code> es tu máquina del tiempo para ver qué ha pasado.</p>
 
-                    <div class="tech-box">
+                    <div class="callout">
                         <p>Verás cosas raras como <code>a1b2c3d</code>. Esos son los <strong>Hashes</strong> (IDs únicos). Es como el DNI de cada commit.</p>
                     </div>
 
@@ -687,10 +588,10 @@
             {
                 title: "7. Checkout: Restaurar",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Ctrl+Z con Esteroides</h2>
+                    <h2>Ctrl+Z con Esteroides</h2>
                     <p>Imagina que borraste el archivo sin querer, o escribiste código basura y quieres volver a como estaba en el último commit.</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Es como si rompes un vaso y chasqueas los dedos para que el vaso vuelva a estar intacto en la mesa, tal como estaba en la última foto que tomaste.
                     </div>
 
@@ -705,11 +606,11 @@
             {
                 title: "8. Reset: Borrar Tiempo",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Rebobinar la Cinta</h2>
+                    <h2>Rebobinar la Cinta</h2>
                     <p>A veces no basta con arreglar un archivo. A veces quieres olvidar que los últimos 5 commits existieron. <code>git reset</code> mueve el tiempo hacia atrás.</p>
 
-                    <div class="tech-box bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500">
-                        <h3 class="text-red-500 font-bold">¡PELIGRO! - Hard Reset</h3>
+                    <div class="callout bad">
+                        <strong class="callout-title">¡PELIGRO! - Hard Reset</strong>
                         <p><code>git reset --hard</code> es el botón nuclear. Borra los commits Y los archivos. Es como si esos días de trabajo nunca hubieran existido.</p>
                     </div>
                 `,
@@ -723,10 +624,10 @@
             {
                 title: "9. Ramas: Multiverso",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Universos Paralelos</h2>
+                    <h2>Universos Paralelos</h2>
                     <p>Esta es la característica MÁS importante de Git. Las <strong>Ramas (Branches)</strong>.</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Imagina una línea de tiempo principal (como en las pelis de Marvel). Esa es <code>main</code>. Si quieres probar algo loco sin romper la realidad, creas una línea temporal alternativa (rama). Si sale mal, la borras. Si sale bien, la unes a la principal.
                     </div>
 
@@ -741,7 +642,7 @@
             {
                 title: "10. Switch: Cambiar Rama",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Saltando entre Mundos</h2>
+                    <h2>Saltando entre Mundos</h2>
                     <p>Crear la rama no basta. Sigues estando en <code>main</code>. Tienes que teletransportarte a la nueva rama para trabajar en ella.</p>
 
                     <p>Cuando cambias de rama, ¡los archivos de tu ordenador cambian físicamente! Git quita los archivos de la rama vieja y pone los de la nueva.</p>
@@ -755,11 +656,11 @@
             {
                 title: "11. Stash: Pausa",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Guardar en el Bolsillo</h2>
+                    <h2>Guardar en el Bolsillo</h2>
                     <p>Estás a mitad de un trabajo, todo desordenado, y tu jefe te grita: "¡Hay un error urgente en producción!".</p>
                     <p>No puedes cambiar de rama con el trabajo sucio. ¿Qué haces? ¿Haces un commit de código roto? ¡No!</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> <code>git stash</code> es como barrer todo lo que tienes en la mesa y meterlo en un cajón temporal. La mesa queda limpia para atender la urgencia. Luego, sacas las cosas del cajón.
                     </div>
                 `,
@@ -772,7 +673,7 @@
             {
                 title: "12. Merge: Fusión",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Uniendo Realidades</h2>
+                    <h2>Uniendo Realidades</h2>
                     <p>Has terminado tu trabajo en la rama <code>feature-login</code>. Funciona perfecto. Ahora quieres que eso forme parte de la historia principal.</p>
 
                     <p>El comando <code>git merge</code> coge la historia de otra rama y la vuelca en la que estás actualmente.</p>
@@ -787,12 +688,12 @@
             {
                 title: "13. Conflictos: ¡Guerra!",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Cuando no encaja</h2>
+                    <h2>Cuando no encaja</h2>
                     <p>Esto es lo que más asusta a los novatos. Imagina que tú modificas la línea 10 de un archivo, y tu compañero modifica TAMBIÉN la línea 10 del mismo archivo.</p>
-                    
-                    <p>Git intenta unirlos, pero no sabe cuál es la "verdadera". Así que detiene todo, marca el archivo con símbolos raros (<code><<<<<<<</code>) y te grita: "¡SOLUCIÓNALO TÚ!".</p>
 
-                    <div class="tech-box">
+                    <p>Git intenta unirlos, pero no sabe cuál es la "verdadera". Así que detiene todo, marca el archivo con símbolos raros (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>) y te grita: "¡SOLUCIÓNALO TÚ!".</p>
+
+                    <div class="callout">
                         No entres en pánico. Solo abre el archivo, borra lo que no sirve, y haz commit de nuevo.
                     </div>
                 `,
@@ -805,7 +706,7 @@
             {
                 title: "14. Tags: Versiones",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Etiquetas Doradas</h2>
+                    <h2>Etiquetas Doradas</h2>
                     <p>Los commits tienen nombres feos (a1b2c3d). Nadie dice "instala la versión a1b2c3d". Decimos "instala la versión 1.0".</p>
 
                     <p>Un <strong>Tag</strong> es como ponerle una pegatina dorada a un commit especial para encontrarlo fácil después. Se usa para lanzamientos (Releases).</p>
@@ -820,11 +721,11 @@
             {
                 title: "15. Remotos: La Nube",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Saliendo de tu PC</h2>
+                    <h2>Saliendo de tu PC</h2>
                     <p>Hasta ahora, todo ha ocurrido en tu ordenador. Si se rompe tu disco duro, adiós proyecto.</p>
                     <p><strong>GitHub</strong> (o GitLab/Bitbucket) es una web donde guardamos copias de nuestros repositorios. Un "Remoto" es simplemente un enlace guardado hacia esa web.</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Es como guardar el número de teléfono de tu casa en la agenda como "Casa". En Git, solemos llamar "origin" al servidor principal.
                     </div>
                 `,
@@ -837,11 +738,11 @@
             {
                 title: "16. Fetch vs Pull",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Descargar Cambios</h2>
+                    <h2>Descargar Cambios</h2>
                     <p>Trabajas en equipo. Alguien ha subido código nuevo mientras dormías. Necesitas bajarlo.</p>
-                    
-                    <h3 class="text-xl font-semibold mb-2">La Gran Diferencia:</h3>
-                    <ul class="list-disc pl-5 space-y-2">
+
+                    <h3>La Gran Diferencia:</h3>
+                    <ul>
                         <li><strong>git fetch:</strong> "Git, vete al servidor y mira qué hay nuevo, pero NO toques mis archivos". Es seguro, solo para mirar.</li>
                         <li><strong>git pull:</strong> "Git, bájalo todo e instálalo YA". Es agresivo. Es básicamente un <code>fetch</code> seguido de un <code>merge</code>.</li>
                     </ul>
@@ -855,11 +756,11 @@
             {
                 title: "17. Push: Subir",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Enviando al Mundo</h2>
+                    <h2>Enviando al Mundo</h2>
                     <p>Has trabajado duro, has hecho tus commits. Ahora quieres que el mundo (o tu equipo) lo vea.</p>
                     <p><code>git push</code> empuja tus commits locales hacia el servidor remoto.</p>
 
-                    <div class="tech-box bg-yellow-50 dark:bg-yellow-900/20">
+                    <div class="callout warn">
                         <strong>Ojo:</strong> Si alguien subió código antes que tú, Git rechazará tu push. Primero tendrás que hacer <code>pull</code> para mezclar lo suyo con lo tuyo, y luego <code>push</code>.
                     </div>
                 `,
@@ -872,11 +773,11 @@
             {
                 title: "18. Fork & PR",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Contribuir al Open Source</h2>
+                    <h2>Contribuir al Open Source</h2>
                     <p>Imagina que quieres mejorar el código de Facebook o Linux. No te van a dar la contraseña de sus servidores.</p>
-                    
-                    <h3 class="text-xl font-semibold mb-3">El Flujo:</h3>
-                    <ol class="list-decimal pl-5 space-y-2">
+
+                    <h3>El Flujo:</h3>
+                    <ol class="steps">
                         <li><strong>Fork:</strong> Haces una copia legal de SU proyecto en TU cuenta.</li>
                         <li><strong>Clone:</strong> Te bajas TU copia a tu PC.</li>
                         <li><strong>Push:</strong> Subes los cambios a TU copia.</li>
@@ -893,9 +794,9 @@
             {
                 title: "19. .gitignore",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Archivos Fantasma</h2>
+                    <h2>Archivos Fantasma</h2>
                     <p>Hay cosas que NUNCA deben subirse a GitHub:</p>
-                    <ul class="list-disc pl-5 mb-4">
+                    <ul>
                         <li>Contraseñas y claves API (¡Hackers!).</li>
                         <li>Carpetas gigantes de dependencias (<code>node_modules</code>).</li>
                         <li>Archivos basura del sistema (.DS_Store).</li>
@@ -912,12 +813,12 @@
             {
                 title: "20. Cherry Pick",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">El Francotirador</h2>
+                    <h2>El Francotirador</h2>
                     <p>Imagina que en la rama <code>develop</code> hay 50 commits nuevos, pero tú solo quieres UNO de ellos (un arreglo de un bug) para llevártelo a <code>main</code>.</p>
                     <p>No quieres hacer merge de todo. Solo quieres esa cereza del pastel.</p>
-                    
-                    <div class="tech-box">
-                        <code>git cherry-pick <hash></code> copia ese commit exacto y lo pega en tu rama actual. Es cirugía de precisión.
+
+                    <div class="callout">
+                        <code>git cherry-pick &lt;hash&gt;</code> copia ese commit exacto y lo pega en tu rama actual. Es cirugía de precisión.
                     </div>
                 `,
                 task: {
@@ -929,10 +830,10 @@
             {
                 title: "21. Rebase: Reescribir",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Historia Limpia</h2>
+                    <h2>Historia Limpia</h2>
                     <p>Cuando haces Merge, las historias se mezclan como una trenza. Cuando haces <strong>Rebase</strong>, cortas tu rama y la pegas al final de la otra, creando una línea recta perfecta.</p>
 
-                    <div class="analogy-box">
+                    <div class="callout plain">
                         <strong>Analogía:</strong> Es como si hubieras llegado tarde a la cola del cine y te colaras, pero mágicamente te transportas al final de la cola como si acabaras de llegar, pero conservando tu sitio... es complicado. Básicamente: Mantiene el historial limpio y lineal.
                     </div>
                 `,
@@ -945,10 +846,10 @@
             {
                 title: "22. Reflog: El Ángel de la Guarda",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Recuperar lo Irrecuperable</h2>
+                    <h2>Recuperar lo Irrecuperable</h2>
                     <p>¿Hiciste un <code>git reset --hard</code> y borraste todo por error? ¿Estás llorando?</p>
                     <p>¡Seca esas lágrimas! Git guarda un registro secreto de CADA movimiento que hace la cabeza lectora (HEAD), incluso los que borraste.</p>
-                    
+
                     <p><code>git reflog</code> te muestra ese registro. Si encuentras el hash de antes del desastre, puedes volver a él.</p>
                 `,
                 task: {
@@ -960,14 +861,14 @@
             {
                 title: "23. Gitflow: El Estándar",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Trabajar como Profesionales</h2>
+                    <h2>Trabajar como Profesionales</h2>
                     <p>En las empresas no creamos ramas a lo loco. Seguimos un orden llamado <strong>Gitflow</strong>:</p>
-                    
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><code class="text-blue-600">main</code>: Solo código perfecto, lo que ve el cliente.</li>
-                        <li><code class="text-yellow-600">develop</code>: Donde se mezcla todo el trabajo del día a día.</li>
-                        <li><code class="text-green-600">feature/login</code>: Ramas temporales para cada tarea.</li>
-                        <li><code class="text-red-600">hotfix/crash</code>: Parches urgentes para arreglar main.</li>
+
+                    <ul>
+                        <li><code>main</code>: Solo código perfecto, lo que ve el cliente.</li>
+                        <li><code>develop</code>: Donde se mezcla todo el trabajo del día a día.</li>
+                        <li><code>feature/login</code>: Ramas temporales para cada tarea.</li>
+                        <li><code>hotfix/crash</code>: Parches urgentes para arreglar main.</li>
                     </ul>
                 `,
                 task: {
@@ -979,7 +880,7 @@
             {
                 title: "24. GitHub Pages",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Hosting Gratuito</h2>
+                    <h2>Hosting Gratuito</h2>
                     <p>¿Sabías que GitHub te regala un servidor web?</p>
                     <p>Si subes archivos HTML/CSS/JS a un repositorio y activas <strong>GitHub Pages</strong> en la configuración, te dará una URL pública (tu-usuario.github.io) para que todo el mundo vea tu web.</p>
                     <p>¡Es perfecto para tu portafolio!</p>
@@ -993,16 +894,16 @@
             {
                 title: "25. Actions: Robots",
                 content: `
-                    <h2 class="text-3xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">Automatización (CI/CD)</h2>
+                    <h2>Automatización (CI/CD)</h2>
                     <p>Lo último en tecnología. GitHub Actions te permite programar robots.</p>
-                    
-                    <div class="analogy-box">
-                        <strong>Ejemplo:</strong> Puedes programar a Git para que, cada vez que subas código:
-                        1. Pase un antivirus.
-                        2. Compruebe si hay errores de sintaxis.
+
+                    <div class="callout plain">
+                        <strong>Ejemplo:</strong> Puedes programar a Git para que, cada vez que subas código:<br>
+                        1. Pase un antivirus.<br>
+                        2. Compruebe si hay errores de sintaxis.<br>
                         3. Si todo está bien, lo suba automáticamente a tu servidor real.
                     </div>
-                    
+
                     <p>Todo esto se configura con archivos de texto (YAML) en la carpeta <code>.github</code>.</p>
                 `,
                 task: {
@@ -1016,22 +917,28 @@
         /* ------------------------------------------------
            APP CONTROLLER
            ------------------------------------------------ */
+        const escapeHtml = (s) => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+
         const app = {
             git: new GitEngine(),
             currentLesson: 0,
-            
+
             init() {
                 try {
                     this.renderMenu();
                     this.loadLesson(0);
                     this.bindEvents();
                     this.renderGraph(); // Initial render
-                    
+
                     // Remove Loading Overlay
                     const overlay = document.getElementById('loadingOverlay');
                     if (overlay) {
                         overlay.style.opacity = '0';
-                        setTimeout(() => overlay.remove(), 500);
+                        setTimeout(() => overlay.remove(), 300);
+                    }
+                    // Focus the terminal only when it is visible beside the lesson
+                    if (window.matchMedia('(min-width: 1041px)').matches) {
+                        document.getElementById('cmdInput').focus({ preventScroll: true });
                     }
                     console.log("App initialized successfully");
                 } catch (e) {
@@ -1039,9 +946,9 @@
                     const errorDiv = document.getElementById('loadingError');
                     if (errorDiv) {
                         errorDiv.classList.remove('hidden');
-                        errorDiv.textContent = `Initialization Failed: ${e.message}`;
-                        document.querySelector('.animate-spin').classList.remove('animate-spin');
-                        document.querySelector('.animate-spin').classList.add('border-red-500');
+                        errorDiv.textContent = `Error de inicialización: ${e.message}`;
+                        const overlay = document.getElementById('loadingOverlay');
+                        if (overlay) overlay.classList.add('is-error');
                     }
                 }
             },
@@ -1049,10 +956,10 @@
             renderMenu() {
                 const select = document.getElementById('moduleSelect');
                 if (!select) return;
-                select.innerHTML = CURRICULUM.map((mod, i) => 
+                select.innerHTML = CURRICULUM.map((mod, i) =>
                     `<option value="${i}">${mod.title}</option>`
                 ).join('');
-                
+
                 select.addEventListener('change', (e) => {
                     this.loadLesson(parseInt(e.target.value));
                 });
@@ -1060,61 +967,51 @@
 
             loadLesson(idx) {
                 if (idx < 0 || idx >= CURRICULUM.length) return;
-                
+
+                const changed = idx !== this.currentLesson;
                 this.currentLesson = idx;
                 const lesson = CURRICULUM[idx];
-                
+
                 // Content Injection
                 const container = document.getElementById('lessonContent');
                 container.innerHTML = `
-                    <div class="animate-fade-in max-w-4xl mx-auto">
-                        <!-- GitHub README Header style -->
-                        <div class="rounded-t-md bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
-                             <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-[#21262d] border border-[#d0d7de] dark:border-[#30363d] text-gray-500">
-                                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 1 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 0 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8ZM5 12.25a.25.25 0 1 0 0 .5.25.25 0 0 0 0-.5Z"></path></svg>
-                             </div>
-                             <div class="flex-1">
-                                <div class="text-xs font-mono font-semibold text-[#1f2328] dark:text-[#c9d1d9]">README.md</div>
-                                <div class="text-[10px] text-gray-500">Lesson ${idx + 1} of ${CURRICULUM.length}</div>
-                             </div>
-                             <div class="flex gap-2">
-                                <span class="px-2 py-0.5 text-[10px] border border-[#d0d7de] dark:border-[#30363d] rounded-full text-gray-500 font-mono">master</span>
-                             </div>
-                        </div>
-                        
-                        <!-- Content Body -->
-                        <div class="rounded-b-md border-x border-b border-[#d0d7de] dark:border-[#30363d] bg-white dark:bg-[#0d1117] p-8 md:p-10 prose prose-sm md:prose-base dark:prose-invert max-w-none">
-                            ${lesson.content}
-                        </div>
-                    </div>
+                    <p class="lesson-kicker">Lección ${idx + 1} de ${CURRICULUM.length}</p>
+                    <div class="prose lesson-body">${lesson.content}</div>
                 `;
-                
+
                 // Update UI State
                 const hintEl = document.getElementById('taskHint');
                 if (hintEl) hintEl.textContent = lesson.task.hint;
-                
+
                 const selectEl = document.getElementById('moduleSelect');
                 if (selectEl) selectEl.value = idx;
-                
+
                 // Navigation Buttons
+                const nextBtn = document.getElementById('nextBtn');
                 document.getElementById('prevBtn').disabled = idx === 0;
-                document.getElementById('nextBtn').disabled = idx === CURRICULUM.length - 1;
+                nextBtn.disabled = idx === CURRICULUM.length - 1;
+                nextBtn.classList.remove('btn-primary');
                 document.getElementById('pageIndicator').textContent = `${idx + 1}/${CURRICULUM.length}`;
 
                 // Progress Bar
                 const progress = ((idx + 1) / CURRICULUM.length) * 100;
                 document.getElementById('globalProgress').style.width = `${progress}%`;
-                document.getElementById('progressText').textContent = `${Math.round(progress)}%`;
+                document.getElementById('progressText').textContent = `Progreso ${Math.round(progress)}%`;
 
                 // Update Terminal Branch Label
                 this.updateTerminalLabel();
+
+                if (changed) {
+                    const top = container.getBoundingClientRect().top + window.scrollY - 100;
+                    if (window.scrollY > top) window.scrollTo({ top: Math.max(0, top) });
+                }
             },
 
             updateTerminalLabel() {
                 const branchLabel = document.getElementById('gitBranchLabel');
                 const branch = this.git.currentBranch;
                 if (this.git.initialized) {
-                    branchLabel.innerHTML = ` (<span class="text-red-400">${branch}</span>)`;
+                    branchLabel.innerHTML = ` (<span class="hl">${escapeHtml(branch)}</span>)`;
                 } else {
                     branchLabel.innerHTML = '';
                 }
@@ -1122,17 +1019,11 @@
 
             handleCommand(cmd) {
                 const termOutput = document.getElementById('terminalOutput');
-                
-                // Echo
-                const branchHtml = this.git.initialized ? ` (<span class="text-red-400">${this.git.currentBranch}</span>)` : '';
-                termOutput.innerHTML += `
-                    <div class="mt-2">
-                        <span class="text-[#238636] font-bold">user@ka0s</span>
-                        <span class="text-gray-500">:</span>
-                        <span class="text-[#58a6ff]">~/project</span>${branchHtml}
-                        <span class="text-gray-400">$</span> <span class="text-white">${cmd}</span>
-                    </div>
-                `;
+
+                // Echo (single line: the output area preserves whitespace)
+                const branchHtml = this.git.initialized ? ` (<span class="hl">${escapeHtml(this.git.currentBranch)}</span>)` : '';
+                termOutput.insertAdjacentHTML('beforeend',
+                    `<div class="t-line"><span class="ok">user@ka0s</span><span class="dim">:</span><span class="path">~/project</span>${branchHtml} <span class="dim">$</span> <span class="t-cmd">${escapeHtml(cmd)}</span></div>`);
 
                 // Logic
                 let response = "";
@@ -1140,16 +1031,19 @@
                 const command = parts[0];
                 const subCommand = parts[1];
                 const args = parts.slice(2);
-                
+
                 if (command === 'git') {
-                    if (this.git[subCommand]) {
+                    if (subCommand === 'config') {
+                        // this.git.config holds the user data and shadows the method
+                        response = GitEngine.prototype.config.call(this.git, args);
+                    } else if (typeof this.git[subCommand] === 'function') {
                         response = this.git[subCommand](args);
                     } else if (subCommand === 'cherry-pick') {
                          response = this.git.cherrypick(args);
                     } else {
                         // Fallback for known commands not fully implemented
                          const known = ['fetch', 'pull', 'clone', 'push'];
-                         if (known.includes(subCommand)) response = this.git[subCommand](args);
+                         if (known.includes(subCommand)) response = typeof this.git[subCommand] === 'function' ? this.git[subCommand](args) : '';
                          else response = `git: '${subCommand}' is not yet fully implemented in simulation.`;
                     }
                 } else if (command === 'touch') {
@@ -1162,7 +1056,7 @@
                 } else if (command === 'ls') {
                     response = Object.keys(this.git.fs).join('  ');
                 } else if (command === 'clear') {
-                    termOutput.innerHTML = ''; 
+                    termOutput.innerHTML = '';
                     return;
                 } else if (command === 'help') {
                     response = "Supported: init, status, add, commit, log, branch, checkout, merge, remote, push, pull, fetch, clone, reset, stash, tag, rebase, cherry-pick";
@@ -1173,7 +1067,7 @@
                 }
 
                 if (response) {
-                    termOutput.innerHTML += `<div class="text-gray-300 dark:text-gray-400 whitespace-pre-wrap mb-2">${response}</div>`;
+                    termOutput.insertAdjacentHTML('beforeend', `<div class="t-out">${response}</div>`);
                 }
 
                 this.updateTerminalLabel();
@@ -1194,27 +1088,27 @@
             renderGraph() {
                 const container = document.getElementById('graphContainer');
                 if (!this.git.initialized) {
-                    container.innerHTML = '<div class="text-gray-400 text-xs font-mono m-auto opacity-50">Esperando inicialización (git init)...</div>';
+                    container.innerHTML = '<div class="graph-empty">Esperando inicialización (git init)...</div>';
                     return;
                 }
 
                 const commits = this.git.commits;
                 if (commits.length === 0) {
-                    container.innerHTML = '<div class="text-gray-400 text-xs font-mono m-auto opacity-50">Repositorio vacío. Haz un commit.</div>';
+                    container.innerHTML = '<div class="graph-empty">Repositorio vacío. Haz un commit.</div>';
                     return;
                 }
 
                 // Layout Config
-                const NODE_RADIUS = 6;
-                const X_SPACING = 60;
-                const Y_SPACING = 40;
-                const START_X = 40;
-                const START_Y = 50;
+                const NODE_RADIUS = 5;
+                const X_SPACING = 64;
+                const Y_SPACING = 56;
+                const START_X = 36;
+                const REF_H = 16;
 
                 // Lane assignment
                 const lanes = { 'main': 0 };
                 let maxLane = 0;
-                
+
                 // Assign lanes to branches found in commits
                 commits.forEach(c => {
                     const branchName = c.branch || 'main';
@@ -1224,105 +1118,90 @@
                     }
                 });
 
+                // Refs per commit (so labels on the same commit stack instead of overlapping)
+                const refsAt = {};
+                Object.keys(this.git.branches).forEach(bName => {
+                    const id = this.git.branches[bName];
+                    if (id) (refsAt[id] = refsAt[id] || []).push(bName);
+                });
+                const maxStack = Math.max(1, ...Object.values(refsAt).map(r => r.length));
+                const START_Y = 20 + maxStack * (REF_H + 4);
+
                 // Calculate Dimensions
-                const width = Math.max(container.clientWidth, START_X + commits.length * X_SPACING + 100);
-                const height = Math.max(container.clientHeight, (maxLane + 1) * Y_SPACING + 100);
+                const width = Math.max(container.clientWidth - 2, START_X + commits.length * X_SPACING + 100);
+                const height = Math.max(container.clientHeight - 2, START_Y + maxLane * Y_SPACING + 44);
+                const xOf = i => START_X + i * X_SPACING;
+                const yOf = c => START_Y + lanes[c.branch || 'main'] * Y_SPACING;
 
                 // SVG Content
                 let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
-                
+
                 // Draw Connections (Edges)
                 commits.forEach((c, i) => {
                     if (c.parent) {
                         const parentIndex = commits.findIndex(p => p.id === c.parent);
                         if (parentIndex !== -1) {
                             const p = commits[parentIndex];
-                            const x1 = START_X + parentIndex * X_SPACING;
-                            const y1 = START_Y + lanes[p.branch || 'main'] * Y_SPACING;
-                            const x2 = START_X + i * X_SPACING;
-                            const y2 = START_Y + lanes[c.branch || 'main'] * Y_SPACING;
-                            
-                            // Curved line
+                            const x1 = xOf(parentIndex), y1 = yOf(p);
+                            const x2 = xOf(i), y2 = yOf(c);
                             const midX = (x1 + x2) / 2;
-                            svg += `<path d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" stroke="#8b949e" stroke-width="2" fill="none" />`;
+                            svg += `<path class="g-edge" d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" />`;
                         }
                     }
                 });
 
                 // Draw Nodes
                 commits.forEach((c, i) => {
-                    const cx = START_X + i * X_SPACING;
-                    const cy = START_Y + lanes[c.branch || 'main'] * Y_SPACING;
-                    const color = c.branch === 'main' ? '#238636' : '#a371f7'; // Green for main, Purple for others
-                    
-                    // Circle
-                    svg += `<circle cx="${cx}" cy="${cy}" r="${NODE_RADIUS}" fill="${color}" stroke="#fff" stroke-width="2" />`;
-                    
-                    // Hash Label
-                    svg += `<text x="${cx}" y="${cy + 20}" font-family="monospace" font-size="10" fill="#8b949e" text-anchor="middle">${c.id}</text>`;
-                    
-                    // Message Label (truncated)
+                    const cx = xOf(i), cy = yOf(c);
+                    const alt = (c.branch || 'main') !== 'main' ? ' alt' : '';
+                    svg += `<circle class="g-node${alt}" cx="${cx}" cy="${cy}" r="${NODE_RADIUS}" />`;
+                    svg += `<text class="g-hash" x="${cx}" y="${cy + 20}" text-anchor="middle">${c.id}</text>`;
                     const msg = c.msg.length > 10 ? c.msg.substring(0, 10) + '...' : c.msg;
-                    svg += `<text x="${cx}" y="${cy + 35}" font-family="sans-serif" font-size="9" fill="#8b949e" text-anchor="middle" opacity="0.7">${msg}</text>`;
+                    svg += `<text class="g-msg" x="${cx}" y="${cy + 33}" text-anchor="middle">${escapeHtml(msg)}</text>`;
                 });
 
                 // Draw Branch Labels & HEAD
-                Object.keys(this.git.branches).forEach(bName => {
-                    const commitId = this.git.branches[bName];
+                Object.keys(refsAt).forEach(commitId => {
                     const cIndex = commits.findIndex(c => c.id === commitId);
-                    
-                    if (cIndex !== -1) {
-                        const c = commits[cIndex];
-                        const cx = START_X + cIndex * X_SPACING;
-                        const cy = START_Y + lanes[c.branch || 'main'] * Y_SPACING;
-                        
-                        // Label Box
+                    if (cIndex === -1) return;
+                    const c = commits[cIndex];
+                    const cx = xOf(cIndex), cy = yOf(c);
+                    refsAt[commitId].forEach((bName, k) => {
                         const isHead = bName === this.git.currentBranch;
-                        const color = isHead ? '#1f6feb' : '#238636'; // Blue if HEAD, Green otherwise
-                        
-                        svg += `<rect x="${cx - 20}" y="${cy - 30}" width="${bName.length * 6 + 10}" height="16" rx="4" fill="${color}" />`;
-                        svg += `<text x="${cx - 15}" y="${cy - 19}" font-family="monospace" font-size="10" fill="white" font-weight="bold">${bName}</text>`;
-                        
-                        // HEAD indicator
+                        const head = isHead ? ' head' : '';
+                        const w = bName.length * 6.1 + 12;
+                        const y = cy - 12 - (k + 1) * (REF_H + 4) + 4;
+                        svg += `<rect class="g-ref${head}" x="${cx - 8}" y="${y}" width="${w}" height="${REF_H}" rx="4" />`;
+                        svg += `<text class="g-ref-text${head}" x="${cx - 2}" y="${y + 11.5}">${escapeHtml(bName)}</text>`;
                         if (isHead) {
-                             svg += `<text x="${cx}" y="${cy - 35}" font-family="monospace" font-size="10" fill="#1f6feb" text-anchor="middle" font-weight="bold">HEAD</text>`;
+                            svg += `<text class="g-head" x="${cx - 8 + w + 5}" y="${y + 11.5}">HEAD</text>`;
                         }
-                    }
+                    });
                 });
 
                 svg += `</svg>`;
                 container.innerHTML = svg;
-                
+
                 // Auto-scroll graph to right
                 container.scrollLeft = container.scrollWidth;
             },
 
             completeTask(msg) {
-                confetti({ particleCount: 150, spread: 60, origin: { y: 0.7 } });
-                
                 const termOutput = document.getElementById('terminalOutput');
-                termOutput.innerHTML += `
-                    <div class="my-4 p-3 bg-[#238636]/10 dark:bg-[#238636]/20 border border-[#238636] text-[#2ea043] dark:text-[#3fb950] rounded-md flex items-center gap-3">
-                        <span class="text-xl">✨</span>
-                        <div>
-                            <div class="font-bold text-sm">Misión Cumplida</div>
-                            <div class="text-xs opacity-90">${msg}</div>
-                        </div>
-                    </div>
-                `;
+                termOutput.insertAdjacentHTML('beforeend',
+                    `<div class="t-success"><strong>Misión cumplida</strong><span>${msg}</span></div>`);
                 termOutput.scrollTop = termOutput.scrollHeight;
 
                 // Unlock next button
-                document.getElementById('nextBtn').disabled = false;
-                
-                // Auto-advance logic (optional)
-                setTimeout(() => {
-                    if (this.currentLesson < CURRICULUM.length - 1) {
-                         document.getElementById('nextBtn').classList.add('animate-pulse', 'text-green-600', 'dark:text-green-400');
-                    }
-                }, 1000);
+                const nextBtn = document.getElementById('nextBtn');
+                nextBtn.disabled = false;
+
+                // Highlight the way forward
+                if (this.currentLesson < CURRICULUM.length - 1) {
+                    nextBtn.classList.add('btn-primary');
+                }
             },
-            
+
             bindEvents() {
                 const input = document.getElementById('cmdInput');
                 input.addEventListener('keydown', (e) => {
@@ -1335,7 +1214,7 @@
                 document.getElementById('prevBtn').addEventListener('click', () => {
                     this.loadLesson(this.currentLesson - 1);
                 });
-                
+
                 document.getElementById('nextBtn').addEventListener('click', () => {
                     this.loadLesson(this.currentLesson + 1);
                 });
@@ -1343,13 +1222,11 @@
         };
 
         // Initialize safely
-        document.addEventListener('DOMContentLoaded', () => {
-             app.init();
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => app.init());
+        } else {
+            app.init();
+        }
     </script>
-    <style>
-        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
   </body>
 </html>
