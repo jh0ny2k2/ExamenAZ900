@@ -89,7 +89,13 @@ select.field.is-bad { border-color: var(--bad); background-color: var(--bad-bg);
 .feedback.ok .feedback-title { color: var(--ok); }
 .feedback.bad .feedback-title { color: var(--bad); }
 .feedback a { text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
-.feedback ol { margin: 6px 0 0; padding-left: 20px; }
+.feedback ol, .feedback ul { margin: 6px 0 10px; padding-left: 20px; }
+.feedback li { margin: 4px 0; }
+.feedback p, .review-expl p { margin: 0 0 8px; }
+.feedback > div > :last-child, .review-expl > :last-child { margin-bottom: 0; }
+.feedback em { color: var(--muted); }
+.review-expl ul { margin: 4px 0 8px; padding-left: 18px; }
+.review-expl li { margin: 2px 0; }
 
 /* Bottom bar */
 .quiz-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
